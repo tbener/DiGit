@@ -1,9 +1,0 @@
-C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\DiGit\bin\Debug\\NativeBinaries\amd64\git2-91fa31f.dll
-C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\DiGit\bin\Debug\\DiGit.exe
-C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\DiGit\bin\Debug\\NativeBinaries\x86\git2-91fa31f.pdb
-C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\DiGit\bin\Debug\\NativeBinaries\amd64\git2-91fa31f.pdb
-C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\DiGit\bin\Debug\\NativeBinaries\x86\git2-91fa31f.dll
-..\packages\LibGit2Sharp.0.20.1.0\lib\net40\LibGit2Sharp.dll
-C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\DiGit\bin\Debug\\DiGit.exe.config
-C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\bin\Debug\Hardcodet.Wpf.TaskbarNotification.dll
-C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\DiGit\bin\Debug\\System.Windows.Interactivity.dll
