@@ -1,0 +1,54 @@
+﻿<mui:ModernDialog x:Class="DiGit.View.AboutView"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                  xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+                  WindowStartupLocation="CenterScreen" 
+                  mc:Ignorable="d"
+                  Title="About DiGit" Width="561.088" Height="400.418">
+
+    <!-- Note: ModernDialog buttons are defined in the constructor of the code behind class -->
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5"/>
+            <RowDefinition />
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Version:" />
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Version}" />
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Author:" />
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Author}" />
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Description}" VerticalAlignment="Center" />
+
+            <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
+                <TextBlock Text="{Binding UpdateInfo}"/>
+                <TextBlock>
+                    <Hyperlink Command="{Binding ShowUpdateCommand}">
+                        <TextBlock Text="{Binding UpdateLink}" />
+                    </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+
+        </Grid>
+
+        <!--<Button Grid.Row="2">Log</Button>-->
+    </Grid>
+
+</mui:ModernDialog>

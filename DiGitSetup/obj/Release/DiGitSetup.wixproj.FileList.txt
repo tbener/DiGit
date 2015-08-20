@@ -1,0 +1,8 @@
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\DiGitSetup\bin\Release\DiGitSetup.msi
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\DiGitSetup\bin\Release\DiGitSetup.wixpdb
+obj\Release\Product.wixobj
+obj\Release\DiGitSetup.wixproj.BindContentsFileListnull.txt
+obj\Release\DiGitSetup.wixproj.BindOutputsFileListnull.txt
+obj\Release\DiGitSetup.wixproj.BindBuiltOutputsFileListnull.txt
+obj\Release\pth153CDA2E13F8DE8FC1FE1AA530D0B314\_DiGit.wixobj
+obj\Release\StandardUI.wixobj

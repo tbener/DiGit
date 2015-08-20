@@ -1,0 +1,14 @@
+﻿v1.0.202
+- Add show/hide hotkey to configuration
+v1.0.201
+- Add GIT commands Merge and Show Log
+- Add "index.lock" icon tooltip
+- Add text ellipsis for long branch names
+v1.0.2
+- Add About window
+- Fix setup update (setup update didn't work)
+- Minor features and bug fixes
+v1.0.1
+- Include this document
+- Bug fix: every bubble was displayed in the Alt-Tab list
+- Bug fix: keep active\inactive bubbles

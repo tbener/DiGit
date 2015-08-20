@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<DiGitConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ver="1.0.206.28290" isBetaUser="true">
+  <Repositories>
+    <Repository path="C:\CM\DBMOTION\" />
+    <Repository path="C:\CM\DBMOTION_LEGACY\" />
+  </Repositories>
+  <Settings>
+    <ShowHideHotkey modifiers="Ctrl+Shift" key="G" />
+    <VisualSettings />
+  </Settings>
+</DiGitConfig>

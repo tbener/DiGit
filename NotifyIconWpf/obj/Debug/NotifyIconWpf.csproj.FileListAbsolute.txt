@@ -1,0 +1,17 @@
+D:\Users\Tal\Documents\Visual Studio 2010\Projects\RadioK\SvnRepository\NotifyIconWpf\bin\Debug\Hardcodet.Wpf.TaskbarNotification.dll
+D:\Users\Tal\Documents\Visual Studio 2010\Projects\RadioK\SvnRepository\NotifyIconWpf\bin\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
+D:\Users\Tal\Documents\Visual Studio 2010\Projects\RadioK\SvnRepository\NotifyIconWpf\obj\Debug\ResolveAssemblyReference.cache
+D:\Users\Tal\Documents\Visual Studio 2010\Projects\RadioK\SvnRepository\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.g.resources
+D:\Users\Tal\Documents\Visual Studio 2010\Projects\RadioK\SvnRepository\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.Properties.Resources.resources
+D:\Users\Tal\Documents\Visual Studio 2010\Projects\RadioK\SvnRepository\NotifyIconWpf\obj\Debug\GenerateResource.read.1.tlog
+D:\Users\Tal\Documents\Visual Studio 2010\Projects\RadioK\SvnRepository\NotifyIconWpf\obj\Debug\GenerateResource.write.1.tlog
+D:\Users\Tal\Documents\Visual Studio 2010\Projects\RadioK\SvnRepository\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.dll
+D:\Users\Tal\Documents\Visual Studio 2010\Projects\RadioK\SvnRepository\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\bin\Debug\Hardcodet.Wpf.TaskbarNotification.dll
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\bin\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\obj\Debug\NotifyIconWpf.csprojResolveAssemblyReference.cache
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.g.resources
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.Properties.Resources.resources
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\obj\Debug\NotifyIconWpf.csproj.GenerateResource.Cache
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.dll
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.pdb

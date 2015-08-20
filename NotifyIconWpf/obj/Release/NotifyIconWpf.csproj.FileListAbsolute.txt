@@ -1,0 +1,16 @@
+C:\Users\tbener\Dropbox\Dev\RadioK\NotifyIconWpf\bin\Release\Hardcodet.Wpf.TaskbarNotification.dll
+C:\Users\tbener\Dropbox\Dev\RadioK\NotifyIconWpf\bin\Release\Hardcodet.Wpf.TaskbarNotification.pdb
+C:\Users\tbener\Dropbox\Dev\RadioK\NotifyIconWpf\obj\Release\Hardcodet.Wpf.TaskbarNotification.g.resources
+C:\Users\tbener\Dropbox\Dev\RadioK\NotifyIconWpf\obj\Release\Hardcodet.Wpf.TaskbarNotification.Properties.Resources.resources
+C:\Users\tbener\Dropbox\Dev\RadioK\NotifyIconWpf\obj\Release\NotifyIconWpf.csproj.GenerateResource.Cache
+C:\Users\tbener\Dropbox\Dev\RadioK\NotifyIconWpf\obj\Release\Hardcodet.Wpf.TaskbarNotification.dll
+C:\Users\tbener\Dropbox\Dev\RadioK\NotifyIconWpf\obj\Release\Hardcodet.Wpf.TaskbarNotification.pdb
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\bin\Release\Hardcodet.Wpf.TaskbarNotification.xml
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\bin\Release\Hardcodet.Wpf.TaskbarNotification.dll
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\bin\Release\Hardcodet.Wpf.TaskbarNotification.pdb
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\obj\Release\NotifyIconWpf.csprojResolveAssemblyReference.cache
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\obj\Release\Hardcodet.Wpf.TaskbarNotification.g.resources
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\obj\Release\Hardcodet.Wpf.TaskbarNotification.Properties.Resources.resources
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\obj\Release\NotifyIconWpf.csproj.GenerateResource.Cache
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\obj\Release\Hardcodet.Wpf.TaskbarNotification.dll
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\obj\Release\Hardcodet.Wpf.TaskbarNotification.pdb

@@ -1,0 +1,3 @@
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\DiGitSetup\bin\Release\cab1.cab
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\DiGitSetup\bin\Release\DiGitSetup.msi
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\DiGitSetup\bin\Release\DiGitSetup.wixpdb

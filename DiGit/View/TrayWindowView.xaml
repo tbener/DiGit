@@ -1,0 +1,63 @@
+﻿<Window x:Class="DiGit.View.TrayWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        Title="TrayWindowView" Height="1" Width="1"
+        Visibility="Hidden" WindowState="Minimized"
+        ShowInTaskbar="False"
+        >
+    <Grid>
+        <tb:TaskbarIcon
+                  x:Name="TaskbarIcon"
+                  IconSource="/Resources/Images/App.ico"
+                  MenuActivation="RightClick"
+                  ToolTipText="{Binding ToolTipText}"
+                  LeftClickCommand="{Binding LeftClickCommand}"
+                  DoubleClickCommand="{Binding DoubleClickCommand}"
+            >
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu x:Name="contextMenu">
+
+                    <MenuItem x:Name="mnuSettings" 
+                              Header="Start on Windows Startup"
+                               IsCheckable="True" IsChecked="{Binding StartWithWindows}"
+                             />
+                    <Separator/>
+                    
+                    <MenuItem x:Name="mnuAddrepo" 
+                              Header="Add repository..." 
+                              Command="{Binding AddRepoCommand}"/>
+                    <Separator/>
+
+                    <MenuItem x:Name="MnuToggle" 
+                              Header="{Binding ShowHideHeader}" ToolTip="Ctrl+G"
+                              Command="{Binding LeftClickCommand}" FontWeight="Bold"/>
+
+                    <MenuItem x:Name="MnuShow" 
+                              Header="Show all bubbles" 
+                              Command="{Binding ShowCommand}"/>
+                    <MenuItem x:Name="MnuHide" 
+                              Header="Hide all bubbles" 
+                              Command="{Binding HideCommand}"/>
+                    <MenuItem Template="{DynamicResource MenuItemBubbleVisualSettingsControlTemplate}"/>
+                    <Separator/>
+                    <MenuItem x:Name="MnuSettings" 
+                              Header="Settings..."
+                              Visibility="{Binding ShowSettingsVisiblilty}"
+                              Command="{Binding ShowSettingsCommand}"/>
+
+                    <MenuItem x:Name="MnuUpdate" 
+                              Header="{Binding CheckUpdateHeader}"
+                              Command="{Binding CheckUpdateCommand}"/>
+                    <MenuItem x:Name="MnuAbout" 
+                              Header="About..."
+                              Command="{Binding ShowAboutCommand}"/>
+                    <MenuItem x:Name="MnuExit" 
+                              Header="Exit"
+                              Command="{Binding ExitCommand}"/>
+
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
+    </Grid>
+</Window>

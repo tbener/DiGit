@@ -1,0 +1,371 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\LibGit2Sharp.0.20.1.0\build\net40\LibGit2Sharp.props" Condition="Exists('..\packages\LibGit2Sharp.0.20.1.0\build\net40\LibGit2Sharp.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F16EE2C0-7F23-425A-B5E3-348ABBC47249}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DiGit</RootNamespace>
+    <AssemblyName>DiGit</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <ExpressionBlendVersion>5.0.40218.0</ExpressionBlendVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>\\dbmotion.loc\Root\IT-Department\Software\Tools\DiGit\ClickOnce\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Unc</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <InstallUrl>\\dbmotion.loc\Root\IT-Department\Software\Tools\DiGit\ClickOnce\</InstallUrl>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Images\App.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>3D0AF8DDA4C55B1ABFF0F2555C030539689456E3</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>DiGit_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FirstFloor.ModernUI">
+      <HintPath>..\packages\ModernUI.WPF.1.0.6\lib\net45\FirstFloor.ModernUI.dll</HintPath>
+    </Reference>
+    <Reference Include="Gat.Controls.AboutBox">
+      <HintPath>..\packages\AboutBox.2.0.0\lib\net45\Gat.Controls.AboutBox.dll</HintPath>
+    </Reference>
+    <Reference Include="LibGit2Sharp">
+      <HintPath>..\packages\LibGit2Sharp.0.20.1.0\lib\net40\LibGit2Sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="Commands\BubbleCommands.cs" />
+    <Compile Include="Commands\ShowSingleViewCommand.cs" />
+    <Compile Include="Commands\OpenFolderCommand.cs" />
+    <Compile Include="Commands\RepositoryCommands.cs" />
+    <Compile Include="Commands\WindowCommands.cs" />
+    <Compile Include="Helpers\AppInfo.cs" />
+    <Compile Include="Helpers\BackgroundTasksManager.cs" />
+    <Compile Include="Helpers\ConfigurationHelper.cs" />
+    <Compile Include="Helpers\ErrorHandler.cs" />
+    <Compile Include="Helpers\FolderBrowser.cs" />
+    <Compile Include="Helpers\HotkeyHelper.cs" />
+    <Compile Include="Helpers\MsgHelper.cs" />
+    <Compile Include="Helpers\NotifyPropertyChangedHelper.cs" />
+    <Compile Include="Helpers\PathHelper.cs" />
+    <Compile Include="Helpers\RepositoriesManager.cs" />
+    <Compile Include="Helpers\BubblesManager.cs" />
+    <Compile Include="Helpers\SerializeHelper.cs" />
+    <Compile Include="Helpers\UserManager.cs" />
+    <Compile Include="Helpers\Utils.cs" />
+    <Compile Include="Model\CommandsListModel.cs" />
+    <Compile Include="Model\Configuration.cs" />
+    <Compile Include="Model\ConfigurationEx.cs" />
+    <Compile Include="Model\MenuCommand.cs" />
+    <Compile Include="Model\RepoTracker.cs" />
+    <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Updates\DiGitVersionInfo.cs" />
+    <Compile Include="Updates\UpdateManager.cs" />
+    <Compile Include="ViewModel\AboutViewModel.cs" />
+    <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\BubbleViewModel.cs" />
+    <Compile Include="ViewModel\CommandsListViewModel.cs" />
+    <Compile Include="ViewModel\DialogViewModel.cs" />
+    <Compile Include="ViewModel\RepositoryViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
+    <Compile Include="ViewModel\TrayWindowViewModel.cs" />
+    <Compile Include="ViewModel\UpdateViewModel.cs" />
+    <Compile Include="View\AddRepositoryView.xaml.cs">
+      <DependentUpon>AddRepositoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\BasicPage1.xaml.cs">
+      <DependentUpon>BasicPage1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\BubbleView.xaml.cs">
+      <DependentUpon>BubbleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CommandsListView.xaml.cs">
+      <DependentUpon>CommandsListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AboutView.xaml.cs">
+      <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TrayWindowView.xaml.cs">
+      <DependentUpon>TrayWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UpdateView.xaml.cs">
+      <DependentUpon>UpdateView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="ResourceDictionary\BubbleResourceDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="ResourceDictionary\CommandsListResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResourceDictionary\Controls\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionary\Controls\Checkbox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionary\CommandsListMenu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionary\Controls\Window.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionary\Controls\ListBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionary\Controls\ScrollViewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionary\Controls\TextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionary\ThemesResourceDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionary\DefaultControlsResourceDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionary\Themes\ExpressionDark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionary\Themes\ModernUI\ModernUI.Theme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AddRepositoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BasicPage1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BubbleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CommandsListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AboutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TrayWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UpdateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewModel\TrayWindowViewModel.resx">
+      <DependentUpon>TrayWindowViewModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Configuration\build.bat" />
+    <None Include="Configuration\Configuration.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DiGit_TemporaryKey.pfx" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="Resources\DiGit.config.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Updates\Schema\build.bat" />
+    <None Include="Updates\Schema\DiGitVersionInfo.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BondTech.HotKeyManagement.WPF.4\BondTech.HotKeyManagement.WPF.4.csproj">
+      <Project>{c78f31c0-ec07-4194-90d4-9cb771ad41a1}</Project>
+      <Name>BondTech.HotKeyManagement.WPF.4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NotifyIconWpf\NotifyIconWpf.csproj">
+      <Project>{7ac63864-7638-41c4-969c-d3197ef2bed9}</Project>
+      <Name>NotifyIconWpf</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Fonts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\unlocked.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\locked.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\App.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Version log.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\DiGitVersionInfo.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Configuration\DiGit.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Expression\Blend\.NETFramework\v4.5\Microsoft.Expression.Blend.WPF.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

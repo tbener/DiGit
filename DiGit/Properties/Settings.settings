@@ -1,0 +1,33 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="DiGit.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ConfigFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DiGit.xml</Value>
+    </Setting>
+    <Setting Name="InfoUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">O:\dbMotion-Development\dbMotion 2005\Dev\TalB\DiGit\Info</Value>
+    </Setting>
+    <Setting Name="RegistrationFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Users.xml</Value>
+    </Setting>
+    <Setting Name="InfoBaseFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DiGitVersionInfo{0}.xml</Value>
+    </Setting>
+    <Setting Name="ReadInfoDelaySec" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="WriteInfoDelaySec" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="UserRegistered" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="CheckUpdateIntervalHr" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="MenuPathLength" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">30</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

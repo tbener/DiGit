@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="DiGit.Binaries">
+            <Component Id="cmp7830B1B71926D1D165E3717DFCBB1586" Guid="{C8AE9CC5-B415-460E-B2C7-09521C18710A}">
+                <File Id="fil647D0EE0E8D207AFEDFE578A06CB5F2B" Source="$(var.DiGit.TargetDir)\DiGit.exe" />
+            </Component>
+            <Component Id="cmp577D60BEFCBEB3F0A3273048AD17BA2C" Guid="{AA8FE47D-E2B2-45AC-877E-9BAE5AA5834A}">
+                <File Id="fil0E9AE396AC2B2D3591C092A5FA9578C7" Source="$(var.DiGit.TargetDir)\DiGit.exe.config" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="DiGit.Binaries">
+            <ComponentRef Id="cmp7830B1B71926D1D165E3717DFCBB1586" />
+            <ComponentRef Id="cmp577D60BEFCBEB3F0A3273048AD17BA2C" />
+        </ComponentGroup>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="DiGit.Content" />
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="DiGit.Satellites" />
+    </Fragment>
+</Wix>

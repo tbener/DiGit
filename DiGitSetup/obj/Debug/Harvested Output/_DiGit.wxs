@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="DiGit.Binaries">
+            <Component Id="com_45C2AD16_C261_4C72_8A4C_C89282AF4683" Guid="{2C9D9128-D5E4-4EA8-853A-F0CB52932DAC}" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_45C2AD16_C261_4C72_8A4C_C89282AF4683" DiskId="1" Hidden="no" KeyPath="yes" ReadOnly="no" System="no" TrueType="no" Vital="yes" Source="$(var.DiGit.TargetDir)\DiGit.exe" />
+            </Component>
+            <Component Id="cmp577D60BEFCBEB3F0A3273048AD17BA2C" Guid="{6BD000F9-E2F1-4EB8-83FE-898C66018235}" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="fil0E9AE396AC2B2D3591C092A5FA9578C7" DiskId="1" Hidden="no" KeyPath="yes" ReadOnly="no" System="no" TrueType="no" Vital="yes" Source="$(var.DiGit.TargetDir)\DiGit.exe.config" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="DiGit.Binaries">
+<ComponentRef Id="com_45C2AD16_C261_4C72_8A4C_C89282AF4683" />
+<ComponentRef Id="cmp577D60BEFCBEB3F0A3273048AD17BA2C" />
+</ComponentGroup>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="DiGit.Content" />
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="DiGit.Satellites" />
+    </Fragment>
+</Wix>

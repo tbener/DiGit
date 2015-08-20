@@ -1,0 +1,70 @@
+﻿<mui:ModernWindow x:Class="DiGit.View.UpdateView"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                  xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+                  xmlns:updates="clr-namespace:DiGit.Updates"
+                  mc:Ignorable="d" 
+                  d:DesignHeight="300" d:DesignWidth="300"
+                  Title="DiGit Update"
+                  Height="360"
+                  Width="360"
+                  Style="{StaticResource BlankWindow}" 
+                  WindowStartupLocation="CenterScreen" 
+                  Icon="/DiGit;component/Resources/Images/App.ico" >
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type updates:DiGitVersionInfoVersionChange}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <!--<Image Source="{Binding type, StringFormat=../Resources/Images/{0}.png}"></Image>-->
+                <Label Content="- "></Label>
+                <!--<TextBlock Grid.Column="0" Text="{Binding Path=type, StringFormat=\'{0}: \'}"/>-->
+                <TextBlock Grid.Column="1" Text="{Binding Value}"/>
+
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type updates:DiGitVersionInfoVersion}">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{Binding version}" Margin="0,4,0,0" FontWeight="Bold"/>
+                <ItemsControl 
+                        ItemsSource="{Binding Change}"/>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+
+    <DockPanel LastChildFill="True" Margin="4,0">
+
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <TextBlock Text="Current version: "/>
+            <TextBlock Text="{Binding CurrentVersion}"/>
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <TextBlock Text="New version: "/>
+            <TextBlock Text="{Binding NewVersion}"/>
+        </StackPanel>
+
+        <DockPanel DockPanel.Dock="Bottom" Margin="0,4" LastChildFill="False">
+            <Button DockPanel.Dock="Left" Command="{Binding CheckUpdateCommand}">Check</Button>
+            <Button DockPanel.Dock="Left" Command="{Binding UpdateCommand}" 
+                    ToolTipService.ShowOnDisabled="True" 
+                    ToolTip="{Binding UpdateCommandTooltip}" 
+                    Margin="6,0">Update now...</Button>
+
+            <Button DockPanel.Dock="Right" Command="{Binding CloseCommand}" IsCancel="True">Close</Button>
+        </DockPanel>
+        <CheckBox DockPanel.Dock="Bottom" IsChecked="{Binding IsBetaUser}" Margin="0,4">Include beta versions</CheckBox>
+
+        <GroupBox Header="What's new" Margin="0, 10" Padding="4">
+            <ScrollViewer MinHeight="200" MinWidth="200" >
+                <ItemsControl  
+                        ItemsSource="{Binding WhatsNewList}"/>
+            </ScrollViewer>
+        </GroupBox>
+
+    </DockPanel>
+</mui:ModernWindow>

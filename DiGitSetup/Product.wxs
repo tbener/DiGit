@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?define UpgradeCode=60cdae80-62eb-4d2f-bc41-f3ab3c1ceb61?>
+<!--<?define VERSION=!(bind.FileVersion.$(var.DiGit.TargetFileName))?>-->
+<?define VERSION=1.0.206?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="DiGit" Language="1033" Version="$(var.VERSION)" Manufacturer="Tal Bener (Allscripts)" UpgradeCode="$(var.UpgradeCode)">
+    <Package InstallerVersion="200" Compressed="yes" ReadOnly="no"/>
+    <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
+    <Upgrade Id="$(var.UpgradeCode)">
+      <UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" OnlyDetect="no" RemoveFeatures="ALL"
+                      IncludeMaximum="no"
+                      IncludeMinimum ="yes" Minimum="0.0.0.0" />
+    </Upgrade>
+    <InstallExecuteSequence>
+      <FindRelatedProducts Before="LaunchConditions" />
+      <RemoveExistingProducts After="InstallValidate" />
+    </InstallExecuteSequence>
+    <!--<MajorUpgrade DowngradeErrorMessage="A newer version of DiGit is already installed." />-->
+    <MediaTemplate EmbedCab="yes" />
+    <Feature Id="ProductFeature" Title="DiGitSetup" Level="1">
+      <ComponentRef Id="comp_07C46244_4734_4E0E_8E0E_63A4AEEB1A02" />
+      <ComponentRef Id="comp_2BE98F8C_538B_41B9_925F_0127B499F595" />
+      <ComponentRef Id="comp_6AA011E9_FC74_42C8_AAAF_D71F1D6FF2CE" />
+      <ComponentRef Id="comp_C1C379DA_9F57_48C8_841C_273DB059490B" />
+      <ComponentRef Id="comp_dir_17A601CA_C3E2_4C0D_8FC5_232AB93CB4F4" />
+      <ComponentGroupRef Id="DiGit.Binaries" />
+      <ComponentRef Id="comp_47C72752_C371_4BF0_BF47_F9ECA618DB98" />
+      <ComponentGroupRef Id="RegistryGroup" />
+      <ComponentRef Id="NotifyIconWpf" />
+      <ComponentRef Id="BondTech.HotKeyManagement.WPF.4" />
+      <ComponentRef Id="comp_16403C2F_39B8_49FE_823E_F3FB436BE570" />
+      <ComponentRef Id="SystemWindowsInteractivity" />
+      <ComponentRef Id="FirstFloorModernUI" />
+      <ComponentRef Id="comp_36DAB21D_1AA9_4E56_A785_56C322F18E2A" />
+      <ComponentRef Id="comp_5C79D5B1_69AF_4FEE_AF5A_B6F41559F9AB" />
+      <ComponentRef Id="comp_2AAD3D30_F6F3_4CD4_8E14_21DBF5C45307" />
+      <ComponentRef Id="digit_version_log" />
+    </Feature>
+    <Property Id="WixShellExecTarget" Value="[TARGETDIR]$(var.DiGit.TargetFileName)" />
+    <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
+    <InstallUISequence>
+      <Custom Action="ERRCA_UIANDADVERTISED" Sequence="5"><![CDATA[ProductState=1]]></Custom>
+      <Custom Action="VSDCA_FolderForm_AllUsers" Sequence="997"><![CDATA[Installed="" AND NOT RESUME AND ALLUSERS=1]]></Custom>
+      <Custom Action="DIRCA_TARGETDIR" Before="CostInitialize"><![CDATA[TARGETDIR = ""]]></Custom>
+      <Show Dialog="UserExitForm" OnExit="cancel" />
+      <Show Dialog="FatalErrorForm" OnExit="error"><![CDATA[NOT HideFatalErrorForm]]></Show>
+      <Show Dialog="MaintenanceForm" Sequence="999"><![CDATA[Installed<>""]]></Show>
+      <Show Dialog="ResumeForm" Sequence="998"><![CDATA[Installed="" AND RESUME]]></Show>
+      <Show Dialog="FinishedForm" OnExit="success" />
+    </InstallUISequence>
+    <CustomAction Id="VSDCA_FolderForm_AllUsers" Property="FolderForm_AllUsers" Value="ALL" />
+    <CustomAction Id="DIRCA_TARGETDIR" Property="TARGETDIR" Value="[ProgramFilesFolder]\[ProductName]" Execute="firstSequence" />
+    <AdminUISequence>
+      <Custom Action="DIRCA_TARGETDIR" Before="CostInitialize"><![CDATA[TARGETDIR = ""]]></Custom>
+      <Show Dialog="UserExitForm" OnExit="cancel" />
+      <Show Dialog="FatalErrorForm" OnExit="error"><![CDATA[NOT HideFatalErrorForm]]></Show>
+      <Show Dialog="MaintenanceForm" Sequence="999"><![CDATA[Installed<>""]]></Show>
+      <Show Dialog="ResumeForm" Sequence="998"><![CDATA[Installed="" AND RESUME]]></Show>
+      <Show Dialog="FinishedForm" OnExit="success" />
+    </AdminUISequence>
+    <InstallExecuteSequence>
+      <Custom Action="DIRCA_TARGETDIR" Before="CostInitialize"><![CDATA[TARGETDIR = ""]]></Custom>
+      <!-- The following action will launch the application before the last window is closed-->
+      <!--<Custom Action="LaunchApplication" After="InstallFinalize">NOT REMOVE</Custom>-->
+    </InstallExecuteSequence>
+    <UIRef Id="FinishedDlg" />
+    <UIRef Id="SplashDlg" />
+    <UIRef Id="WelcomeDlg" />
+    <UIRef Id="ProgressDlg" />
+    <UI Id="LaunchApplication">
+      <Publish Dialog="FinishedForm" Control="CloseButton" Event="DoAction" Value="LaunchApplication">
+        <![CDATA[NOT Remove]]>
+      </Publish>
+    </UI>
+    <UI Id="Base">
+      <Property Id="VSDNETURLMSG" Value="This setup requires the .NET Framework version [1].  Please install the .NET Framework and run this setup again.  The .NET Framework can be obtained from the web.  Would you like to do this now?" />
+      <Property Id="VSDIISMSG" Value="This setup requires Internet Information Server 5.1 or higher and Windows XP or higher.  This setup cannot be installed on Windows 2000.  Please install Internet Information Server or a newer operating system and run this setup again." />
+      <Property Id="VSDUIANDADVERTISED" Value="This advertised application will not be installed because it might be unsafe. Contact your administrator to change the installation user interface option of the package to basic." />
+      <Property Id="VSDNETMSG" Value="This setup requires the .NET Framework version [1].  Please install the .NET Framework and run this setup again." />
+      <Property Id="VSDINVALIDURLMSG" Value="The specified path '[2]' is unavailable. The Internet Information Server might not be running or the path exists and is redirected to another machine. Please check the status of this virtual directory in the Internet Services Manager." />
+      <Property Id="VSDVERSIONMSG" Value="Unable to install because a newer version of this product is already installed." />
+    </UI>
+    <CustomAction Id="ERRCA_UIANDADVERTISED" Error="[VSDUIANDADVERTISED]" />
+    <UI Id="BasicDialogs">
+      <Binary Id="NewFldrBtn" SourceFile="Resources\WiXNewFolderBtn.ico" />
+      <Binary Id="UpFldrBtn" SourceFile="Resources\WiXUpFolderBtn.ico" />
+      <Property Id="ErrorDialog" Value="ErrorDialog" />
+      <Property Id="SFF_UpFldrBtn" Value="UpFldrBtn" />
+      <Property Id="SFF_NewFldrBtn" Value="NewFldrBtn" />
+      <TextStyle Id="VSI_MS_Sans_Serif13.0_0_0" FaceName="MS Sans Serif" Size="9" Red="0" Green="0" Blue="0" />
+      <TextStyle Id="VSI_MS_Sans_Serif16.0_1_0" FaceName="MS Sans Serif" Size="12" Red="0" Green="0" Blue="0" Bold="yes" />
+      <TextStyle Id="VSI_MS_Shell_Dlg13.0_0_0" FaceName="MS Shell Dlg" Size="9" Red="0" Green="0" Blue="0" />
+      <Dialog Id="Cancel" X="50" Y="50" Width="271" Height="78" Title="[ProductName]" NoMinimize="yes">
+        <Control Id="NoButton" Type="PushButton" X="198" Y="48" Width="65" Height="21" Text="{\VSI_MS_Sans_Serif13.0_0_0}&amp;No" TabSkip="no" Default="yes" Cancel="yes">
+          <Publish Event="EndDialog" Value="Return" />
+        </Control>
+        <Control Id="YesButton" Type="PushButton" X="126" Y="48" Width="65" Height="21" Text="{\VSI_MS_Sans_Serif13.0_0_0}&amp;Yes" TabSkip="no">
+          <Publish Event="EndDialog" Value="Exit" />
+        </Control>
+        <Control Id="BodyText" Type="Text" X="6" Y="9" Width="258" Height="24" Text="{\VSI_MS_Sans_Serif13.0_0_0}The installation is not yet complete. Are you sure you want to exit?" TabSkip="yes" NoPrefix="yes" />
+      </Dialog>
+      <Dialog Id="ConfirmRemoveDialog" X="50" Y="50" Width="271" Height="78" Title="Remove [ProductName]" NoMinimize="yes">
+        <Control Id="NoButton" Type="PushButton" X="198" Y="48" Width="65" Height="21" Text="{\VSI_MS_Sans_Serif13.0_0_0}&amp;No" TabSkip="no" Default="yes" Cancel="yes">
+          <Publish Property="WelcomeForm_ConfirmRemove" Value="No" />
+          <Publish Event="EndDialog" Value="Return" />
+        </Control>
+        <Control Id="YesButton" Type="PushButton" X="126" Y="48" Width="65" Height="21" Text="{\VSI_MS_Sans_Serif13.0_0_0}&amp;Yes" TabSkip="no">
+          <Publish Property="WelcomeForm_ConfirmRemove" Value="Yes" />
+          <Publish Event="EndDialog" Value="Return" />
+        </Control>
+        <Control Id="BodyText" Type="Text" X="6" Y="9" Width="258" Height="24" Text="{\VSI_MS_Sans_Serif13.0_0_0}You have chosen to remove [ProductName] from your computer. Are you sure you want to remove it?" TabSkip="yes" NoPrefix="yes" />
+      </Dialog>
+      <Dialog Id="DiskCost" X="50" Y="50" Width="361" Height="192" Title="[ProductName] Disk Space" NoMinimize="yes" TrackDiskSpace="yes">
+        <Control Id="OKButton" Type="PushButton" X="288" Y="165" Width="66" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}OK" TabSkip="no" Default="yes" Cancel="yes">
+          <Publish Event="EndDialog" Value="Return" />
+        </Control>
+        <Control Id="VolumeCostList1" Type="VolumeCostList" X="6" Y="39" Width="348" Height="114" Text="{\VSI_MS_Sans_Serif13.0_0_0}{116}{80}{80}{80}{80}" TabSkip="no" Sunken="yes" Removable="yes" Fixed="yes" Remote="yes" />
+        <Control Id="AvailableBodyText" Type="Text" X="6" Y="9" Width="348" Height="24" Text="{\VSI_MS_Sans_Serif13.0_0_0}The list below includes the drives you can install [ProductName] to, along with each drive's available and required disk space." TabSkip="yes" NoPrefix="yes">
+          <Condition Action="show"><![CDATA[OutOfDiskSpace<>1]]></Condition>
+          <Condition Action="hide"><![CDATA[OutOfDiskSpace=1]]></Condition>
+        </Control>
+        <Control Id="RequiredBodyText" Type="Text" X="6" Y="9" Width="348" Height="24" Text="{\VSI_MS_Sans_Serif13.0_0_0}The amount of required disk space exceeds the amount of available disk space. The highlighted items indicate the drives with insufficient disk space." TabSkip="yes" NoPrefix="yes">
+          <Condition Action="show"><![CDATA[OutOfDiskSpace=1]]></Condition>
+          <Condition Action="hide"><![CDATA[OutOfDiskSpace<>1]]></Condition>
+        </Control>
+      </Dialog>
+      <Dialog Id="FilesInUse" X="50" Y="50" Width="361" Height="177" Title="[ProductName] Files in Use" NoMinimize="yes">
+        <Control Id="RetryButton" Type="PushButton" X="99" Y="150" Width="81" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}&amp;Try Again" TabSkip="no" Default="yes">
+          <Publish Event="EndDialog" Value="Retry" />
+        </Control>
+        <Control Id="ContinueButton" Type="PushButton" X="186" Y="150" Width="81" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}&amp;Continue" TabSkip="no">
+          <Publish Event="EndDialog" Value="Ignore" />
+        </Control>
+        <Control Id="ExitButton" Type="PushButton" X="273" Y="150" Width="81" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}E&amp;xit Installation" TabSkip="no" Cancel="yes">
+          <Publish Event="EndDialog" Value="Exit" />
+        </Control>
+        <Control Id="ListFilesInUse" Type="ListBox" X="6" Y="51" Width="348" Height="90" Property="FileInUseProcess" Text="{\VSI_MS_Sans_Serif13.0_0_0}MsiFilesInUse" TabSkip="no" Sunken="yes" Sorted="yes" />
+        <Control Id="InstallBodyText" Type="Text" X="6" Y="9" Width="345" Height="36" Text="{\VSI_MS_Sans_Serif13.0_0_0}The following applications are using files which the installer must update. You can either close the applications and click &quot;Try Again&quot;, or click &quot;Continue&quot; so that the installer continues the installation, and replaces these files when your system restarts." TabSkip="yes" NoPrefix="yes">
+          <Condition Action="show"><![CDATA[REMOVE=""]]></Condition>
+          <Condition Action="hide"><![CDATA[REMOVE<>""]]></Condition>
+        </Control>
+        <Control Id="RemoveBodyText" Type="Text" X="6" Y="9" Width="345" Height="36" Text="{\VSI_MS_Sans_Serif13.0_0_0}The following applications are using files which the installer must remove. You can either close the applications and click &quot;Try Again&quot;, or click &quot;Continue&quot; so that the installer continues the installation, and replaces these files when your system restarts." TabSkip="yes" NoPrefix="yes">
+          <Condition Action="show"><![CDATA[REMOVE<>""]]></Condition>
+          <Condition Action="hide"><![CDATA[REMOVE=""]]></Condition>
+        </Control>
+      </Dialog>
+      <Dialog Id="SelectFolderDialog" X="50" Y="50" Width="313" Height="223" Title="Browse for Folder" NoMinimize="yes">
+        <Control Id="OKButton" Type="PushButton" X="168" Y="198" Width="66" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}OK" TabSkip="no" Default="yes">
+          <Publish Event="SetTargetPath" Value="[SelectFolderDialog_Property]">1</Publish>
+          <Publish Event="EndDialog" Value="Return">1</Publish>
+        </Control>
+        <Control Id="CancelButton" Type="PushButton" X="240" Y="198" Width="66" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}Cancel" TabSkip="no" Cancel="yes">
+          <Publish Event="Reset" Value="{}">1</Publish>
+          <Publish Event="EndDialog" Value="Return">1</Publish>
+        </Control>
+        <Control Id="BrowseText" Type="Text" X="6" Y="9" Width="60" Height="12" Text="{\VSI_MS_Sans_Serif13.0_0_0}&amp;Browse:" TabSkip="no" />
+        <Control Id="FolderCombo" Type="DirectoryCombo" X="66" Y="6" Width="198" Height="120" Property="SelectFolderDialog_Property" Text="{\VSI_MS_Sans_Serif13.0_0_0}MsiDirectoryCombo" TabSkip="no" Indirect="yes" Removable="yes" Fixed="yes" Remote="yes" RAMDisk="yes" Floppy="yes" />
+        <Control Id="FolderUpButton" Type="PushButton" X="270" Y="6" Width="18" Height="18" Text="[SFF_UpFldrBtn]" TabSkip="no" IconSize="16" FixedSize="yes" Icon="yes">
+          <Publish Event="DirectoryListUp" Value="{}">1</Publish>
+        </Control>
+        <Control Id="NewFolderButton" Type="PushButton" X="288" Y="6" Width="18" Height="18" Text="[SFF_NewFldrBtn]" TabSkip="no" IconSize="16" FixedSize="yes" Icon="yes">
+          <Publish Event="DirectoryListNew" Value="{}">1</Publish>
+        </Control>
+        <Control Id="FolderList" Type="DirectoryList" X="6" Y="30" Width="300" Height="129" Property="SelectFolderDialog_Property" Text="{\VSI_MS_Sans_Serif13.0_0_0}MsiDirectoryList" TabSkip="no" Sunken="yes" Indirect="yes" />
+        <Control Id="FolderText" Type="Text" X="6" Y="171" Width="60" Height="12" Text="{\VSI_MS_Sans_Serif13.0_0_0}&amp;Folder:" TabSkip="no" />
+        <Control Id="FolderPathEdit" Type="PathEdit" X="66" Y="168" Width="240" Height="18" Property="SelectFolderDialog_Property" Text="{\VSI_MS_Sans_Serif13.0_0_0}MsiPathEdit" TabSkip="no" Sunken="yes" Indirect="yes" />
+      </Dialog>
+      <Dialog Id="ErrorDialog" X="50" Y="50" Width="330" Height="101" Title="[ProductName]" ErrorDialog="yes">
+        <Control Id="ErrorText" Type="Text" X="6" Y="9" Width="318" Height="48" Text="{\VSI_MS_Sans_Serif13.0_0_0}" TabSkip="no" Disabled="yes" NoPrefix="yes" />
+        <Control Id="Y" Type="PushButton" X="240" Y="72" Width="81" Height="21" Text="{\VSI_MS_Sans_Serif13.0_0_0}&amp;Yes" TabSkip="yes">
+          <Publish Event="EndDialog" Value="ErrorYes" />
+        </Control>
+        <Control Id="A" Type="PushButton" X="0" Y="72" Width="81" Height="21" Text="{\VSI_MS_Sans_Serif13.0_0_0}E&amp;xit Installation" TabSkip="yes">
+          <Publish Event="EndDialog" Value="ErrorAbort" />
+        </Control>
+        <Control Id="C" Type="PushButton" X="42" Y="72" Width="81" Height="21" Text="{\VSI_MS_Sans_Serif13.0_0_0}Cancel" TabSkip="yes">
+          <Publish Event="EndDialog" Value="ErrorCancel" />
+        </Control>
+        <Control Id="I" Type="PushButton" X="81" Y="72" Width="81" Height="21" Text="{\VSI_MS_Sans_Serif13.0_0_0}C&amp;ontinue" TabSkip="yes">
+          <Publish Event="EndDialog" Value="ErrorIgnore" />
+        </Control>
+        <Control Id="N" Type="PushButton" X="120" Y="72" Width="81" Height="21" Text="{\VSI_MS_Sans_Serif13.0_0_0}&amp;No" TabSkip="yes">
+          <Publish Event="EndDialog" Value="ErrorNo" />
+        </Control>
+        <Control Id="O" Type="PushButton" X="159" Y="72" Width="81" Height="21" Text="{\VSI_MS_Sans_Serif13.0_0_0}OK" TabSkip="yes">
+          <Publish Event="EndDialog" Value="ErrorOk" />
+        </Control>
+        <Control Id="R" Type="PushButton" X="198" Y="72" Width="81" Height="21" Text="{\VSI_MS_Sans_Serif13.0_0_0}&amp;Try Again" TabSkip="yes">
+          <Publish Event="EndDialog" Value="ErrorRetry" />
+        </Control>
+      </Dialog>
+    </UI>
+    <UI Id="UserInterface">
+      <Binary Id="_0CFCE1A0_7D2A_4376_8D21_D338915A14C4" SourceFile="Resources\bubble.jpg" />
+      <Binary Id="_E831114B_0F1E_4BFA_8C11_F08B99EA6A31" SourceFile="Resources\bubble.bmp" />
+      <Binary Id="_68569415_84BF_4DAD_9058_03E224E71637" SourceFile="Resources\DiGit preview.bmp" />
+      <Binary Id="DefBannerBitmap" SourceFile="Resources\WiXDefBannerBitmap.bmp" />
+      <Property Id="DefaultUIFont" Value="VsdDefaultUIFont.524F4245_5254_5341_4C45_534153783400" />
+      <TextStyle Id="VsdDefaultUIFont.524F4245_5254_5341_4C45_534153783400" FaceName="MS Sans Serif" Size="9" Red="0" Green="0" Blue="0" />
+      <UIText Id="MenuLocal"><![CDATA[Will be installed on local hard drive]]></UIText>
+      <UIText Id="SelParentCostNegNeg"><![CDATA[This feature frees up [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures free up [4] on your hard drive.]]></UIText>
+      <UIText Id="SelNetworkNetwork"><![CDATA[This feature will remain to be run from the network]]></UIText>
+      <UIText Id="SelNetworkLocal"><![CDATA[This feature will change from run from network state to be installed on the local hard drive]]></UIText>
+      <UIText Id="SelNetworkAdvertise"><![CDATA[This feature will change from run from network state to set to be installed when required]]></UIText>
+      <UIText Id="SelNetworkAbsent"><![CDATA[This feature will be uninstalled completely, you won't be able to run it from the network]]></UIText>
+      <UIText Id="SelAbsentAbsent"><![CDATA[This feature will remain uninstalled]]></UIText>
+      <UIText Id="ScriptInProgress"><![CDATA[Gathering required information...]]></UIText>
+      <UIText Id="MenuCD"><![CDATA[Will be installed to run from CD]]></UIText>
+      <UIText Id="SelChildCostNeg"><![CDATA[This feature frees up [1] on your hard drive.]]></UIText>
+      <UIText Id="SelCDLocal"><![CDATA[This feature will change from run from CD state to be installed on the local hard drive]]></UIText>
+      <UIText Id="MenuAbsent"><![CDATA[Entire feature will be unavailable]]></UIText>
+      <UIText Id="SelCDAdvertise"><![CDATA[This feature will change from run from CD state to set to be installed when required]]></UIText>
+      <UIText Id="MenuAllNetwork"><![CDATA[Entire feature will be installed to run from network]]></UIText>
+      <UIText Id="SelLocalNetwork"><![CDATA[This feature will be removed from your local hard drive, but will be still available to run from the network]]></UIText>
+      <UIText Id="SelAdvertiseNetwork"><![CDATA[This feature will be available to run from the network]]></UIText>
+      <UIText Id="MenuAllLocal"><![CDATA[Entire feature will be installed on local hard drive]]></UIText>
+      <UIText Id="SelAdvertiseLocal"><![CDATA[This feature will be installed on your local hard drive]]></UIText>
+      <UIText Id="MenuAllCD"><![CDATA[Entire feature will be installed to run from CD]]></UIText>
+      <UIText Id="SelCDAbsent"><![CDATA[This feature will be uninstalled completely, you won't be able to run it from CD]]></UIText>
+      <UIText Id="MenuAdvertise"><![CDATA[Feature will be installed when required]]></UIText>
+      <UIText Id="SelAdvertiseCD"><![CDATA[This feature will be available to run from CD]]></UIText>
+      <UIText Id="bytes"><![CDATA[bytes]]></UIText>
+      <UIText Id="SelAdvertiseAdvertise"><![CDATA[Will be installed when required]]></UIText>
+      <UIText Id="AbsentPath" />
+      <UIText Id="MB"><![CDATA[MB]]></UIText>
+      <UIText Id="SelAdvertiseAbsent"><![CDATA[This feature will become unavailable]]></UIText>
+      <UIText Id="KB"><![CDATA[KB]]></UIText>
+      <UIText Id="GB"><![CDATA[GB]]></UIText>
+      <UIText Id="SelAbsentNetwork"><![CDATA[This feature will be installed to run from the network]]></UIText>
+      <UIText Id="SelAbsentCD"><![CDATA[This feature will be installed to run from CD]]></UIText>
+      <UIText Id="SelAbsentAdvertise"><![CDATA[This feature will be set to be installed when required]]></UIText>
+      <UIText Id="SelAbsentLocal"><![CDATA[This feature will be installed on the local hard drive]]></UIText>
+      <UIText Id="SelCDCD"><![CDATA[This feature will remain to be run from CD]]></UIText>
+      <UIText Id="NewFolder"><![CDATA[Folder|New Folder]]></UIText>
+      <UIText Id="MenuNetwork"><![CDATA[Will be installed to run from network]]></UIText>
+      <UIText Id="SelLocalCD"><![CDATA[This feature will be removed from your local hard drive, but will be still available to run from CD]]></UIText>
+      <UIText Id="SelLocalAbsent"><![CDATA[This feature will be completely removed]]></UIText>
+      <UIText Id="SelCostPending"><![CDATA[Compiling cost for this feature...]]></UIText>
+      <UIText Id="SelLocalLocal"><![CDATA[This feature will remain on you local hard drive]]></UIText>
+      <UIText Id="SelChildCostPos"><![CDATA[This feature requires [1] on your hard drive.]]></UIText>
+      <UIText Id="SelLocalAdvertise"><![CDATA[This feature will be removed from your local hard drive, but will be set to be installed when required]]></UIText>
+      <UIText Id="SelParentCostNegPos"><![CDATA[This feature frees up [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures require [4] on your hard drive.]]></UIText>
+      <UIText Id="SelParentCostPosNeg"><![CDATA[This feature requires [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures free up [4] on your hard drive.]]></UIText>
+      <UIText Id="SelParentCostPosPos"><![CDATA[This feature requires [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures require [4] on your hard drive.]]></UIText>
+      <UIText Id="TimeRemaining"><![CDATA[Time remaining: {[1] minutes }{[2] seconds}]]></UIText>
+      <UIText Id="VolumeCostAvailable"><![CDATA[Available]]></UIText>
+      <UIText Id="VolumeCostDifference"><![CDATA[Difference]]></UIText>
+      <UIText Id="VolumeCostRequired"><![CDATA[Required]]></UIText>
+      <UIText Id="VolumeCostSize"><![CDATA[Disk Size]]></UIText>
+      <UIText Id="VolumeCostVolume"><![CDATA[Volume]]></UIText>
+    </UI>
+    <UI Id="FinishedDlg">
+      <Property Id="MaintenanceForm_Action" Value="Repair" />
+      <RadioButtonGroup Property="MaintenanceForm_Action">
+        <RadioButton Height="17" Text="{\VSI_MS_Sans_Serif13.0_0_0}&amp;Repair [ProductName]" Value="Repair" Width="348" X="0" Y="0" />
+        <RadioButton Height="17" Text="{\VSI_MS_Sans_Serif13.0_0_0}Re&amp;move [ProductName]" Value="Remove" Width="348" X="0" Y="18" />
+      </RadioButtonGroup>
+      <Dialog Id="UserExitForm" X="50" Y="50" Width="373" Height="287" Title="[ProductName]">
+        <Control Id="CloseButton" Type="PushButton" X="300" Y="261" Width="66" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}&amp;Close" TabSkip="no" Default="yes" Cancel="yes">
+          <Publish Event="EndDialog" Value="Return"><![CDATA[1]]></Publish>
+        </Control>
+        <Control Id="CancelButton" Type="PushButton" X="156" Y="261" Width="66" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}Cancel" TabSkip="no" Disabled="yes" />
+        <Control Id="PreviousButton" Type="PushButton" X="228" Y="261" Width="66" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}&lt; &amp;Back" TabSkip="no" Disabled="yes" />
+        <Control Id="BannerBmp" Type="Bitmap" X="0" Y="0" Width="375" Height="52" Text="DefBannerBitmap" TabSkip="no" Disabled="yes" />
+        <Control Id="Line1" Type="Line" X="0" Y="52" Width="375" Height="6" Text="{\VSI_MS_Sans_Serif13.0_0_0}MsiHorizontalLine" TabSkip="yes" Disabled="yes" />
+        <Control Id="Line2" Type="Line" X="0" Y="252" Width="375" Height="6" Text="{\VSI_MS_Sans_Serif13.0_0_0}MsiHorizontalLine" TabSkip="yes" Disabled="yes" />
+        <Control Id="BannerText" Type="Text" X="9" Y="9" Width="306" Height="33" Text="{\VSI_MS_Sans_Serif16.0_1_0}Installation Interrupted" TabSkip="yes" Transparent="yes" NoPrefix="yes" />
+        <Control Id="BodyTextRemove" Type="Text" X="9" Y="63" Width="354" Height="180" Text="{\VSI_MS_Sans_Serif13.0_0_0}The installer was interrupted before [ProductName] could be removed. You need to restart the installer to try again.&#xD;&#xA;&#xD;&#xA;Click &quot;Close&quot; to exit." TabSkip="yes" NoPrefix="yes">
+          <Condition Action="show"><![CDATA[REMOVE<>""]]></Condition>
+          <Condition Action="hide"><![CDATA[REMOVE=""]]></Condition>
+        </Control>
+        <Control Id="BodyTextInstall" Type="Text" X="18" Y="63" Width="342" Height="24" Text="{\VSI_MS_Sans_Serif13.0_0_0}The installation was interrupted before [ProductName] could be installed. You need to restart the installer to try again." TabSkip="yes" NoPrefix="yes">
+          <Condition Action="show"><![CDATA[REMOVE=""]]></Condition>
+          <Condition Action="hide"><![CDATA[REMOVE<>""]]></Condition>
+        </Control>
+      </Dialog>
+      <Dialog Id="FatalErrorForm" X="50" Y="50" Width="373" Height="287" Title="[ProductName]">
+        <Control Id="CloseButton" Type="PushButton" X="300" Y="261" Width="66" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}&amp;Close" TabSkip="no" Default="yes" Cancel="yes">
+          <Publish Event="EndDialog" Value="Return"><![CDATA[1]]></Publish>
+        </Control>
+        <Control Id="CancelButton" Type="PushButton" X="156" Y="261" Width="66" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}Cancel" TabSkip="no" Disabled="yes" />
+        <Control Id="PreviousButton" Type="PushButton" X="228" Y="261" Width="66" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}&lt; &amp;Back" TabSkip="no" Disabled="yes" />
+        <Control Id="BannerBmp" Type="Bitmap" X="0" Y="0" Width="375" Height="52" Text="DefBannerBitmap" TabSkip="no" Disabled="yes" />
+        <Control Id="Line1" Type="Line" X="0" Y="52" Width="375" Height="6" Text="{\VSI_MS_Sans_Serif13.0_0_0}MsiHorizontalLine" TabSkip="yes" Disabled="yes" />
+        <Control Id="Line2" Type="Line" X="0" Y="252" Width="375" Height="6" Text="{\VSI_MS_Sans_Serif13.0_0_0}MsiHorizontalLine" TabSkip="yes" Disabled="yes" />
+        <Control Id="BannerText" Type="Text" X="9" Y="9" Width="306" Height="33" Text="{\VSI_MS_Sans_Serif16.0_1_0}Installation Incomplete" TabSkip="yes" Transparent="yes" NoPrefix="yes" />
+        <Control Id="BodyTextRemove" Type="Text" X="9" Y="63" Width="354" Height="180" Text="{\VSI_MS_Sans_Serif13.0_0_0}The installer was interrupted before [ProductName] could be installed. You need to restart the installer to try again.&#xD;&#xA;&#xD;&#xA;Click &quot;Close&quot; to exit." TabSkip="yes" NoPrefix="yes">
+          <Condition Action="show"><![CDATA[REMOVE=""]]></Condition>
+          <Condition Action="hide"><![CDATA[REMOVE<>""]]></Condition>
+        </Control>
+        <Control Id="BodyTextInstall" Type="Text" X="9" Y="63" Width="354" Height="180" Text="{\VSI_MS_Sans_Serif13.0_0_0}The installer was interrupted before [ProductName] could be removed. You need to restart the installer to try again.&#xD;&#xA;&#xD;&#xA;Click &quot;Close&quot; to exit." TabSkip="yes" NoPrefix="yes">
+          <Condition Action="show"><![CDATA[REMOVE<>""]]></Condition>
+          <Condition Action="hide"><![CDATA[REMOVE=""]]></Condition>
+        </Control>
+      </Dialog>
+      <Dialog Id="MaintenanceForm" X="50" Y="50" Width="373" Height="287" Title="[ProductName]">
+        <Control Id="FinishButton" Type="PushButton" X="300" Y="261" Width="66" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}&amp;Finish" TabSkip="no" Default="yes">
+          <Publish Property="REINSTALL" Value="ALL"><![CDATA[MaintenanceForm_Action="Repair"]]></Publish>
+          <Publish Event="Reinstall" Value="ALL"><![CDATA[MaintenanceForm_Action="Repair"]]></Publish>
+          <Publish Property="REMOVE" Value="ALL"><![CDATA[MaintenanceForm_Action="Remove"]]></Publish>
+          <Publish Event="Remove" Value="ALL"><![CDATA[MaintenanceForm_Action="Remove"]]></Publish>
+          <Publish Event="EndDialog" Value="Return"><![CDATA[1]]></Publish>
+        </Control>
+        <Control Id="RepairRadioGroup" Type="RadioButtonGroup" X="18" Y="108" Width="348" Height="48" Property="MaintenanceForm_Action" Text="{\VSI_MS_Sans_Serif13.0_0_0}MsiRadioButtonGroup" TabSkip="no" />
+        <Control Id="CancelButton" Type="PushButton" X="156" Y="261" Width="66" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}Cancel" TabSkip="no" Cancel="yes">
+          <Publish Event="SpawnDialog" Value="Cancel" />
+        </Control>
+        <Control Id="PreviousButton" Type="PushButton" X="228" Y="261" Width="66" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}&lt; &amp;Back" TabSkip="no" Disabled="yes" />
+        <Control Id="BannerBmp" Type="Bitmap" X="0" Y="0" Width="375" Height="52" Text="DefBannerBitmap" TabSkip="no" Disabled="yes" />
+        <Control Id="Line1" Type="Line" X="0" Y="52" Width="375" Height="6" Text="{\VSI_MS_Sans_Serif13.0_0_0}MsiHorizontalLine" TabSkip="yes" Disabled="yes" />
+        <Control Id="Line2" Type="Line" X="0" Y="252" Width="375" Height="6" Text="{\VSI_MS_Sans_Serif13.0_0_0}MsiHorizontalLine" TabSkip="yes" Disabled="yes" />
+        <Control Id="BannerText" Type="Text" X="9" Y="9" Width="306" Height="33" Text="{\VSI_MS_Sans_Serif16.0_1_0}Welcome to the [ProductName] Setup Wizard" TabSkip="yes" Transparent="yes" NoPrefix="yes" />
+        <Control Id="BodyText" Type="Text" X="9" Y="63" Width="354" Height="42" Text="{\VSI_MS_Sans_Serif13.0_0_0}Select whether you want to repair or remove [ProductName]." TabSkip="yes" NoPrefix="yes" />
+      </Dialog>
+      <Dialog Id="ResumeForm" X="50" Y="50" Width="373" Height="287" Title="[ProductName]">
+        <Control Id="FinishButton" Type="PushButton" X="300" Y="261" Width="66" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}&amp;Finish" TabSkip="no" Default="yes">
+          <Publish Event="EndDialog" Value="Return"><![CDATA[1]]></Publish>
+        </Control>
+        <Control Id="CancelButton" Type="PushButton" X="156" Y="261" Width="66" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}Cancel" TabSkip="no" Cancel="yes">
+          <Publish Event="SpawnDialog" Value="Cancel" />
+        </Control>
+        <Control Id="PreviousButton" Type="PushButton" X="228" Y="261" Width="66" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}&lt; &amp;Back" TabSkip="no" Disabled="yes" />
+        <Control Id="BannerBmp" Type="Bitmap" X="0" Y="0" Width="375" Height="52" Text="DefBannerBitmap" TabSkip="no" Disabled="yes" />
+        <Control Id="Line1" Type="Line" X="0" Y="52" Width="375" Height="6" Text="{\VSI_MS_Sans_Serif13.0_0_0}MsiHorizontalLine" TabSkip="yes" Disabled="yes" />
+        <Control Id="Line2" Type="Line" X="0" Y="252" Width="375" Height="6" Text="{\VSI_MS_Sans_Serif13.0_0_0}MsiHorizontalLine" TabSkip="yes" Disabled="yes" />
+        <Control Id="BannerText" Type="Text" X="9" Y="9" Width="306" Height="33" Text="{\VSI_MS_Sans_Serif16.0_1_0}Welcome to the [ProductName] Setup Wizard" TabSkip="yes" Transparent="yes" NoPrefix="yes" />
+        <Control Id="BodyText" Type="Text" X="9" Y="63" Width="354" Height="180" Text="{\VSI_MS_Sans_Serif13.0_0_0}The installer will resume the installation of [ProductName] on your computer.&#xD;&#xA;&#xD;&#xA;Click &quot;Finish&quot; to continue." TabSkip="yes" NoPrefix="yes" />
+      </Dialog>
+      <Dialog Id="FinishedForm" X="50" Y="50" Width="373" Height="287" Title="[ProductName]">
+        <Control Id="CloseButton" Type="PushButton" X="300" Y="261" Width="66" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}&amp;Close" TabSkip="no" Default="yes" Cancel="yes">
+          <Publish Event="EndDialog" Value="Return"><![CDATA[1]]></Publish>
+        </Control>
+        <Control Id="CancelButton" Type="PushButton" X="156" Y="261" Width="66" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}Cancel" TabSkip="no" Disabled="yes" />
+        <Control Id="PreviousButton" Type="PushButton" X="228" Y="261" Width="66" Height="18" Text="{\VSI_MS_Sans_Serif13.0_0_0}&lt; &amp;Back" TabSkip="no" Disabled="yes" />
+        <Control Id="BannerBmp" Type="Bitmap" X="0" Y="0" Width="375" Height="52" Text="DefBannerBitmap" TabSkip="no" Disabled="yes" />
+        <Control Id="Line1" Type="Line" X="0" Y="52" Width="375" Height="6" Text="{\VSI_MS_Sans_Serif13.0_0_0}MsiHorizontalLine" TabSkip="yes" Disabled="yes" />
+        <Control Id="Line2" Type="Line" X="0" Y="252" Width="375" Height="6" Text="{\VSI_MS_Sans_Serif13.0_0_0}MsiHorizontalLine" TabSkip="yes" Disabled="yes" />
+        <Control Id="BannerText" Type="Text" X="9" Y="9" Width="306" Height="33" Text="{\VSI_MS_Sans_Serif16.0_1_0}Installation Complete" TabSkip="yes" Transparent="yes" NoPrefix="yes" />
+        <Control Id="BodyTextRemove" Type="Text" X="9" Y="63" Width="354" Height="138" Text="{\VSI_MS_Sans_Serif13.0_0_0}[ProductName] has been successfully removed.&#xD;&#xA;&#xD;&#xA;Click &quot;Close&quot; to exit." TabSkip="yes" NoPrefix="yes">
+          <Condition Action="show"><![CDATA[REMOVE<>""]]></Condition>
+          <Condition Action="hide"><![CDATA[REMOVE=""]]></Condition>
+        </Control>
+        <Control Id="UpdateText" Type="Text" X="9" Y="216" Width="354" Height="36" Text="{\VSI_MS_Sans_Serif13.0_0_0}Please use Windows Update to check for any critical updates to the .NET Framework." TabSkip="yes" NoPrefix="yes">
+          <Condition Action="show"><![CDATA[REMOVE=""]]></Condition>
+          <Condition Action="hide"><![CDATA[REMOVE<>""]]></Condition>
+        </Control>
+        <Control Id="BodyText" Type="Text" X="9" Y="63" Width="354" Height="138" Text="{\VSI_MS_Sans_Serif13.0_0_0}[ProductName] has been successfully installed.&#xD;&#xA;&#xD;&#xA;Click &quot;Close&quot; to exit." TabSkip="yes" NoPrefix="yes">
+          <Condition Action="show"><![CDATA[REMOVE=""]]></Condition>
+          <Condition Action="hide"><![CDATA[REMOVE<>""]]></Condition>
+        </Control>
+      </Dialog>
+    </UI>
+  </Product>
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="dir_3239CE8E_51C2_43B4_8B2A_E24C16D58A9C" Name="DiGit">
+          <Component Id="comp_36DAB21D_1AA9_4E56_A785_56C322F18E2A" Guid="F3082E30-E702-4E4A-82F1-E1C3A99168BA" Permanent="no" SharedDllRefCount="no" Transitive="no">
+            <File Id="_EFA075F8_C003_4EE2_B4D1_8B48CA0233B5" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="DiGit.ico" Source="..\DiGit\Resources\Images\App.ico" KeyPath="yes" />
+          </Component>
+          <Component Id="digit_version_log" Guid="*">
+            <File Id="digit_version_log" Source="..\DiGit\Resources\Version log.txt" KeyPath="yes" />
+          </Component>
+          <Directory Id="dir_4A9B099B_DDBB_4B04_8DC1_4DE3E1AA421E" Name="Help">
+            <Component Id="comp_5C79D5B1_69AF_4FEE_AF5A_B6F41559F9AB" Guid="C10CD220-E318-4468-A3FA-C5B7005588D4" Permanent="no" SharedDllRefCount="no" Transitive="no">
+              <File Id="_10A93B21_D15C_4DAC_B297_67F79D68930F" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="DiGit preview.bmp" Source="Resources\DiGit preview.bmp" KeyPath="yes" />
+            </Component>
+            <Component Id="comp_2AAD3D30_F6F3_4CD4_8E14_21DBF5C45307" Guid="63BB27EB-C67E-44C4-904C-6BAECACFE6B3" Permanent="no" SharedDllRefCount="no" Transitive="no">
+              <File Id="_AABB0462_8271_45F0_BD2F_97DDEA4B63A0" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="bubble.bmp" Source="Resources\bubble.bmp" KeyPath="yes" />
+            </Component>
+          </Directory>
+          <Directory Id="dir_7C2959E8_F191_4C1A_9311_BCA38F4B0F0A" Name="NativeBinaries">
+            <Directory Id="dir_39AF8AA4_3084_4554_83C7_58E6693CCDD2" Name="amd64">
+              <Component Id="comp_07C46244_4734_4E0E_8E0E_63A4AEEB1A02" Guid="8FEC036F-D10A-4877-905A-4D1410F40F5D" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_0582E2C4_BDD3_40E5_A9D6_1E763D82C3A7" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="git2-91fa31f.dll" Source="$(var.DiGit.TargetDir)\NativeBinaries\amd64\git2-91fa31f.dll" KeyPath="yes" />
+              </Component>
+              <Component Id="comp_2BE98F8C_538B_41B9_925F_0127B499F595" Guid="E2039290-10A0-4DF3-B5F6-4C98CEE58665" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_C8CD3F61_E5CD_485A_A323_8EB03BF42A14" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="git2-91fa31f.pdb" Source="$(var.DiGit.TargetDir)\NativeBinaries\amd64\git2-91fa31f.pdb" KeyPath="yes" />
+              </Component>
+            </Directory>
+            <Directory Id="dir_DD77052B_A8AF_4320_A25F_27217C109243" Name="x86">
+              <Component Id="comp_6AA011E9_FC74_42C8_AAAF_D71F1D6FF2CE" Guid="0368EB18-8C50-4684-BA0D-E507021F15F5" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_CF8B6F91_92DB_48CF_99A8_404617C53FAB" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="git2-91fa31f.dll" Source="$(var.DiGit.TargetDir)\NativeBinaries\x86\git2-91fa31f.dll" KeyPath="yes" />
+              </Component>
+              <Component Id="comp_C1C379DA_9F57_48C8_841C_273DB059490B" Guid="5EE4F1B1-B596-424F-9F0C-D56B6852BA6B" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_67F6A2C0_779E_4AE1_A685_99B2FA6779AB" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="git2-91fa31f.pdb" Source="$(var.DiGit.TargetDir)\NativeBinaries\x86\git2-91fa31f.pdb" KeyPath="yes" />
+              </Component>
+            </Directory>
+          </Directory>
+          <Directory Id="DiGit.Binaries" />
+          <Component Id="NotifyIconWpf">
+            <File Source="$(var.NotifyIconWpf.TargetPath)" KeyPath="yes" />
+          </Component>
+          <Component Id="comp_16403C2F_39B8_49FE_823E_F3FB436BE570" Guid="057FB3AD-B91A-422B-B17B-2FE66B322046" Permanent="no" SharedDllRefCount="no" Transitive="no">
+            <File Id="_DA023DE0_2D67_4D4F_9FC5_5293003EE47E" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="LibGit2Sharp.dll" Source="..\packages\LibGit2Sharp.0.20.1.0\lib\net40\LibGit2Sharp.dll" KeyPath="yes" />
+          </Component>
+          <Component Id="FirstFloorModernUI">
+            <File Source="$(var.DiGit.TargetDir)\FirstFloor.ModernUI.dll" KeyPath="yes" />
+          </Component>
+          <Component Id="SystemWindowsInteractivity">
+            <File Source="$(var.DiGit.TargetDir)\System.Windows.Interactivity.dll" KeyPath="yes" />
+          </Component>
+          <Component Id="BondTech.HotKeyManagement.WPF.4">
+            <File Source="$(var.BondTech.HotKeyManagement.WPF.4.TargetPath)" KeyPath="yes" />
+          </Component>
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="dir_17A601CA_C3E2_4C0D_8FC5_232AB93CB4F4" Name="DiGit">
+          <Component Id="comp_dir_17A601CA_C3E2_4C0D_8FC5_232AB93CB4F4" Guid="1EA25B77-CCDC-435A-BE9C-7AFBE2F2EEA3">
+            <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]\Installer" Name="comp_dir_17A601CA_C3E2_4C0D_8FC5_232AB93CB4F4" Type="string" Value="New Folder #1 directory" KeyPath="yes" />
+            <RemoveFolder Id="id_F7B96A62_9A4C_4027_9DD9_416E7565D6B1" On="uninstall" Directory="dir_17A601CA_C3E2_4C0D_8FC5_232AB93CB4F4" />
+          </Component>
+          <Component Id="comp_47C72752_C371_4BF0_BF47_F9ECA618DB98" Guid="4830C60E-0DAE-4063-A43B-BF783B9E283D" Permanent="no" SharedDllRefCount="no" Transitive="no">
+            <Shortcut Id="_DAFE7025_DDE1_4752_8673_0FA8636BDDC6" Directory="dir_17A601CA_C3E2_4C0D_8FC5_232AB93CB4F4" Name="DiGit" Show="normal" Target="[dir_3239CE8E_51C2_43B4_8B2A_E24C16D58A9C]DiGit.exe" WorkingDirectory="dir_17A601CA_C3E2_4C0D_8FC5_232AB93CB4F4">
+              <Icon Id="_90199D00A7BE" SourceFile="..\DiGit\Resources\Images\App.ico" />
+            </Shortcut>
+            <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]\Installer" Name="comp_47C72752_C371_4BF0_BF47_F9ECA618DB98" Type="string" Value="DiGit directory" KeyPath="yes" />
+          </Component>
+        </Directory>
+      </Directory>
+    </Directory>
+    <ComponentGroup Id="RegistryGroup">
+      <!--<Component Id="_15FABF5F_A177_4486_9D0E_93E4207C00F4" Guid="99428135-C769-46C3-B356-3CE699DD15D2" Transitive="no" Directory="TARGETDIR">
+        <RegistryKey Root="HKCU" Key="Software" ForceCreateOnInstall="no" ForceDeleteOnUninstall="no" />
+      </Component>
+      <Component Id="_DB6891C7_6EEC_4FFE_A410_879318379D0F" Guid="7D6CEB14-9A7D-4FE9-906E-D296CE7D65D8" Transitive="no" Directory="TARGETDIR">
+        <RegistryKey Root="HKCU" Key="Software\Microsoft" ForceCreateOnInstall="no" ForceDeleteOnUninstall="no" />
+      </Component>
+      <Component Id="_EAB87F53_DC3D_4EF9_9C0F_6A31738024D4" Guid="9C0357D1-7FD6-477B-8D44-9034FF1566D4" Transitive="no" Directory="TARGETDIR">
+        <RegistryKey Root="HKCU" Key="Software\Microsoft\Windows" ForceCreateOnInstall="no" ForceDeleteOnUninstall="no" />
+      </Component>
+      <Component Id="_1FD6A65A_27BB_4431_9056_B22565E87071" Guid="724C520D-FFAD-45A9-9BAA-5645500D8BA4" Transitive="no" Directory="TARGETDIR">
+        <RegistryKey Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion" ForceCreateOnInstall="no" ForceDeleteOnUninstall="no" />
+      </Component>
+      <Component Id="_FF8A7EE8_FED6_4ADD_AEA0_EFE32DEF2507" Guid="33819BDD-E44B-4E9C-82CE-F4D97B100277" Transitive="no" Directory="TARGETDIR">
+        <RegistryKey Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion\Run" ForceCreateOnInstall="no" ForceDeleteOnUninstall="no" />
+      </Component>-->
+      <Component Id="_9359B3CC_0C4B_47F5_87AA_81E84F5DC9FF" Guid="63A19A9D-6AE0-4D88-8B37-41A379F4048F" Transitive="no" Directory="TARGETDIR">
+        <RegistryValue Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion\Run" Type="string" Name="DiGit" Value="[TARGETDIR]$(var.DiGit.TargetFileName)" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+  <Fragment>
+  </Fragment>
+</Wix>

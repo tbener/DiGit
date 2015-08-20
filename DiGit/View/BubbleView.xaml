@@ -1,0 +1,170 @@
+﻿<Window  x:Class="DiGit.View.BubbleView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        Title="BubbleView" Height="200" Width="160" 
+        Topmost="True"
+        
+        AllowsTransparency="True" 
+        OpacityMask="White" 
+        WindowStyle="None" 
+        Background="Transparent"
+        ShowInTaskbar="False" 
+        ResizeMode="NoResize" 
+        x:Name="BubbleWindow"
+        >
+    <Window.Resources>
+
+
+        <!--ItemsSource="{Binding CommandsList}"-->
+        <ContextMenu Style="{StaticResource ContextMenuCommandsStyleTest}" x:Key="CommandsContextMenu" Opened="CommandsContextMenu_Opened" Closed="CommandsContextMenu_Closed" ItemsSource="{Binding CommandsList}">
+            <!--<ContextMenu.ItemsSource>
+                <CompositeCollection>
+                    <MenuItem Header="dddd"/>
+                        <MenuItem Header="dddd" />
+                        <MenuItem Header="dddd" />
+                    <CollectionContainer Collection="{StaticResource extensions}"/>
+                </CompositeCollection>
+            </ContextMenu.ItemsSource>-->
+        </ContextMenu>
+
+
+    </Window.Resources>
+
+
+
+    <Grid x:Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseLeftButtonUp">
+                <i:InvokeCommandAction Command="{Binding ClickCommand}"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+
+
+
+
+        <Border x:Name="MainBorder" 
+            Panel.ZIndex="1"
+            Style="{DynamicResource BubbleBorderStyle}" 
+            Opacity="{Binding BubbleOpacity, Mode=OneWay}" >
+
+            <Border.Triggers>
+                <EventTrigger RoutedEvent="Control.MouseEnter">
+                        <BeginStoryboard>
+                            <Storyboard >
+                                <DoubleAnimation Duration="0:0:0.1" To="1" Storyboard.TargetProperty="Opacity"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="Control.MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard >
+                            <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Opacity"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Border.Triggers>
+
+            <Border.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{Binding FolderOpenMenuHeader}" Command="{Binding OpenFolderCommand}" CommandParameter="{Binding OpenFolderCommandParameter}"></MenuItem>
+                    <Separator/>
+                    <MenuItem Header="Hide" Command="{Binding HideCommand}"/>
+                    <MenuItem Header="Hide All" Command="{Binding HideAllCommand}"/>
+                    <MenuItem Header="Show All" Command="{Binding ShowAllCommand}" />
+                    <Separator/>
+                    <MenuItem Template="{DynamicResource MenuItemBubbleVisualSettingsControlTemplate}"/>
+                    <Separator/>
+                    <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
+                </ContextMenu>
+            </Border.ContextMenu>
+            <Grid  DockPanel.Dock="Top" >
+
+
+                <Grid Name="gridMenu" VerticalAlignment="Bottom" >
+
+                    <Grid.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsShowMenu}" Value="true">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <BooleanAnimationUsingKeyFrames Storyboard.Target="{StaticResource CommandsContextMenu}" Storyboard.TargetProperty="IsOpen">
+                                                    <DiscreteBooleanKeyFrame KeyTime="0:0:0" Value="True"/>
+                                                </BooleanAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <!--<BeginStoryboard Storyboard="{StaticResource HideMenuStoryboard}"/>-->
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                </Grid>
+
+                <TextBlock Text="{Binding CurrentBranch}" 
+                           Width="120"
+                           TextTrimming="CharacterEllipsis"
+                           ToolTip="{Binding CurrentBranch}"
+                           HorizontalAlignment="Center" 
+                            VerticalAlignment="Center"
+                           DockPanel.Dock="Top" 
+                           Style="{DynamicResource BranchTextStyle}"/>
+
+                <!--<Viewbox StretchDirection="Both" Stretch="Uniform"
+                         HorizontalAlignment="Center" 
+                            VerticalAlignment="Center"
+                           DockPanel.Dock="Top" 
+                           >
+                    <ContentControl Content="Some Text"/>
+                </Viewbox>-->
+
+                <ToggleButton IsEnabled="False" IsChecked="{Binding LockExists}" ToolTipService.ShowOnDisabled="True" ToolTip="index.lock"
+                              HorizontalAlignment="Right" VerticalAlignment="Top" Width="16" Height="16" Margin="3">
+                    <ToggleButton.Template>
+
+                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image>
+                                    <Image.Style>
+                                        <Style>
+                                            <Setter Property="Image.Source" 
+                                Value="/Resources/images/unlocked.png" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsChecked, 
+                                    RelativeSource={RelativeSource AncestorType=
+                                    {x:Type ToggleButton}}}" Value="True">
+                                                    <Setter Property="Image.Source" 
+                                        Value="/Resources/images/locked.png" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                                <ContentPresenter Content="{TemplateBinding Content}" 
+                    Margin="5,0,0,0" />
+                            </StackPanel>
+
+                        </ControlTemplate>
+                    </ToggleButton.Template>
+                </ToggleButton>
+            </Grid>
+
+
+            <Border.InputBindings>
+                <MouseBinding Command="{Binding DblClkCommand}" CommandParameter="{Binding DblClkCommandParam}" MouseAction="LeftDoubleClick" />
+            </Border.InputBindings>
+
+
+        </Border>
+
+
+    </Grid>
+</Window>
