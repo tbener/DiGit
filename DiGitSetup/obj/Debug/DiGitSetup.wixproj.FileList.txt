@@ -1,8 +1,0 @@
-obj\Debug\Product.wixobj
-obj\Debug\StandardUI.wixobj
-obj\Debug\pth63D060D1384B974AFBC74BD86E22EA7E\_DiGit.wixobj
-C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\DiGitSetup\bin\Debug\DiGitSetup.msi
-C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\DiGitSetup\bin\Debug\DiGitSetup.wixpdb
-obj\Debug\DiGitSetup.wixproj.BindContentsFileListnull.txt
-obj\Debug\DiGitSetup.wixproj.BindOutputsFileListnull.txt
-obj\Debug\DiGitSetup.wixproj.BindBuiltOutputsFileListnull.txt

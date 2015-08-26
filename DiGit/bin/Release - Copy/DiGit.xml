@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<DiGitConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ver="0">
-  <Repositories>
-    <Repository path="C:\CM\DBMOTION\" />
-    <Repository path="C:\CM\DBMOTION_LEGACY\" />
-  </Repositories>
-</DiGitConfig>
