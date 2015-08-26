@@ -25,7 +25,22 @@ namespace DiGit.ViewModel
         protected BaseViewModel(Repository repo) :this()
         {
             _repo = repo;
+            Repository = repo;
         }
+
+
+
+        public Repository Repository
+        {
+            get { return (Repository)GetValue(RepositoryProperty); }
+            set { SetValue(RepositoryProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Repository.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty RepositoryProperty =
+            DependencyProperty.Register("Repository", typeof(Repository), typeof(BaseViewModel), new PropertyMetadata(null));
+
+
 
         public Repository Repo
         {

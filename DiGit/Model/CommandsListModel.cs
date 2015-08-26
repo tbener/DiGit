@@ -39,10 +39,6 @@ namespace DiGit.Model
 
         }
 
-        private void teset()
-        {
-            Msg.Show("Helloooo");
-        }
 
         public ObservableCollection<MenuCommand> GetCommandsList
         {

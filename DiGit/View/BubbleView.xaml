@@ -16,17 +16,7 @@
     <Window.Resources>
 
 
-        <!--ItemsSource="{Binding CommandsList}"-->
-        <ContextMenu Style="{StaticResource ContextMenuCommandsStyleTest}" x:Key="CommandsContextMenu" Opened="CommandsContextMenu_Opened" Closed="CommandsContextMenu_Closed" ItemsSource="{Binding CommandsList}">
-            <!--<ContextMenu.ItemsSource>
-                <CompositeCollection>
-                    <MenuItem Header="dddd"/>
-                        <MenuItem Header="dddd" />
-                        <MenuItem Header="dddd" />
-                    <CollectionContainer Collection="{StaticResource extensions}"/>
-                </CompositeCollection>
-            </ContextMenu.ItemsSource>-->
-        </ContextMenu>
+        <ContextMenu Style="{StaticResource ContextMenuCommandsStyleTest}" x:Key="CommandsContextMenu" Opened="CommandsContextMenu_Opened" Closed="CommandsContextMenu_Closed" ItemsSource="{Binding CommandsList}"/>
 
 
     </Window.Resources>

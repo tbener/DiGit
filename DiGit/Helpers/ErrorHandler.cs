@@ -41,12 +41,12 @@ namespace DiGit.Helpers
 
         internal static void Handle(Exception error, string errorPrefix, params object[] args)
         {
-            Handle(new Exception(string.Format(errorPrefix + "\n", args), error));
+            Handle(new Exception(string.Format(errorPrefix + "\n\r", args), error));
         }
 
         internal static void Handle(Exception error, string errorPrefix)
         {
-            Handle(new Exception(errorPrefix + "\n", error));
+            Handle(new Exception(errorPrefix + "\n\r", error));
         }
     }
 }

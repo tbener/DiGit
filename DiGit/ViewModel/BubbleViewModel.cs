@@ -39,7 +39,7 @@ namespace DiGit.ViewModel
         public ICommand OpenFolderCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
 
-        public ObservableCollection<MenuCommand> CommandsList { get; set; }
+        public ObservableCollection<ICommand> CommandsList { get; set; }
 
         // TODO: add refresh command
 
@@ -83,10 +83,10 @@ namespace DiGit.ViewModel
             repoTracker.OnBranchChanged += (s, e) => { Refresh(); };
             //_repoTracker.OnStatusChanged += repoTracker_OnStatusChanged;
 
-            CommandsListViewModel = new CommandsListViewModel(repo);
+            //CommandsListViewModel = new CommandsListViewModel(repo);
 
-            _cmdModel = new CommandsListModel(repo);
-            CommandsList = _cmdModel.GetCommandsList;
+            //_cmdModel = new CommandsListModel(repo);
+            CommandsList = CreateCommandList();
 
             ConfigurationHelper.Configuration.Settings.VisualSettings.PropertyChanged += (sender, args) =>
             {
@@ -94,6 +94,14 @@ namespace DiGit.ViewModel
                     OnPropertyChanged("BubbleOpacity");
             };
 
+        }
+
+
+        private ObservableCollection<ICommand> CreateCommandList()
+        {
+            List<ICommand> list = 
+                ConfigurationHelper.Configuration.Commands.Select(c => new UserCommand(c, this.Repository)).Cast<ICommand>().ToList();
+            return new ObservableCollection<ICommand>(list);
         }
 
         public void Refresh()
@@ -156,7 +164,7 @@ namespace DiGit.ViewModel
         //        CurrentBranch = _repo.Head.Name;
         //}
 
-        public CommandsListViewModel CommandsListViewModel { get; set; }
+        //public CommandsListViewModel CommandsListViewModel { get; set; }
 
 
         public string CurrentBranch

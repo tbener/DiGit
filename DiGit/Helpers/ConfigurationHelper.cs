@@ -56,6 +56,30 @@ namespace DiGit.Helpers
 
             if (_configRoot.Settings.VisualSettings == null) 
                 _configRoot.Settings.VisualSettings = new DiGitConfigSettingsVisualSettings();
+
+            if (_configRoot.Commands == null)
+            {
+                _configRoot.Commands = new[]
+                {
+                    GetUserCommand("Switch", "switch"),
+                    GetUserCommand("Push", "push"),
+                    GetUserCommand("Pull", "pull"),
+                    GetUserCommand("Commit", "commit"),
+                    GetUserCommand("Merge", "merge"),
+                    GetUserCommand("Show log", "log"),
+                    GetUserCommand("Sync", "sync")
+                };
+            }
+        }
+        
+        private static DiGitConfigCommand GetUserCommand(string header, string cmd)
+        {
+            return new DiGitConfigCommand()
+            {
+                header = header,
+                arguments = string.Format("/command:{0} /path:{1}", cmd, "{rep_path}"), 
+                fileName = @"C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe"
+            };
         }
 
 

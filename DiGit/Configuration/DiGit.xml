@@ -8,4 +8,8 @@
     <ShowHideHotkey modifiers="Ctrl+Shift" key="G" />
     <VisualSettings BubblesOpacity="1"/>
   </Settings>
+  <Commands>
+    <Command header="Sync" filename="C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" arguments="/command:sync /path:{rep_path}" helptext="Please help..." />
+    <Command header="Push" filename="C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" arguments="/command:push /path:{rep_path}" helptext="" />
+  </Commands>
 </DiGitConfig>

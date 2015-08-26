@@ -105,6 +105,7 @@
     <Compile Include="Commands\ShowSingleViewCommand.cs" />
     <Compile Include="Commands\OpenFolderCommand.cs" />
     <Compile Include="Commands\RepositoryCommands.cs" />
+    <Compile Include="Commands\UserCommand.cs" />
     <Compile Include="Commands\WindowCommands.cs" />
     <Compile Include="Helpers\AppInfo.cs" />
     <Compile Include="Helpers\BackgroundTasksManager.cs" />

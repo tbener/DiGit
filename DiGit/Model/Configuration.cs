@@ -28,7 +28,7 @@ namespace DiGit.Model {
         
         private DiGitConfigSettings settingsField;
         
-        private string commandsField;
+        private DiGitConfigCommand[] commandsField;
         
         private string verField;
         
@@ -56,7 +56,8 @@ namespace DiGit.Model {
         }
         
         /// <remarks/>
-        public string Commands {
+        [System.Xml.Serialization.XmlArrayItemAttribute("Command", IsNullable=false)]
+        public DiGitConfigCommand[] Commands {
             get {
                 return this.commandsField;
             }
@@ -232,6 +233,93 @@ namespace DiGit.Model {
             }
             set {
                 this._bubblesOpacityField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.17929")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+    public partial class DiGitConfigCommand {
+        
+        private string headerField;
+        
+        private string fileNameField;
+        
+        private string argumentsField;
+        
+        private string windowStyleField;
+        
+        private string optionsField;
+        
+        private string helpTextField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string header {
+            get {
+                return this.headerField;
+            }
+            set {
+                this.headerField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string fileName {
+            get {
+                return this.fileNameField;
+            }
+            set {
+                this.fileNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string arguments {
+            get {
+                return this.argumentsField;
+            }
+            set {
+                this.argumentsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string windowStyle {
+            get {
+                return this.windowStyleField;
+            }
+            set {
+                this.windowStyleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string options {
+            get {
+                return this.optionsField;
+            }
+            set {
+                this.optionsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string helpText {
+            get {
+                return this.helpTextField;
+            }
+            set {
+                this.helpTextField = value;
             }
         }
     }

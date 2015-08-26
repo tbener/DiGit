@@ -380,6 +380,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
+
     <ControlTemplate x:Key="SubmenuItemTemplate" TargetType="{x:Type MenuItem}">
         <Grid>
             <Grid.ColumnDefinitions>
