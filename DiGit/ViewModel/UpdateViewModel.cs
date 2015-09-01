@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using DiGit.Commands;
 using DiGit.Helpers;
-using DiGit.Updates;
+using DiGit.Model;
+using DiGit.Versioning;
+using DiGit.ViewModel.Base;
 
 namespace DiGit.ViewModel
 {
-    class UpdateViewModel : BaseViewModel
+    class UpdateViewModel : BaseDialogViewModel
     {
         public ICommand CheckUpdateCommand { get; set; }
         public ICommand UpdateCommand { get; set; }

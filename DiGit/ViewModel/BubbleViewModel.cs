@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using DiGit.Properties;
+using DiGit.ViewModel.Base;
 using LibGit2Sharp;
 using DiGit.Model;
 using System.Windows.Input;
@@ -20,13 +15,12 @@ using System.Threading;
 
 namespace DiGit.ViewModel
 {
-    public class BubbleViewModel : BaseViewModel
+    public class BubbleViewModel : BaseRepoViewModel
     {
         private bool _lockFileExists = false;
         private string _currentBranch = string.Empty;
         private string _status = string.Empty;
         private bool _flagMoved = false;
-        private readonly CommandsListModel _cmdModel;
 
         public ICommand HideCommand { get; set; }
         public ICommand HideAllCommand { get; set; }
@@ -40,8 +34,6 @@ namespace DiGit.ViewModel
         public ICommand RefreshCommand { get; set; }
 
         public ObservableCollection<ICommand> CommandsList { get; set; }
-
-        // TODO: add refresh command
 
         public BubbleViewModel(Repository repo)
             : base(repo)
@@ -57,8 +49,8 @@ namespace DiGit.ViewModel
             string shortPath = repo.Info.WorkingDirectory;
             try
             {
-                if (Settings.Default.MenuPathLength > 0)
-                    shortPath = PathHelper.ShortDisplay(repo.Info.WorkingDirectory, Settings.Default.MenuPathLength);
+                if (Properties.Settings.Default.MenuPathLength > 0)
+                    shortPath = PathHelper.ShortDisplay(repo.Info.WorkingDirectory, Properties.Settings.Default.MenuPathLength);
             }
             catch (Exception ex)
             {
@@ -66,12 +58,12 @@ namespace DiGit.ViewModel
                 shortPath += " (*)";
             }
 
-            FolderOpenMenuHeader = string.Format("Open {0}", shortPath);
+            FolderOpenMenuHeader = string.Format("Open {0}", shortPath.Replace("_", "__"));
             OpenFolderCommand = new OpenFolderCommand();
             OpenFolderCommandParameter = repo.Info.WorkingDirectory;
 
-            HideAllCommand = new RelayCommand(() => BubblesManager.ShowAll(false), () => { return RepositoriesManager.Repos.Count() > 0; });
-            ShowAllCommand = new RelayCommand(() => BubblesManager.ShowAll(true), () => { return RepositoriesManager.Repos.Count() > 0; });
+            HideAllCommand = new RelayCommand(() => BubblesManager.ShowAll(false), () => RepositoriesManager.Repos.Any());
+            ShowAllCommand = new RelayCommand(() => BubblesManager.ShowAll(true), () => RepositoriesManager.Repos.Any());
             ExitCommand = new ExitCommand();
 
             ShowHideMenuCommand = new RelayCommand(ShowHideMenu);
@@ -80,12 +72,8 @@ namespace DiGit.ViewModel
             var repoTracker = new RepoTracker(repo);
             repoTracker.OnLockFileCreated += (s, e) => { LockExists = true; };
             repoTracker.OnLockFileDeleted += (s, e) => { LockExists = false; };
-            repoTracker.OnBranchChanged += (s, e) => { Refresh(); };
-            //_repoTracker.OnStatusChanged += repoTracker_OnStatusChanged;
+            repoTracker.OnBranchChanged += (s, e) => Refresh();
 
-            //CommandsListViewModel = new CommandsListViewModel(repo);
-
-            //_cmdModel = new CommandsListModel(repo);
             CommandsList = CreateCommandList();
 
             ConfigurationHelper.Configuration.Settings.VisualSettings.PropertyChanged += (sender, args) =>
@@ -94,13 +82,18 @@ namespace DiGit.ViewModel
                     OnPropertyChanged("BubbleOpacity");
             };
 
+            ConfigurationHelper.OnConfigurationLoaded += (sender, args) =>
+            {
+                CommandsList = CreateCommandList();
+            };
+
         }
 
 
         private ObservableCollection<ICommand> CreateCommandList()
         {
             List<ICommand> list = 
-                ConfigurationHelper.Configuration.Commands.Select(c => new UserCommand(c, this.Repository)).Cast<ICommand>().ToList();
+                ConfigurationHelper.Configuration.Commands.Select(c => new UserCommand(c, Repository)).Cast<ICommand>().ToList();
             return new ObservableCollection<ICommand>(list);
         }
 
@@ -114,7 +107,7 @@ namespace DiGit.ViewModel
                     CurrentBranch = Repo.Head.Name;
                     break;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     if (counter > 0)
                     {

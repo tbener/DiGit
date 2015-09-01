@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using DiGit.Helpers;
 using System.Windows;
 using DiGit.Commands;
-using DiGit.Updates;
+using DiGit.Model;
+using DiGit.Versioning;
 
 namespace DiGit
 {

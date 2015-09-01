@@ -4,14 +4,14 @@ using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Input;
 using System.Xml.Serialization;
-using FirstFloor.ModernUI.Windows.Converters;
+using DiGit.Helpers;
+using DiGit.Model;
 using LibGit2Sharp;
 using Microsoft.Win32;
-using DiGit.Helpers;
-using System.Windows.Input;
 
-namespace DiGit.Model
+namespace DiGit.Configuration
 {
     
 

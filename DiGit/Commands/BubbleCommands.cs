@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using DiGit.Helpers;
+using DiGit.Model;
 using LibGit2Sharp;
 
 namespace DiGit.Commands

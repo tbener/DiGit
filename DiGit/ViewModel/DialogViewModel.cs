@@ -1,7 +1,7 @@
 ﻿using System.Windows.Input;
-using DiGit.ViewModel;
+using DiGit.ViewModel.Base;
 
-namespace EhrInterceptionStudio.ViewModels
+namespace DiGit.ViewModel
 {
 	public abstract class DialogViewModel : BaseViewModel
 	{

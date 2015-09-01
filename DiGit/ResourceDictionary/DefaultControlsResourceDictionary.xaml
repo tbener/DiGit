@@ -13,7 +13,7 @@
         <!--<ResourceDictionary Source="CommandsListMenu.xaml"/>-->
     </ResourceDictionary.MergedDictionaries>
 
-    <!-- dummy style to fix but in wpf4 -->
+    <!-- dummy style to fix bug in wpf4 -->
     <Style TargetType="{x:Type Rectangle}" />
 
 </ResourceDictionary>

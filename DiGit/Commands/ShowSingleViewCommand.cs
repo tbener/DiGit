@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using DiGit.Helpers;
-using DiGit.View;
-using DiGit.ViewModel;
+using DiGit.ViewModel.Base;
 
 namespace DiGit.Commands
 {
@@ -44,7 +43,7 @@ namespace DiGit.Commands
                 if (Views[_viewType] == null)
                 {
                     Views[_viewType] = Activator.CreateInstance(_viewType) as Window;
-                    BaseViewModel vm = Views[_viewType].DataContext as BaseViewModel;
+                    BaseDialogViewModel vm = Views[_viewType].DataContext as BaseDialogViewModel;
                     if (vm != null)
                         vm.RequestClose += (sender, args) => Views[_viewType].Close();
                     Views[_viewType].Closed += (s, e) => Views[_viewType] = null;

@@ -3,8 +3,11 @@ using System.Windows;
 using System.Windows.Input;
 using DiGit.Commands;
 using DiGit.Helpers;
+using DiGit.Model;
+using DiGit.Versioning;
 using DiGit.View;
-using DiGit.Updates;
+using DiGit.Versioning;
+using DiGit.ViewModel.Base;
 using Hardcodet.Wpf.TaskbarNotification;
 
 namespace DiGit.ViewModel
@@ -24,6 +27,8 @@ namespace DiGit.ViewModel
         public ICommand ShowSettingsCommand { get; set; }
         public ICommand CheckUpdateCommand { get; set; }
         public ICommand ShowUpdateCommand { get; set; }
+        public ICommand OpenConfigFolderCommand { get; set; }
+        public ICommand ReloadConfigurationCommand { get; set; }
 
         private TaskbarIcon _taskbarIcon;
 
@@ -50,6 +55,8 @@ namespace DiGit.ViewModel
 
             ShowUpdateCommand = new ShowSingleViewCommand(typeof(UpdateView));
             CheckUpdateCommand = ShowUpdateCommand;
+            OpenConfigFolderCommand = new RelayCommand(() => Utils.OpenContainingFolder(ConfigurationHelper.ConfigFile));
+            ReloadConfigurationCommand = new RelayCommand(() => ConfigurationHelper.Load());
 
             HotkeyHelper.OnHotkeyChanged += (sender, args) => OnPropertyChanged("ShowHideHeader");
             // todo: currently the only balloon is for update, so no distinction about what to do.

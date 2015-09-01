@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Windows.Input;
+using DiGit.Configuration;
 using DiGit.Model;
 using DiGit.Properties;
 
 namespace DiGit.Helpers
 {
+
+    public delegate void ConfigurationLoadedEventHandler(object sender, EventArgs arg);
+
     public static class ConfigurationHelper
     {
 
         private static DiGitConfig _configRoot = null;
+
+        public static event ConfigurationLoadedEventHandler OnConfigurationLoaded;
 
         public static string ConfigFile
         {
@@ -34,6 +40,8 @@ namespace DiGit.Helpers
             {
                 _configRoot = SerializeHelper.Load(typeof(DiGitConfig), file) as DiGitConfig;
                 Upgrade();
+                if (OnConfigurationLoaded != null)
+                    OnConfigurationLoaded(null, new EventArgs());
                 return true;
             }
             catch (Exception ex)

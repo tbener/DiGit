@@ -1,69 +1,15 @@
-﻿using DiGit.Helpers;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
+using DiGit.Helpers;
 using LibGit2Sharp;
 
-namespace DiGit.ViewModel
+namespace DiGit.ViewModel.Base
 {
     public abstract class BaseViewModel : DependencyObject, INotifyPropertyChanged
     {
-        private Repository _repo;
-        public event CancelEventHandler RequestClose;
-
-        protected BaseViewModel()
-        {
-            
-        }
-
-        protected BaseViewModel(Repository repo) :this()
-        {
-            _repo = repo;
-            Repository = repo;
-        }
-
-
-
-        public Repository Repository
-        {
-            get { return (Repository)GetValue(RepositoryProperty); }
-            set { SetValue(RepositoryProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for Repository.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty RepositoryProperty =
-            DependencyProperty.Register("Repository", typeof(Repository), typeof(BaseViewModel), new PropertyMetadata(null));
-
-
-
-        public Repository Repo
-        {
-            get { return _repo; }
-            set { _repo = value; }
-        }
-
-        public double BubbleOpacity
-        {
-            get { return ConfigurationHelper.Configuration.Settings.VisualSettings.BubblesOpacity; }
-            set
-            {
-                ConfigurationHelper.Configuration.Settings.VisualSettings.BubblesOpacity = value;
-            }
-        }
-
-
-        protected virtual void OnRequestClose(bool cancel)
-        {
-            if (RequestClose != null)
-                RequestClose(this, new CancelEventArgs(cancel));
-        }
-
         #region INotifyPropertyChanged Members and helper
 
         readonly NotifyPropertyChangedHelper _propertyChangeHelper = new NotifyPropertyChangedHelper();

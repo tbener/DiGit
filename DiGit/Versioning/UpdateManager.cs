@@ -4,12 +4,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 using DiGit.Commands;
 using DiGit.Helpers;
+using DiGit.Model;
 using DiGit.Properties;
+using DiGit.Versioning;
 
-namespace DiGit.Updates
+namespace DiGit.Versioning
 {
     public delegate void UpdateInfoChangedEventHandler(object sender, EventArgs arg);
     public delegate void UpdateRequiredEventHandler(object sender, EventArgs arg);
@@ -21,27 +22,6 @@ namespace DiGit.Updates
         public static event UpdateRequiredEventHandler OnUpdateRequired;
         public static DiGitVersionInfo VersionInfo { get; private set; }
 
-
-        //internal static void Initiate(TimeSpan delay)
-        //{
-        //    //var t = new System.Timers.Timer();
-        //    //t.Interval = delay.TotalMilliseconds;
-        //    //t.AutoReset = false;
-        //    //t.Elapsed += First_Timer_Elapsed;
-        //    //t.Start();
-
-        //    var t = new System.Timers.Timer();
-        //    t.Interval = TimeSpan.FromHours(5).TotalMilliseconds;
-        //    t.AutoReset = true;
-        //    t.Elapsed += (sender, args) => CheckRemoteAsync();
-        //    t.Start();
-        //}
-
-        //static void First_Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        //{
-        //    if (!Working && !HasData)
-        //        CheckRemoteAsync();
-        //}
 
         internal static void CheckRemoteAsync()
         {

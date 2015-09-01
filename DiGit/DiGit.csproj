@@ -107,7 +107,7 @@
     <Compile Include="Commands\RepositoryCommands.cs" />
     <Compile Include="Commands\UserCommand.cs" />
     <Compile Include="Commands\WindowCommands.cs" />
-    <Compile Include="Helpers\AppInfo.cs" />
+    <Compile Include="Model\AppInfo.cs" />
     <Compile Include="Helpers\BackgroundTasksManager.cs" />
     <Compile Include="Helpers\ConfigurationHelper.cs" />
     <Compile Include="Helpers\ErrorHandler.cs" />
@@ -116,15 +116,13 @@
     <Compile Include="Helpers\MsgHelper.cs" />
     <Compile Include="Helpers\NotifyPropertyChangedHelper.cs" />
     <Compile Include="Helpers\PathHelper.cs" />
-    <Compile Include="Helpers\RepositoriesManager.cs" />
-    <Compile Include="Helpers\BubblesManager.cs" />
+    <Compile Include="Model\RepositoriesManager.cs" />
+    <Compile Include="Model\BubblesManager.cs" />
     <Compile Include="Helpers\SerializeHelper.cs" />
-    <Compile Include="Helpers\UserManager.cs" />
+    <Compile Include="Model\UserManager.cs" />
     <Compile Include="Helpers\Utils.cs" />
-    <Compile Include="Model\CommandsListModel.cs" />
-    <Compile Include="Model\Configuration.cs" />
-    <Compile Include="Model\ConfigurationEx.cs" />
-    <Compile Include="Model\MenuCommand.cs" />
+    <Compile Include="Configuration\Configuration.cs" />
+    <Compile Include="Configuration\ConfigurationEx.cs" />
     <Compile Include="Model\RepoTracker.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Program.cs" />
@@ -133,15 +131,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
-    <Compile Include="Updates\DiGitVersionInfo.cs" />
-    <Compile Include="Updates\UpdateManager.cs" />
+    <Compile Include="Versioning\DiGitVersionInfo.cs" />
+    <Compile Include="Versioning\UpdateManager.cs" />
     <Compile Include="ViewModel\AboutViewModel.cs" />
-    <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\Base\BaseDialogViewModel.cs" />
+    <Compile Include="ViewModel\Base\BaseRepoViewModel.cs" />
+    <Compile Include="ViewModel\Base\BaseViewModel.cs" />
     <Compile Include="ViewModel\BubbleViewModel.cs" />
-    <Compile Include="ViewModel\CommandsListViewModel.cs" />
-    <Compile Include="ViewModel\DialogViewModel.cs" />
     <Compile Include="ViewModel\RepositoryViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
+    <Compile Include="ViewModel\Settings\BaseSettingsViewModel.cs" />
+    <Compile Include="ViewModel\Settings\UserCommandEditViewModel.cs" />
+    <Compile Include="ViewModel\Settings\UserCommandsViewModel.cs" />
     <Compile Include="ViewModel\TrayWindowViewModel.cs" />
     <Compile Include="ViewModel\UpdateViewModel.cs" />
     <Compile Include="View\AddRepositoryView.xaml.cs">
@@ -153,14 +154,17 @@
     <Compile Include="View\BubbleView.xaml.cs">
       <DependentUpon>BubbleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\CommandsListView.xaml.cs">
-      <DependentUpon>CommandsListView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Settings\UserCommandEditView.xaml.cs">
+      <DependentUpon>UserCommandEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Settings\UserCommandsView.xaml.cs">
+      <DependentUpon>UserCommandsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TrayWindowView.xaml.cs">
       <DependentUpon>TrayWindowView.xaml</DependentUpon>
@@ -224,7 +228,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ResourceDictionary\Themes\ExpressionDark.xaml">
+    <Page Include="ResourceDictionary\Themes\_ExpressionDark.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -244,15 +248,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\CommandsListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\AboutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Settings\UserCommandEditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Settings\UserCommandsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -290,8 +298,8 @@
     <EmbeddedResource Include="ViewModel\TrayWindowViewModel.resx">
       <DependentUpon>TrayWindowViewModel.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Configuration\build.bat" />
-    <None Include="Configuration\Configuration.xsd">
+    <None Include="Configuration\Schema\build.bat" />
+    <None Include="Configuration\Schema\Configuration.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="DiGit_TemporaryKey.pfx" />
@@ -304,8 +312,8 @@
     <None Include="Resources\DiGit.config.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Updates\Schema\build.bat" />
-    <None Include="Updates\Schema\DiGitVersionInfo.xsd">
+    <None Include="Versioning\Schema\build.bat" />
+    <None Include="Versioning\Schema\DiGitVersionInfo.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
@@ -323,7 +331,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Fonts\" />
+    <Resource Include="Versioning\DiGitVersionInfo.xml" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\unlocked.png" />
@@ -358,8 +366,9 @@
     <Resource Include="Resources\DiGitVersionInfo.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Configuration\DiGit.xml" />
+    <None Include="Configuration\Schema\DiGit.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Expression\Blend\.NETFramework\v4.5\Microsoft.Expression.Blend.WPF.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

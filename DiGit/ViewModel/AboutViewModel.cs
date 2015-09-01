@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Reflection;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using DiGit.Commands;
-using DiGit.Helpers;
-using DiGit.Updates;
+using DiGit.Model;
+using DiGit.Versioning;
 using DiGit.View;
+using DiGit.ViewModel.Base;
 
 namespace DiGit.ViewModel
 {
-    public class AboutViewModel : BaseViewModel
+    public class AboutViewModel : BaseDialogViewModel
     {
         public ICommand ShowUpdateCommand { get; set; }
 
@@ -20,7 +15,7 @@ namespace DiGit.ViewModel
         {
             ShowUpdateCommand = ShowUpdateCommand = new ShowSingleViewCommand(typeof(UpdateView));
 
-            UpdateManager.OnUpdateInfoChanged += delegate(object sender, EventArgs args)
+            UpdateManager.OnUpdateInfoChanged += delegate
             {
                 OnPropertyChanged("UpdateInfo");
                 OnPropertyChanged("UpdateLink");
@@ -50,8 +45,7 @@ namespace DiGit.ViewModel
                 {
                     if (UpdateManager.UpdateRequired)
                         return "New version available.";
-                    else
-                        return "Your DiGit version is up to date.";
+                    return "Your DiGit version is up to date.";
                 }
 
                 return "";

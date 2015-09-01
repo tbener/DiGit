@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+using System.ComponentModel;
 using System.Windows.Forms;
 using System.Windows.Input;
 using DiGit.Commands;
 using DiGit.Helpers;
+using DiGit.Model;
+using DiGit.ViewModel.Base;
 using LibGit2Sharp;
 
 namespace DiGit.ViewModel
 {
-    public class RepositoryViewModel : BaseViewModel
+    public class RepositoryViewModel : BaseRepoViewModel
     {
         private string _repositoryPath;
         public ICommand BrowseCommand { get; set; }
@@ -22,6 +19,8 @@ namespace DiGit.ViewModel
         public ICommand CheckCommand { get; set; }
 
         private readonly bool _isAdding;
+
+        public event CancelEventHandler RequestClose;
 
         public RepositoryViewModel(Repository repo)
             : base(repo)
@@ -85,6 +84,7 @@ namespace DiGit.ViewModel
             }
             catch (Exception ex)
             {
+                ErrorHandler.Handle(ex, false);
                 SetStatus("No Git repository found");
             }
 
@@ -96,18 +96,6 @@ namespace DiGit.ViewModel
         {
             return Repo != null;
 
-            Repo = null;
-            try
-            {
-                Repo = new Repository(RepositoryPath);
-                SetStatus("Repository OK");
-                return true;
-            }
-            catch (Exception ex)
-            {
-                SetStatus("No Git repository found");
-            }
-            return false;
         }
 
         private void SetRepository()
@@ -145,6 +133,12 @@ namespace DiGit.ViewModel
             }
 
             OnRequestClose(!ok);
+        }
+
+        protected virtual void OnRequestClose(bool cancel)
+        {
+            if (RequestClose != null)
+                RequestClose(this, new CancelEventArgs(cancel));
         }
     }
 }

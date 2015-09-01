@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DiGitVersionInfo>
+  <Setup URI="O:\IT-Department\Software\Tools\DiGit\DiGitSetup.msi"/>
+  <Version version="1.0.207" notifyVersion="All">
+    <Change type="Feature">Commands are customizable</Change>
+    <Change type="Feature">Open configutaion folder</Change>
+  </Version>
+  <Version version="1.0.206" notifyVersion="All">
+    <Change type="Feature">Add transparency</Change>
+    <Change type="Feature">Limit path length in bubble context menu</Change>
+  </Version>
+  <Version version="1.0.205" notifyVersion="All">
+    <Change type="Feature">Improve update manager</Change>
+  </Version>
+  <Version version="1.0.203" revision="23922" notifyVersion="All">
+    <Change type="Feature">Update manager added</Change>
+    <Change type="Feature">Run single instance</Change>
+    <Change type="Feature">Added Sync command</Change>
+    <Change type="Feature">Improve error handling</Change>
+  </Version>
+  <Version version="1.0.202" notifyVersion="All">
+    <Change type="Feature">Add show/hide hotkey to configuration (manual)</Change>
+  </Version>
+  <Version version="1.0.201" notifyVersion="All">
+    <Change type="Feature">Add GIT commands Merge and Show Log</Change>
+    <Change type="Feature">Add "index.lock" icon tooltip</Change>
+    <Change type="Feature">Add text ellipsis for long branch names</Change>
+  </Version>
+</DiGitVersionInfo>

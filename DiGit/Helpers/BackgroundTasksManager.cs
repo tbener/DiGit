@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DiGit.Model;
 using DiGit.Properties;
-using DiGit.Updates;
+using DiGit.Versioning;
+using DiGit.Versioning;
 
 namespace DiGit.Helpers
 {

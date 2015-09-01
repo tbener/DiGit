@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace DiGit.Helpers
 {
@@ -23,14 +18,16 @@ namespace DiGit.Helpers
                 evtLogException = ex;
             }
 
-#if DEBUG
-            Msg.ShowE(error);
-#else
+
+
             if (displayMessage)
                 if (evtLogException == null)
                     Msg.ShowE(error.Message);
                 else
                     Msg.ShowE(error);
+#if DEBUG
+            else
+                Msg.ShowE(error, "THIS MESSAGE IS DISPLAYED ONLY IN DEBUG MODE");
 #endif
 
             if (evtLogException != null)

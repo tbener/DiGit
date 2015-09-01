@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls.Primitives;
-using System.Windows.Threading;
-using DiGit.Model;
+using DiGit.Configuration;
+using DiGit.Helpers;
 using DiGit.View;
 using DiGit.ViewModel;
 
-namespace DiGit.Helpers
+namespace DiGit.Model
 {
     public static class BubblesManager
     {
-        private static List<Window> _views;
+        private static readonly List<Window> Views;
 
         private const double RIGHT_MARGIN = 140;
         private const double HORISONTAL_MARGIN = 40;
@@ -24,7 +20,7 @@ namespace DiGit.Helpers
 
         static BubblesManager()
         {
-            _views = new List<Window>();
+            Views = new List<Window>();
 
             OwnerWindow = new Window();
             OwnerWindow.WindowStyle = WindowStyle.ToolWindow;
@@ -39,7 +35,7 @@ namespace DiGit.Helpers
 
         public static void Refresh(bool hard=false)
         {
-            if (hard) _views.Clear();
+            if (hard) Views.Clear();
             RepositoriesManager.Repos.ForEach(Add);
         }
 
@@ -72,9 +68,9 @@ namespace DiGit.Helpers
         {
 
             if (active) Position(view);
-            if (_views.Contains(view)) return;
+            if (Views.Contains(view)) return;
 
-            _views.Add(view);
+            Views.Add(view);
             view.LocationChanged += new EventHandler(view_LocationChanged);
         }
 
@@ -119,7 +115,7 @@ namespace DiGit.Helpers
         private static bool IsRectInWindow(Rect rect, Window view, out Window otherView)
         {
 
-            otherView = _views.FirstOrDefault(v => !v.Equals(view) && v.Visibility == Visibility.Visible && rect.IntersectsWith(WindowToRect(v)));
+            otherView = Views.FirstOrDefault(v => !v.Equals(view) && v.Visibility == Visibility.Visible && rect.IntersectsWith(WindowToRect(v)));
             if (otherView != null) return true;
 
             return false;
@@ -163,7 +159,7 @@ namespace DiGit.Helpers
         internal static void ShowAll(bool show)
         {
             _showBubbles = show;
-            _views.ForEach(v => ShowView(v, show, show));   // updateActive = show because if the user shows all,
+            Views.ForEach(v => ShowView(v, show, show));   // updateActive = show because if the user shows all,
             // they all should become Active, but if he hides them all, the Active property should not changed.
         }
 
@@ -178,8 +174,8 @@ namespace DiGit.Helpers
 
         internal static void CloseAll()
         {
-            _views.ForEach(v => v.Close());
-            _views.Clear();
+            Views.ForEach(v => v.Close());
+            Views.Clear();
         }
 
        

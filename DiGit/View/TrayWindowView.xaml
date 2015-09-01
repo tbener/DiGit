@@ -45,6 +45,16 @@
                               Header="Settings..."
                               Visibility="{Binding ShowSettingsVisiblilty}"
                               Command="{Binding ShowSettingsCommand}"/>
+                    
+                    <MenuItem 
+                              Header="Settings">
+                        <MenuItem 
+                              Header="Open containing folder"
+                              Command="{Binding OpenConfigFolderCommand}"/>
+                        <MenuItem 
+                              Header="Reload (beta)"
+                              Command="{Binding ReloadConfigurationCommand}"/>
+                    </MenuItem>
 
                     <MenuItem x:Name="MnuUpdate" 
                               Header="{Binding CheckUpdateHeader}"

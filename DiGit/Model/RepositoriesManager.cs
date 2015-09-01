@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DiGit.Model;
-using LibGit2Sharp;
-using LibGit2Sharp.Handlers;
-using DiGit.View;
-using DiGit.ViewModel;
 using System.IO;
-using DiGit.Commands;
+using System.Linq;
+using DiGit.Configuration;
+using DiGit.Helpers;
+using LibGit2Sharp;
 
-namespace DiGit.Helpers
+namespace DiGit.Model
 {
     internal static class RepositoriesManager
     {
@@ -86,33 +81,11 @@ namespace DiGit.Helpers
                     foreach (DiGitConfigRepository configRepository in config.Repositories)
                     {
                         Add(configRepository.path, configRepository);
-                        //configRepository.Repository = new Repository(configRepository.path);
-                        //_repos.Add(configRepository.path, configRepository);
                     }
             }
-            else
-            {
 
-                //config = new DiGitConfig();
-                //config.Repositories = new [
-                //config.Repositories.
-                //SerializeHelper.Save(config, ConfigurationHelper.ConfigFile);
-            }
             return _repos.Count > 0;
-            //config = SerializeHelper.Load(typeof(DiGitConfig), ConfigurationHelper.ConfigFile);
-            //string temp = @"c:\cm\dbmotion";
-
-            //var repo = new Repository(temp);
-
-            //var view = new BubbleView();
-            //BubblesManager.Add(view);
-            //BubbleViewModel vm = new BubbleViewModel(repo);
-            //view.DataContext = vm;
-            //vm.Start(view);
-
-
-
-//            return false;
+           
         }
     }
 }

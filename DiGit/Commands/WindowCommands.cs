@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Input;
 using System.Windows;
 using DiGit.Helpers;
+using DiGit.Model;
 using DiGit.View;
 
 //using RadioK.UI.Models;

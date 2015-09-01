@@ -1,20 +1,14 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 using BondTech.HotKeyManagement.WPF._4;
 using DiGit.Commands;
 using DiGit.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using DiGit.View;
+using DiGit.ViewModel.Base;
 
 namespace DiGit.ViewModel
 {
-    internal class SettingsViewModel : DependencyObject
+    internal class SettingsViewModel : BaseDialogViewModel
     {
         HotKeyManager MyHotKeyManager;
         private string _path;
