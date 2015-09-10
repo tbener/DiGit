@@ -1,0 +1,28 @@
+﻿<mui:ModernWindow x:Class="DiGit.View.TipsView"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                  xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+                  mc:Ignorable="d" 
+                  Width="413" Height="297"
+                  Title="DiGit"
+                  Style="{StaticResource BlankWindow}" WindowStartupLocation="CenterScreen" Icon="/DiGit;component/Resources/Images/App.ico" Topmost="True">
+    <ScrollViewer>
+        <DockPanel LastChildFill="False" Margin="4">
+            <StackPanel DockPanel.Dock="Top">
+                <TextBlock Text="What's New" Style="{StaticResource Heading1}" />
+                <TextBlock Text="Commands can be customized! (beta)" Style="{StaticResource Heading2}" Margin="0, 6"/>
+                <TextBlock Text="Customize your commands through XML file (no UI)." />
+                <TextBlock Text="Right click on the tray icon -> Settings -> Open containing folder." />
+                <TextBlock Text="Edit and save DiGit.xml, then click on Settings -> Reload." />
+
+                
+            </StackPanel>
+            <DockPanel DockPanel.Dock="Bottom" Margin="0,4" LastChildFill="False" >
+                <Button DockPanel.Dock="Right" Command="{Binding CloseCommand}" IsCancel="True">Close</Button>
+            </DockPanel>
+        </DockPanel>
+
+    </ScrollViewer>
+</mui:ModernWindow>

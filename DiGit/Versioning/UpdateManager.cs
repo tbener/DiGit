@@ -78,7 +78,7 @@ namespace DiGit.Versioning
 
             if (ConfigurationHelper.Configuration.isBetaUser)
             {
-                file = GetFileName("Beta");
+                file = GetFileName("beta");
                 if (File.Exists(file)) return file;
             }
 

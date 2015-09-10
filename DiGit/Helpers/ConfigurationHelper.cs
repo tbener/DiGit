@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Windows.Input;
+using DiGit.Commands;
 using DiGit.Configuration;
 using DiGit.Model;
 using DiGit.Properties;
+using DiGit.View;
 
 namespace DiGit.Helpers
 {
@@ -55,6 +57,15 @@ namespace DiGit.Helpers
         // Fill in missing entries from older versions
         private static void Upgrade()
         {
+            Version prevVer = new Version();
+            if (Version.TryParse(_configRoot.ver, out prevVer))
+            {
+                if (AppInfo.AppVersion.Build > Version.Parse(_configRoot.ver).Build)
+                {
+                    new ShowSingleViewCommand(typeof(TipsView)).Execute(null);
+                }
+            }
+           
             if (_configRoot.Settings == null) 
                 _configRoot.Settings = new DiGitConfigSettings();
             if (_configRoot.Settings.ShowHideHotkey == null)
@@ -76,6 +87,15 @@ namespace DiGit.Helpers
                     GetUserCommand("Merge", "merge"),
                     GetUserCommand("Show log", "log"),
                     GetUserCommand("Sync", "sync")
+                };
+            }
+
+            if (_configRoot.Folders == null)
+            {
+                _configRoot.Folders = new[]
+                {
+                    new DiGitConfigFolder() {path=@"dbm_Configuration\ConfigurationCenter\src\ConfigCenter"},
+                    new DiGitConfigFolder() {path=@"dbm_Configuration\ConfigurationCenter\src"}
                 };
             }
         }

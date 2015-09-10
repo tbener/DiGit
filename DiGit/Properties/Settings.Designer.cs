@@ -121,13 +121,25 @@ namespace DiGit.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        [global::System.Configuration.DefaultSettingValueAttribute("40")]
         public int MenuPathLength {
             get {
                 return ((int)(this["MenuPathLength"]));
             }
             set {
                 this["MenuPathLength"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("80")]
+        public int MenuPathLengthWide {
+            get {
+                return ((int)(this["MenuPathLengthWide"]));
+            }
+            set {
+                this["MenuPathLengthWide"] = value;
             }
         }
     }

@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:model="clr-namespace:DiGit.Model"
         Title="BubbleView" Height="200" Width="160" 
         Topmost="True"
         
@@ -16,7 +17,7 @@
     <Window.Resources>
 
 
-        <ContextMenu Style="{StaticResource ContextMenuCommandsStyleTest}" x:Key="CommandsContextMenu" Opened="CommandsContextMenu_Opened" Closed="CommandsContextMenu_Closed" ItemsSource="{Binding CommandsList}"/>
+        <ContextMenu Style="{StaticResource ContextMenuCommandsStyleTest}" x:Key="CommandsContextMenu" Opened="CommandsContextMenu_Opened" Closed="CommandsContextMenu_Closed" ItemsSource="{Binding UserCommandList}"/>
 
 
     </Window.Resources>
@@ -44,11 +45,12 @@
 
             <Border.Triggers>
                 <EventTrigger RoutedEvent="Control.MouseEnter">
-                        <BeginStoryboard>
-                            <Storyboard >
-                                <DoubleAnimation Duration="0:0:0.1" To="1" Storyboard.TargetProperty="Opacity"/>
-                            </Storyboard>
-                        </BeginStoryboard>
+                    <BeginStoryboard>
+                        <Storyboard >
+                            <DoubleAnimation Duration="0:0:0.1" To="1" Storyboard.TargetProperty="Opacity"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                    
                 </EventTrigger>
                 <EventTrigger RoutedEvent="Control.MouseLeave">
                     <BeginStoryboard>
@@ -61,7 +63,39 @@
 
             <Border.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="{Binding FolderOpenMenuHeader}" Command="{Binding OpenFolderCommand}" CommandParameter="{Binding OpenFolderCommandParameter}"></MenuItem>
+                    <ContextMenu.Resources>
+                        <CollectionViewSource Source="{Binding FavoriteFolders}" x:Key="FavoriteFoldersItems"/>
+                    </ContextMenu.Resources>
+                    <!--<MenuItem Header="{Binding FolderOpenMenuHeader}" Command="{Binding OpenFolderCommand}" CommandParameter="{Binding OpenFolderCommandParameter}"></MenuItem>-->
+                    <MenuItem Header="{Binding RootPath}" Command="{Binding RootPathCommand}" >
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/SystemIcons/FileExplorer.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="{Binding ClipboardPath}" ToolTip="From Clipboard" Command="{Binding ClipboardPathCommand}" >
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/SystemIcons/Clipboard.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Favorite Folders">
+                        <!--<MenuItem.Icon>
+                            <Image Source="/Resources/SystemIcons/Favorite.png"/>
+                        </MenuItem.Icon>-->
+                        <MenuItem.ItemsSource>
+                            <CompositeCollection>
+                                <CollectionContainer Collection="{Binding Source={StaticResource FavoriteFoldersItems}}" />
+                                <Separator/>
+                                <MenuItem Header="Edit..." Command="{Binding ToDo}"></MenuItem>
+                            </CompositeCollection>
+                        </MenuItem.ItemsSource>
+                        <MenuItem.ItemContainerStyle>
+                            <Style>
+                                <Setter Property="MenuItem.Header" Value="{Binding DisplayPath}"/>
+                                <Setter Property="MenuItem.Command" Value="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.OpenFavFolderCommand }"/>
+                                <Setter Property="MenuItem.CommandParameter" Value="{Binding .}"/>
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                    </MenuItem>
                     <Separator/>
                     <MenuItem Header="Hide" Command="{Binding HideCommand}"/>
                     <MenuItem Header="Hide All" Command="{Binding HideAllCommand}"/>

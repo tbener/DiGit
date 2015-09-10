@@ -8,11 +8,10 @@ using DiGit.ViewModel.Base;
 
 namespace DiGit.ViewModel
 {
-    class UpdateViewModel : BaseDialogViewModel
+    class UpdateViewModel : BaseWindowViewModel
     {
         public ICommand CheckUpdateCommand { get; set; }
         public ICommand UpdateCommand { get; set; }
-        public ICommand CloseCommand { get; set; }
 
         public UpdateViewModel()
         {
@@ -21,7 +20,6 @@ namespace DiGit.ViewModel
 
             CheckUpdateCommand = new RelayCommand(UpdateManager.CheckRemoteAsync);
             UpdateCommand = new RelayCommand(UpdateManager.RunUpdate, CanUpdate);
-            CloseCommand = new RelayCommand(() => OnRequestClose(true));
 
             if (!UpdateManager.Working && !UpdateManager.HasData)
                 UpdateManager.CheckRemoteAsync();

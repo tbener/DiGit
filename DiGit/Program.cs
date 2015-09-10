@@ -36,13 +36,18 @@ namespace DiGit
                 step = "Init App class";
                 App app = new App();
                 app.InitializeComponent();
-                step = "Run App class";
+                step = "";
                 app.Run();
-
             }
             catch (Exception ex)
             {
-                ErrorHandler.Handle(ex, "An unexpected error ocurred while loading DiGit ({0}).", step);
+                if (step != "") step = string.Format(" ({0})", step);
+                ErrorHandler.Handle(ex, "An unexpected error ocurred{0}.", step);
+                try
+                {
+                    new ExitCommand().Execute(null);
+                }
+                catch{}
             }
             finally
             {

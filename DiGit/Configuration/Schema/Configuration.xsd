@@ -52,6 +52,17 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="Folders">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Folder">
+                <xs:complexType>
+                  <xs:attribute name="path" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:sequence>
       <xs:attribute name="ver" type="xs:string" use="required" />
       <xs:attribute name="isBetaUser" type="xs:boolean" use="required" />

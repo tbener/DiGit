@@ -31,6 +31,16 @@ namespace DiGit.Helpers
             return Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), join);
         }
 
+        public static bool Exists(string path)
+        {
+            return Directory.Exists(path);
+        }
+
+        public static bool Exists(string root, string path)
+        {
+            return Exists(GetFullPath(root, path));
+        }
+
         public static string GetFullPath(string path)
         {
             return GetFullPath(AppPath(), path, false);

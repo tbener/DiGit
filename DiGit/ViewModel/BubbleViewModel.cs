@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
+using DiGit.Configuration;
 using DiGit.ViewModel.Base;
 using LibGit2Sharp;
 using DiGit.Model;
@@ -21,6 +23,8 @@ namespace DiGit.ViewModel
         private string _currentBranch = string.Empty;
         private string _status = string.Empty;
         private bool _flagMoved = false;
+        private ObservableCollection<DiGitConfigFolder> _favoriteFolders;
+        private readonly PathClass _clipboardPathClass;
 
         public ICommand HideCommand { get; set; }
         public ICommand HideAllCommand { get; set; }
@@ -30,8 +34,11 @@ namespace DiGit.ViewModel
         public ICommand ShowMenu { get; set; }
         public ICommand ExitCommand { get; set; }
         public ICommand ShowHideMenuCommand { get; set; }
-        public ICommand OpenFolderCommand { get; set; }
+        public ICommand RootPathCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
+        public ICommand ContextMenuOpen { get; set; }
+        public ICommand ClipboardPathCommand { get; set; }
+        public ICommand OpenFavFolderCommand { get; set; }
 
         public ObservableCollection<ICommand> CommandsList { get; set; }
 
@@ -41,26 +48,11 @@ namespace DiGit.ViewModel
 
 
             ClickCommand = new RelayCommand(ShowHideMenu);
-            DblClkCommand = new OpenFolderCommand();
-            DblClkCommandParam = repo.Info.WorkingDirectory;
+            DblClkCommand = new OpenFolderCommand(new PathClass(repo));
             RefreshCommand = new RelayCommand(Refresh);
 
-            // try compacting path
-            string shortPath = repo.Info.WorkingDirectory;
-            try
-            {
-                if (Properties.Settings.Default.MenuPathLength > 0)
-                    shortPath = PathHelper.ShortDisplay(repo.Info.WorkingDirectory, Properties.Settings.Default.MenuPathLength);
-            }
-            catch (Exception ex)
-            {
-                ErrorHandler.Handle(ex, false);
-                shortPath += " (*)";
-            }
 
-            FolderOpenMenuHeader = string.Format("Open {0}", shortPath.Replace("_", "__"));
-            OpenFolderCommand = new OpenFolderCommand();
-            OpenFolderCommandParameter = repo.Info.WorkingDirectory;
+
 
             HideAllCommand = new RelayCommand(() => BubblesManager.ShowAll(false), () => RepositoriesManager.Repos.Any());
             ShowAllCommand = new RelayCommand(() => BubblesManager.ShowAll(true), () => RepositoriesManager.Repos.Any());
@@ -74,7 +66,7 @@ namespace DiGit.ViewModel
             repoTracker.OnLockFileDeleted += (s, e) => { LockExists = false; };
             repoTracker.OnBranchChanged += (s, e) => Refresh();
 
-            CommandsList = CreateCommandList();
+            //CommandsList = CreateCommandList();
 
             ConfigurationHelper.Configuration.Settings.VisualSettings.PropertyChanged += (sender, args) =>
             {
@@ -82,17 +74,69 @@ namespace DiGit.ViewModel
                     OnPropertyChanged("BubbleOpacity");
             };
 
+
+
+            PathClass rootPathClass = new PathClass(repo);
+            rootPathClass.DisplayLength = Properties.Settings.Default.MenuPathLength;
+            RootPathCommand = new OpenFolderCommand(rootPathClass);
+            RootPath = string.Format("Open {0}", rootPathClass.DisplayPath);
+
+            _clipboardPathClass = new PathClass(repo);
+            _clipboardPathClass.DisplayLength = Properties.Settings.Default.MenuPathLength;
+            _clipboardPathClass.MonitorClipboard = true;
+            _clipboardPathClass.OnChange += (sender, args) => OnPropertyChanged("ClipboardPath");
+
+            ClipboardPathCommand = new OpenFolderCommand(_clipboardPathClass);
+            OpenFavFolderCommand = new OpenFolderCommand();
+
+
             ConfigurationHelper.OnConfigurationLoaded += (sender, args) =>
             {
-                CommandsList = CreateCommandList();
+                //CommandsList = CreateCommandList();
+                OnPropertyChanged("UserCommandList");
+                OnPropertyChanged("FavoriteFolders");
             };
 
         }
 
+        public string RootPath { get; set; }
+
+        public string ClipboardPath
+        {
+            get
+            {
+                if (_clipboardPathClass.RelativePath.Length > 0)
+                    return string.Format("Open {0}", _clipboardPathClass.DisplayPath);
+                return "No path found in Clipboard";
+
+            }
+        }
+
+
+
+        public List<PathClass> FavoriteFolders
+        {
+            get
+            {
+                return ConfigurationHelper.Configuration.Folders.Where(f => 
+                    PathHelper.Exists(Repo.Info.WorkingDirectory, f.path)).Select(f => 
+                        new PathClass(Repo, f.path) { DisplayLength = Properties.Settings.Default.MenuPathLengthWide }).ToList();
+            }
+
+        }
+
+        public List<ICommand> UserCommandList
+        {
+            get
+            {
+                return ConfigurationHelper.Configuration.Commands.Select(c => new UserCommand(c, Repository)).Cast<ICommand>().ToList();
+            }
+
+        }
 
         private ObservableCollection<ICommand> CreateCommandList()
         {
-            List<ICommand> list = 
+            List<ICommand> list =
                 ConfigurationHelper.Configuration.Commands.Select(c => new UserCommand(c, Repository)).Cast<ICommand>().ToList();
             return new ObservableCollection<ICommand>(list);
         }
@@ -118,7 +162,7 @@ namespace DiGit.ViewModel
                         CurrentBranch = "[Error]";
                 }
             } while (counter-- > 0);
-            
+
         }
 
         public void Start(Window view)
@@ -132,7 +176,7 @@ namespace DiGit.ViewModel
                 //BubbleView view1 = s as BubbleView;
                 //if (view1 != null) Status = string.Format("{0}, {1}", view1.Left.ToString(), view1.Top.ToString());
             };
-            
+
             _flagMoved = false;
         }
 
@@ -200,7 +244,7 @@ namespace DiGit.ViewModel
             "IsShowMenu", typeof(bool), typeof(BubbleViewModel), new PropertyMetadata(default(bool)));
 
 
-        
+
 
 
         public bool IsShowMenu

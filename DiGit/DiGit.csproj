@@ -107,6 +107,7 @@
     <Compile Include="Commands\RepositoryCommands.cs" />
     <Compile Include="Commands\UserCommand.cs" />
     <Compile Include="Commands\WindowCommands.cs" />
+    <Compile Include="Helpers\ClipboardNotification.cs" />
     <Compile Include="Model\AppInfo.cs" />
     <Compile Include="Helpers\BackgroundTasksManager.cs" />
     <Compile Include="Helpers\ConfigurationHelper.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Helpers\MsgHelper.cs" />
     <Compile Include="Helpers\NotifyPropertyChangedHelper.cs" />
     <Compile Include="Helpers\PathHelper.cs" />
+    <Compile Include="Model\PathClass.cs" />
     <Compile Include="Model\RepositoriesManager.cs" />
     <Compile Include="Model\BubblesManager.cs" />
     <Compile Include="Helpers\SerializeHelper.cs" />
@@ -137,12 +139,14 @@
     <Compile Include="ViewModel\Base\BaseDialogViewModel.cs" />
     <Compile Include="ViewModel\Base\BaseRepoViewModel.cs" />
     <Compile Include="ViewModel\Base\BaseViewModel.cs" />
+    <Compile Include="ViewModel\Base\BaseWindowViewModel.cs" />
     <Compile Include="ViewModel\BubbleViewModel.cs" />
     <Compile Include="ViewModel\RepositoryViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\Settings\BaseSettingsViewModel.cs" />
     <Compile Include="ViewModel\Settings\UserCommandEditViewModel.cs" />
     <Compile Include="ViewModel\Settings\UserCommandsViewModel.cs" />
+    <Compile Include="ViewModel\TipsViewModel.cs" />
     <Compile Include="ViewModel\TrayWindowViewModel.cs" />
     <Compile Include="ViewModel\UpdateViewModel.cs" />
     <Compile Include="View\AddRepositoryView.xaml.cs">
@@ -165,6 +169,9 @@
     </Compile>
     <Compile Include="View\Settings\UserCommandsView.xaml.cs">
       <DependentUpon>UserCommandsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TipsView.xaml.cs">
+      <DependentUpon>TipsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TrayWindowView.xaml.cs">
       <DependentUpon>TrayWindowView.xaml</DependentUpon>
@@ -261,6 +268,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Settings\UserCommandsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TipsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -368,7 +379,15 @@
   <ItemGroup>
     <None Include="Configuration\Schema\DiGit.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\SystemIcons\Favorite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SystemIcons\Clipboard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SystemIcons\FileExplorer.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Expression\Blend\.NETFramework\v4.5\Microsoft.Expression.Blend.WPF.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
