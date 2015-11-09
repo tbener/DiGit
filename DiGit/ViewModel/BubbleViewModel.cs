@@ -39,6 +39,7 @@ namespace DiGit.ViewModel
         public ICommand ContextMenuOpen { get; set; }
         public ICommand ClipboardPathCommand { get; set; }
         public ICommand OpenFavFolderCommand { get; set; }
+        public ICommand SetFavorite { get; set; }
 
         public ObservableCollection<ICommand> CommandsList { get; set; }
 
@@ -86,15 +87,23 @@ namespace DiGit.ViewModel
             _clipboardPathClass.MonitorClipboard = true;
             _clipboardPathClass.OnChange += (sender, args) => OnPropertyChanged("ClipboardPath");
 
+            ClipboardFolder = new FolderCBViewModel(repo);
+
             ClipboardPathCommand = new OpenFolderCommand(_clipboardPathClass);
             OpenFavFolderCommand = new OpenFolderCommand();
 
 
             ConfigurationHelper.OnConfigurationLoaded += (sender, args) =>
             {
-                //CommandsList = CreateCommandList();
                 OnPropertyChanged("UserCommandList");
-                OnPropertyChanged("FavoriteFolders");
+                OnPropertyChanged("FavoriteFoldersViewModels");
+                OnPropertyChanged("RecentFoldersViewModels");
+            };
+
+            FolderViewModel.OnChange += (sender, args) =>
+            {
+                OnPropertyChanged("FavoriteFoldersViewModels");
+                OnPropertyChanged("RecentFoldersViewModels");
             };
 
         }
@@ -112,15 +121,59 @@ namespace DiGit.ViewModel
             }
         }
 
+        public FolderCBViewModel ClipboardFolder
+        {
+            get; 
+            set;
+        }
+
+        //public FolderCBViewModel ClipboardFolder
+        //{
+        //    get { return (FolderCBViewModel)GetValue(ClipboardFolderProperty); }
+        //    set { SetValue(ClipboardFolderProperty, value); }
+        //}
+
+        //// Using a DependencyProperty as the backing store for ClipboardFolder1.  This enables animation, styling, binding, etc...
+        //public static readonly DependencyProperty ClipboardFolderProperty =
+        //    DependencyProperty.Register("ClipboardFolder", typeof(FolderCBViewModel), typeof(BubbleViewModel), new PropertyMetadata(null));
 
 
-        public List<PathClass> FavoriteFolders
+
+        public ObservableCollection<FolderViewModel> FavoriteFoldersViewModels
+        {
+            get
+            {
+                var list = FolderViewModel.GetListByRepo(Repo).Where(f => f.IsFavorite);
+                var obs = new ObservableCollection<FolderViewModel>(list);
+                return obs;
+            }
+        }
+
+        public ObservableCollection<FolderViewModel> RecentFoldersViewModels
+        {
+            get
+            {
+                var list = FolderViewModel.GetListByRepo(Repo).Where(f => !f.IsFavorite);
+                var obs = new ObservableCollection<FolderViewModel>(list);
+                return obs;
+            }
+        }
+
+        public PathClassViewModel RootPathClass
+        {
+            get
+            {
+                return new PathClassViewModel(new PathClass(Repo));
+            }
+        }
+
+        public List<PathClassViewModel> FavoriteFolders
         {
             get
             {
                 return ConfigurationHelper.Configuration.Folders.Where(f => 
                     PathHelper.Exists(Repo.Info.WorkingDirectory, f.path)).Select(f => 
-                        new PathClass(Repo, f.path) { DisplayLength = Properties.Settings.Default.MenuPathLengthWide }).ToList();
+                        new PathClassViewModel(new PathClass(Repo, f.path) { DisplayLength = Properties.Settings.Default.MenuPathLengthWide, IsFavorite = true})).ToList();
             }
 
         }

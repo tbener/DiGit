@@ -10,6 +10,7 @@
         <ResourceDictionary Source="Controls/ListBox.xaml"/>
         <ResourceDictionary Source="Controls/Window.xaml"/>
         <ResourceDictionary Source="Controls/Checkbox.xaml"/>
+        <ResourceDictionary Source="Controls/MenuItem_Test.xaml"/>
         <!--<ResourceDictionary Source="CommandsListMenu.xaml"/>-->
     </ResourceDictionary.MergedDictionaries>
 

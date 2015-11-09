@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Windows;
 using DiGit.Configuration;
 using DiGit.Helpers;
@@ -153,6 +152,7 @@ namespace DiGit.Model
             get { return MonitorClipboard ? RelativePath.Length > 0 : Exists; }
         }
 
+        public bool IsFavorite { get; set; }
 
     }
 }

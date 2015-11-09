@@ -347,6 +347,16 @@ namespace DiGit.Configuration {
         
         private string pathField;
         
+        private bool isFavoriteField;
+        
+        private System.DateTime lastUsageField;
+        
+        private bool lastUsageFieldSpecified;
+        
+        public DiGitConfigFolder() {
+            this.isFavoriteField = false;
+        }
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string path {
@@ -355,6 +365,40 @@ namespace DiGit.Configuration {
             }
             set {
                 this.pathField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool isFavorite {
+            get {
+                return this.isFavoriteField;
+            }
+            set {
+                this.isFavoriteField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public System.DateTime lastUsage {
+            get {
+                return this.lastUsageField;
+            }
+            set {
+                this.lastUsageField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool lastUsageSpecified {
+            get {
+                return this.lastUsageFieldSpecified;
+            }
+            set {
+                this.lastUsageFieldSpecified = value;
             }
         }
     }

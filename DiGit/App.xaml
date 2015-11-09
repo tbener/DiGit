@@ -11,10 +11,12 @@
     	<ResourceDictionary>
     		<ResourceDictionary.MergedDictionaries>
     			<ResourceDictionary Source="ResourceDictionary/BubbleResourceDictionary.xaml"/>
-                <ResourceDictionary Source="ResourceDictionary/CommandsListResourceDictionary.xaml"/>
+                <ResourceDictionary Source="ResourceDictionary/CommandsListMenuResourceDictionary.xaml"/>
                 <!--<ResourceDictionary Source="ResourceDictionary/DefaultControlsResourceDictionary.xaml"/>-->
                 <ResourceDictionary Source="ResourceDictionary/ThemesResourceDictionary.xaml" />
-    		</ResourceDictionary.MergedDictionaries>
+
+                <ResourceDictionary Source="ResourceDictionary/Controls/MenuItem_Test.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
     	</ResourceDictionary>
          
     </Application.Resources>

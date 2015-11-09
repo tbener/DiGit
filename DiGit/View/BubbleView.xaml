@@ -16,7 +16,6 @@
         >
     <Window.Resources>
 
-
         <ContextMenu Style="{StaticResource ContextMenuCommandsStyleTest}" x:Key="CommandsContextMenu" Opened="CommandsContextMenu_Opened" Closed="CommandsContextMenu_Closed" ItemsSource="{Binding UserCommandList}"/>
 
 
@@ -50,7 +49,7 @@
                             <DoubleAnimation Duration="0:0:0.1" To="1" Storyboard.TargetProperty="Opacity"/>
                         </Storyboard>
                     </BeginStoryboard>
-                    
+
                 </EventTrigger>
                 <EventTrigger RoutedEvent="Control.MouseLeave">
                     <BeginStoryboard>
@@ -64,37 +63,145 @@
             <Border.ContextMenu>
                 <ContextMenu>
                     <ContextMenu.Resources>
-                        <CollectionViewSource Source="{Binding FavoriteFolders}" x:Key="FavoriteFoldersItems"/>
+                        <CollectionViewSource Source="{Binding FavoriteFoldersViewModels}" x:Key="FavoriteFoldersItems"/>
+                        <CollectionViewSource Source="{Binding RecentFoldersViewModels}" x:Key="RecentFoldersItems"/>
+
+                        <!--<Style x:Key="PathClassMenuStyle__" TargetType="{x:Type MenuItem}">
+                            <Setter Property="IsChecked" Value="True"/>
+                            <Setter Property="IsCheckable" Value="True"/>
+                            <Setter Property="Header" Value="{Binding PathClass.DisplayPath}"/>
+                            <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.OpenFavFolderCommand }"/>
+                            <Setter Property="CommandParameter" Value="{Binding PathClass}"/>
+                            <Setter Property="OverridesDefaultStyle" Value="False" />
+                            <Style.Triggers>
+                                <Trigger Property="MenuItem.Role" Value="SubmenuItem">
+                                    <Setter Property="MenuItem.Template" Value="{StaticResource PathClassSubmenuItemTemplateKey}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>-->
+
+                        <ControlTemplate x:Key="FavoriteToggleButton" TargetType="{x:Type ToggleButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image>
+                                    <Image.Style>
+                                        <Style>
+                                            <Setter Property="Image.Source" Value="/Resources/SystemIcons/NonFavorite.png" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsChecked, 
+                                                    RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}" Value="True">
+                                                    <Setter Property="Image.Source" Value="/Resources/SystemIcons/Favorite.png" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                                <ContentPresenter Content="{TemplateBinding Content}" Margin="5,0,0,0" />
+                            </StackPanel>
+
+                        </ControlTemplate>
+
+                        <!--<Style x:Key="PathClassMenuStyle" TargetType="{x:Type MenuItem}">
+                            <Setter Property="Header" Value="{Binding PathClass.DisplayPath}"/>
+                            <Setter Property="HeaderTemplate" >
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <TextBlock Text="{Binding}"/>
+                                            <ToggleButton Template="{StaticResource FavoriteToggleButton}" HorizontalAlignment="Right" Margin="0 0 -24 0"  Padding="0" BorderThickness="0" Command="{Binding SetFavorite}"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.OpenFavFolderCommand }"/>
+                            <Setter Property="CommandParameter" Value="{Binding PathClass}"/>
+                        </Style>-->
+
+                        <Style x:Key="FolderMenuStyle" TargetType="{x:Type MenuItem}">
+                            <Setter Property="Header" Value="{Binding DisplayText}"/>
+                            <Setter Property="HeaderTemplate" >
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <TextBlock Text="{Binding}"/>
+                                            <ToggleButton Template="{StaticResource FavoriteToggleButton}" HorizontalAlignment="Right" Margin="0 0 -60 0"  Padding="0" BorderThickness="0" 
+                                                          IsChecked="{Binding RelativeSource={RelativeSource AncestorType=MenuItem, Mode=FindAncestor}, Path=DataContext.IsFavorite}"
+                                                          />
+                                        </Grid>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Command" Value="{Binding OpenFolderCommand}"/>
+                        </Style>
+
+
+
+                        <!--<ToggleButton IsEnabled="False" IsChecked="{Binding LockExists}" ToolTipService.ShowOnDisabled="True" ToolTip="index.lock"
+                              HorizontalAlignment="Right" VerticalAlignment="Top" Width="16" Height="16" Margin="3">
+                            <ToggleButton.Template>
+
+                                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image>
+                                            <Image.Style>
+                                                <Style>
+                                                    <Setter Property="Image.Source" 
+                                Value="/Resources/images/unlocked.png" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsChecked, 
+                                    RelativeSource={RelativeSource AncestorType=
+                                    {x:Type ToggleButton}}}" Value="True">
+                                                            <Setter Property="Image.Source" 
+                                        Value="/Resources/images/locked.png" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Image.Style>
+                                        </Image>
+                                        <ContentPresenter Content="{TemplateBinding Content}" 
+                    Margin="5,0,0,0" />
+                                    </StackPanel>
+
+                                </ControlTemplate>
+                            </ToggleButton.Template>
+                        </ToggleButton>-->
+
                     </ContextMenu.Resources>
-                    <!--<MenuItem Header="{Binding FolderOpenMenuHeader}" Command="{Binding OpenFolderCommand}" CommandParameter="{Binding OpenFolderCommandParameter}"></MenuItem>-->
                     <MenuItem Header="{Binding RootPath}" Command="{Binding RootPathCommand}" >
                         <MenuItem.Icon>
                             <Image Source="/Resources/SystemIcons/FileExplorer.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="{Binding ClipboardPath}" ToolTip="From Clipboard" Command="{Binding ClipboardPathCommand}" >
+                    <!--<MenuItem Header="{Binding ClipboardPath}" ToolTip="From Clipboard" Command="{Binding ClipboardPathCommand}" >
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/SystemIcons/Clipboard.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>-->
+                    <MenuItem ToolTip="From Clipboard" DataContext="{Binding ClipboardFolder}"
+                              Style="{StaticResource FolderMenuStyle}">
                         <MenuItem.Icon>
                             <Image Source="/Resources/SystemIcons/Clipboard.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Favorite Folders">
-                        <!--<MenuItem.Icon>
-                            <Image Source="/Resources/SystemIcons/Favorite.png"/>
-                        </MenuItem.Icon>-->
+
+                    <!--<Separator/>
+                    <MenuItem DataContext="{Binding RootPathClass}" Style="{StaticResource PathClassMenuStyle}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/SystemIcons/FileExplorer.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>-->
+                    <!--<MenuItem  ToolTip="From Clipboard" DataContext="{Binding ClipboardPathClass}" Style="{StaticResource PathClassMenuStyle}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/SystemIcons/Clipboard.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>-->
+                    <MenuItem Header="Favorite Folders" ItemContainerStyle="{StaticResource FolderMenuStyle}">
                         <MenuItem.ItemsSource>
                             <CompositeCollection>
                                 <CollectionContainer Collection="{Binding Source={StaticResource FavoriteFoldersItems}}" />
                                 <Separator/>
-                                <MenuItem Header="Edit..." Command="{Binding ToDo}"></MenuItem>
+                                <CollectionContainer Collection="{Binding Source={StaticResource RecentFoldersItems}}" />
                             </CompositeCollection>
                         </MenuItem.ItemsSource>
-                        <MenuItem.ItemContainerStyle>
-                            <Style>
-                                <Setter Property="MenuItem.Header" Value="{Binding DisplayPath}"/>
-                                <Setter Property="MenuItem.Command" Value="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.OpenFavFolderCommand }"/>
-                                <Setter Property="MenuItem.CommandParameter" Value="{Binding .}"/>
-                            </Style>
-                        </MenuItem.ItemContainerStyle>
                     </MenuItem>
                     <Separator/>
                     <MenuItem Header="Hide" Command="{Binding HideCommand}"/>

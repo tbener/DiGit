@@ -27,7 +27,8 @@ namespace DiGit.Helpers
                     Msg.ShowE(error);
 #if DEBUG
             else
-                Msg.ShowE(error, "THIS MESSAGE IS DISPLAYED ONLY IN DEBUG MODE");
+                if (error.GetType() != typeof(System.IO.IOException))
+                    Msg.ShowE(error, "THIS MESSAGE IS DISPLAYED ONLY IN DEBUG MODE");
 #endif
 
             if (evtLogException != null)

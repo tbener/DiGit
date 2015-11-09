@@ -5,6 +5,7 @@ using DiGit.Configuration;
 using DiGit.Model;
 using DiGit.Properties;
 using DiGit.View;
+using DiGit.ViewModel;
 
 namespace DiGit.Helpers
 {
@@ -118,6 +119,7 @@ namespace DiGit.Helpers
             try
             {
                 _configRoot.Repositories = RepositoriesManager.Repos.ToArray();
+                _configRoot.Folders = FolderViewModel.FolderList.ToArray();
                 return SerializeHelper.Save(_configRoot, file);
             }
             catch (Exception ex)
