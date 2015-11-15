@@ -29,7 +29,8 @@ namespace DiGit.ViewModel
         public ICommand ShowUpdateCommand { get; set; }
         public ICommand OpenConfigFolderCommand { get; set; }
         public ICommand ReloadConfigurationCommand { get; set; }
-
+        public ICommand ShowTipsCommand { get; set; }
+        
         private TaskbarIcon _taskbarIcon;
 
         public TrayWindowViewModel(TaskbarIcon taskbarIcon)
@@ -57,6 +58,7 @@ namespace DiGit.ViewModel
             CheckUpdateCommand = ShowUpdateCommand;
             OpenConfigFolderCommand = new RelayCommand(() => Utils.OpenContainingFolder(ConfigurationHelper.ConfigFile));
             ReloadConfigurationCommand = new RelayCommand(() => ConfigurationHelper.Load());
+            ShowTipsCommand = new RelayCommand(() => new ShowSingleViewCommand(typeof(TipsView)).Execute(null));
 
             HotkeyHelper.OnHotkeyChanged += (sender, args) => OnPropertyChanged("ShowHideHeader");
             // todo: currently the only balloon is for update, so no distinction about what to do.

@@ -142,5 +142,17 @@ namespace DiGit.Properties {
                 this["MenuPathLengthWide"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int FoldersMRU {
+            get {
+                return ((int)(this["FoldersMRU"]));
+            }
+            set {
+                this["FoldersMRU"] = value;
+            }
+        }
     }
 }

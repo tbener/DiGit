@@ -53,7 +53,6 @@ namespace DiGit.Model
                     configRepository = new DiGitConfigRepository();
                 configRepository.Repository = repo;
                 _repos.Add(configRepository.path, configRepository);
-                ConfigurationHelper.Save();
                 return true;
             }
             catch (Exception ex)

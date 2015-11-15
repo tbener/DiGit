@@ -82,7 +82,7 @@
 
                         <ControlTemplate x:Key="FavoriteToggleButton" TargetType="{x:Type ToggleButton}">
                             <StackPanel Orientation="Horizontal">
-                                <Image>
+                                <Image Cursor="Hand">
                                     <Image.Style>
                                         <Style>
                                             <Setter Property="Image.Source" Value="/Resources/SystemIcons/NonFavorite.png" />

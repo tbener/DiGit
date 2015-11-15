@@ -126,18 +126,7 @@ namespace DiGit.ViewModel
             get; 
             set;
         }
-
-        //public FolderCBViewModel ClipboardFolder
-        //{
-        //    get { return (FolderCBViewModel)GetValue(ClipboardFolderProperty); }
-        //    set { SetValue(ClipboardFolderProperty, value); }
-        //}
-
-        //// Using a DependencyProperty as the backing store for ClipboardFolder1.  This enables animation, styling, binding, etc...
-        //public static readonly DependencyProperty ClipboardFolderProperty =
-        //    DependencyProperty.Register("ClipboardFolder", typeof(FolderCBViewModel), typeof(BubbleViewModel), new PropertyMetadata(null));
-
-
+        
 
         public ObservableCollection<FolderViewModel> FavoriteFoldersViewModels
         {
@@ -154,7 +143,7 @@ namespace DiGit.ViewModel
             get
             {
                 var list = FolderViewModel.GetListByRepo(Repo).Where(f => !f.IsFavorite);
-                var obs = new ObservableCollection<FolderViewModel>(list);
+                var obs = new ObservableCollection<FolderViewModel>(list.OrderByDescending(f => f.ConfigFolder.lastUsage));
                 return obs;
             }
         }

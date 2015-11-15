@@ -4,25 +4,72 @@
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                   xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+                  xmlns:c="clr-namespace:DiGit.Converters"
                   mc:Ignorable="d" 
-                  Width="413" Height="297"
+                  Width="640" 
+                  Height="640"
                   Title="DiGit"
-                  Style="{StaticResource BlankWindow}" WindowStartupLocation="CenterScreen" Icon="/DiGit;component/Resources/Images/App.ico" Topmost="True">
-    <ScrollViewer>
-        <DockPanel LastChildFill="False" Margin="4">
+                  Style="{StaticResource BlankWindow}" WindowStartupLocation="CenterScreen" Icon="/DiGit;component/Resources/Images/App.ico" Topmost="True" d:DesignHeight="696">
+    <mui:ModernWindow.Resources>
+        <c:VersionToBooleanConverter x:Key="VersionConverter"/>
+
+        <Style TargetType="Expander">
+            <Setter Property="Margin" Value="0 14"/>
+        </Style>
+
+        <Style x:Key="ScreenshotStyle" TargetType="Image">
+            <Setter Property="Margin" Value="40 12"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="#FF8B8585" Direction="315" Opacity="0.3" BlurRadius="15" ShadowDepth="10" ></DropShadowEffect>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </mui:ModernWindow.Resources>
+    <DockPanel Margin="8">
+        <TextBlock DockPanel.Dock="Top" Text="What's New" Style="{StaticResource Heading1}" />
+        <Button DockPanel.Dock="Bottom" Margin="0 4"  HorizontalAlignment="Right" Command="{Binding CloseCommand}" IsCancel="True" >Close</Button>
+
+        <ScrollViewer>
             <StackPanel DockPanel.Dock="Top">
-                <TextBlock Text="What's New" Style="{StaticResource Heading1}" />
-                <TextBlock Text="Commands can be customized! (beta)" Style="{StaticResource Heading2}" Margin="0, 6"/>
-                <TextBlock Text="Customize your commands through XML file (no UI)." />
-                <TextBlock Text="Right click on the tray icon -> Settings -> Open containing folder." />
-                <TextBlock Text="Edit and save DiGit.xml, then click on Settings -> Reload." />
+                <Expander Tag="1.0.208" IsExpanded="True" Header="New in 1.0.208">
+                    <StackPanel>
+                        <TextBlock Text="Favorite dynamic folders" Style="{StaticResource Heading2}" Margin="0 6"/>
 
-                
+                        <TextBlock Text="Got a mail with a path? Just copy the relative part. Then right click on the bubble to open it." />
+
+                        <GroupBox Header="Try it now!" Margin="40 8" Padding="8 4" Width="420" HorizontalAlignment="Left">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" >
+                                    <TextBlock Text="Copy the following path: " VerticalAlignment="Center" />
+                                    <TextBox Text="dbm_System\Updates\Resources" Width="245" />
+                                </StackPanel>
+                                <TextBlock Text="Now right click on any bubble to open it." Margin="0 4 0 6"/>
+                            </StackPanel>
+                        </GroupBox>
+                        <TextBlock Text="You can also copy a full path from one branch, then open it from another..." />
+                        <Image Source="../Resources/Tips/Images/1.0.208.003.png" Width="380" Style="{StaticResource ScreenshotStyle}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Click on the" VerticalAlignment="Center"/>
+                            <Image Source="../Resources/SystemIcons/Favorite.png" VerticalAlignment="Center" Margin="6 0"/>
+                            <TextBlock Text="to add or remove from the Favorites list" VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                    </StackPanel>
+                </Expander>
+
+                <Expander Tag="1.0.207" IsExpanded="True" Header="New in 1.0.207">
+                    <StackPanel>
+                        <TextBlock Text="Commands can be customized" Style="{StaticResource Heading2}" Margin="0 6"/>
+                        <TextBlock Text="Customize your commands through XML file (no UI)." />
+                        <TextBlock Text="Right click on the tray icon -> Settings -> Open containing folder." />
+                        <TextBlock Text="Edit and save DiGit.xml, then click on Settings -> Reload." />
+                    </StackPanel>
+                </Expander>
+
             </StackPanel>
-            <DockPanel DockPanel.Dock="Bottom" Margin="0,4" LastChildFill="False" >
-                <Button DockPanel.Dock="Right" Command="{Binding CloseCommand}" IsCancel="True">Close</Button>
-            </DockPanel>
-        </DockPanel>
+        </ScrollViewer>
 
-    </ScrollViewer>
+    </DockPanel>
 </mui:ModernWindow>

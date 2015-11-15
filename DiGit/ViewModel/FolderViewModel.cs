@@ -34,11 +34,12 @@ namespace DiGit.ViewModel
         private static List<DiGitConfigFolder> _folderList;
         private static readonly Dictionary<Repository, ObservableCollection<FolderViewModel>> ListByRepo;
 
-        protected virtual DiGitConfigFolder ConfigFolder { get; set; }
+        public virtual DiGitConfigFolder ConfigFolder { get; set; }
 
         static FolderViewModel()
         {
             ListByRepo = new Dictionary<Repository, ObservableCollection<FolderViewModel>>();
+            SizeFoldersMru();
         }
 
         protected FolderViewModel(Repository repo, DiGitConfigFolder digitConfigFolder) : base(repo)
@@ -53,7 +54,9 @@ namespace DiGit.ViewModel
         {
             Process.Start(FullPath);
             ConfigFolder.lastUsage = DateTime.Now;
+            ConfigFolder.lastUsageSpecified = true;
             AddConfigFolderToList();
+            OnChange(null, null);
         }
 
         #region Static lists management
@@ -78,15 +81,34 @@ namespace DiGit.ViewModel
 
         private void AddConfigFolderToList()
         {
-            if (!_folderList.Contains(ConfigFolder)) return;
+            if (_folderList.Contains(ConfigFolder)) return;
             _folderList.Add(ConfigFolder);
             foreach (KeyValuePair<Repository, ObservableCollection<FolderViewModel>> keyValuePair in ListByRepo)
             {
                 if (PathHelper.Exists(keyValuePair.Key.Info.WorkingDirectory, ConfigFolder.path))
-                    // rebuild the list for this Repo
                     keyValuePair.Value.Add(new FolderViewModel(keyValuePair.Key, ConfigFolder));
             }
-            OnChange(null, null);
+            if (!ConfigFolder.isFavorite)
+                SizeFoldersMru();
+        }
+
+        private static void SizeFoldersMru()
+        {
+            var mruList = FolderList.Where(dcf => !dcf.isFavorite).ToList();
+            int max = Math.Max(3, Properties.Settings.Default.FoldersMRU);
+            if (mruList.Count() > max)
+            {
+                List<DiGitConfigFolder> toRemove = mruList.OrderByDescending(dcf => dcf.lastUsage).ToList().GetRange(max, mruList.Count() - max);
+                FolderList.RemoveAll(toRemove.Contains);
+                foreach (KeyValuePair<Repository, ObservableCollection<FolderViewModel>> keyValuePair in ListByRepo)
+                {
+                    foreach (var vm in keyValuePair.Value)
+                    {
+                        if (!FolderList.Contains(vm.ConfigFolder)) keyValuePair.Value.Remove(vm);
+                    }
+                    
+                }
+            }
         }
 
         #endregion
@@ -113,7 +135,7 @@ namespace DiGit.ViewModel
                     ErrorHandler.Handle(ex, false);
                     display += " (*)";
                 }
-                return display.Replace("_", "__");
+                return display; //.Replace("_", "__");
             }
         }
 

@@ -92,7 +92,7 @@ namespace DiGit.ViewModel
             }
         }
 
-        protected override DiGitConfigFolder ConfigFolder
+        public override DiGitConfigFolder ConfigFolder
         {
             get { return _cpConfigFolder; } 
             set { _cpConfigFolder = value; }

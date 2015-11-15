@@ -56,6 +56,10 @@
                               Command="{Binding ReloadConfigurationCommand}"/>
                     </MenuItem>
 
+                    <MenuItem x:Name="MnuTips" 
+                              Header="What's new..."
+                              Command="{Binding ShowTipsCommand}"/>
+
                     <MenuItem x:Name="MnuUpdate" 
                               Header="{Binding CheckUpdateHeader}"
                               Command="{Binding CheckUpdateCommand}"/>

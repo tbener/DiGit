@@ -9,5 +9,7 @@ namespace DiGit.ViewModel
 {
     public class TipsViewModel : BaseWindowViewModel
     {
+        public Version NewVersion { get; set; }
+        public Version PreviousVersion { get; set; }
     }
 }

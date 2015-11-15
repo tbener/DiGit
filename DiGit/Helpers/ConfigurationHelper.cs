@@ -58,7 +58,7 @@ namespace DiGit.Helpers
         // Fill in missing entries from older versions
         private static void Upgrade()
         {
-            Version prevVer = new Version();
+            Version prevVer;
             if (Version.TryParse(_configRoot.ver, out prevVer))
             {
                 if (AppInfo.AppVersion.Build > Version.Parse(_configRoot.ver).Build)
@@ -95,8 +95,7 @@ namespace DiGit.Helpers
             {
                 _configRoot.Folders = new[]
                 {
-                    new DiGitConfigFolder() {path=@"dbm_Configuration\ConfigurationCenter\src\ConfigCenter"},
-                    new DiGitConfigFolder() {path=@"dbm_Configuration\ConfigurationCenter\src"}
+                    new DiGitConfigFolder() {path=@"dbm_System\Updates\Resources"},
                 };
             }
         }

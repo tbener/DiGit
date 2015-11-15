@@ -107,6 +107,7 @@
     <Compile Include="Commands\RepositoryCommands.cs" />
     <Compile Include="Commands\UserCommand.cs" />
     <Compile Include="Commands\WindowCommands.cs" />
+    <Compile Include="Converters\VersionToBooleanConverter.cs" />
     <Compile Include="Helpers\ClipboardNotification.cs" />
     <Compile Include="Model\AppInfo.cs" />
     <Compile Include="Helpers\BackgroundTasksManager.cs" />
@@ -118,7 +119,6 @@
     <Compile Include="Helpers\NotifyPropertyChangedHelper.cs" />
     <Compile Include="Helpers\PathHelper.cs" />
     <Compile Include="Model\PathClass.cs" />
-    <Compile Include="Model\PathManager.cs" />
     <Compile Include="Model\RepositoriesManager.cs" />
     <Compile Include="Model\BubblesManager.cs" />
     <Compile Include="Helpers\SerializeHelper.cs" />
@@ -402,6 +402,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\SystemIcons\NonFavorite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Tips\Images\1.0.208.001.png" />
+    <Resource Include="Resources\Tips\Images\1.0.208.002.png" />
+    <Resource Include="Resources\Tips\Images\1.0.208.003.png" />
+    <Resource Include="Resources\Tips\Images\1.0.208.004.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Expression\Blend\.NETFramework\v4.5\Microsoft.Expression.Blend.WPF.targets" />
