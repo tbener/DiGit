@@ -27,10 +27,10 @@
       <Value Profile="(Default)">5</Value>
     </Setting>
     <Setting Name="MenuPathLength" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">40</Value>
+      <Value Profile="(Default)">32</Value>
     </Setting>
     <Setting Name="MenuPathLengthWide" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">80</Value>
+      <Value Profile="(Default)">50</Value>
     </Setting>
     <Setting Name="FoldersMRU" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">10</Value>

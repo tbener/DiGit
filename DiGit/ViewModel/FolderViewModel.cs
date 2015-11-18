@@ -44,7 +44,7 @@ namespace DiGit.ViewModel
 
         protected FolderViewModel(Repository repo, DiGitConfigFolder digitConfigFolder) : base(repo)
         {
-            DisplayLength = Properties.Settings.Default.MenuPathLength;
+            DisplayLength = Properties.Settings.Default.MenuPathLengthWide;
             ConfigFolder = digitConfigFolder;
             
             OpenFolderCommand = new RelayCommand(OpenFolder, () => Exists);

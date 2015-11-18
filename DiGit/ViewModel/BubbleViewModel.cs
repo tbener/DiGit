@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows;
-using DiGit.Configuration;
 using DiGit.ViewModel.Base;
 using LibGit2Sharp;
 using DiGit.Model;
@@ -19,12 +17,10 @@ namespace DiGit.ViewModel
 {
     public class BubbleViewModel : BaseRepoViewModel
     {
-        private bool _lockFileExists = false;
+        private bool _lockFileExists;
         private string _currentBranch = string.Empty;
         private string _status = string.Empty;
-        private bool _flagMoved = false;
-        private ObservableCollection<DiGitConfigFolder> _favoriteFolders;
-        private readonly PathClass _clipboardPathClass;
+        private bool _flagMoved;
 
         public ICommand HideCommand { get; set; }
         public ICommand HideAllCommand { get; set; }
@@ -75,23 +71,13 @@ namespace DiGit.ViewModel
                     OnPropertyChanged("BubbleOpacity");
             };
 
-
-
+            // todo: dispose use of PathClass
             PathClass rootPathClass = new PathClass(repo);
             rootPathClass.DisplayLength = Properties.Settings.Default.MenuPathLength;
             RootPathCommand = new OpenFolderCommand(rootPathClass);
             RootPath = string.Format("Open {0}", rootPathClass.DisplayPath);
 
-            _clipboardPathClass = new PathClass(repo);
-            _clipboardPathClass.DisplayLength = Properties.Settings.Default.MenuPathLength;
-            _clipboardPathClass.MonitorClipboard = true;
-            _clipboardPathClass.OnChange += (sender, args) => OnPropertyChanged("ClipboardPath");
-
             ClipboardFolder = new FolderCBViewModel(repo);
-
-            ClipboardPathCommand = new OpenFolderCommand(_clipboardPathClass);
-            OpenFavFolderCommand = new OpenFolderCommand();
-
 
             ConfigurationHelper.OnConfigurationLoaded += (sender, args) =>
             {
@@ -110,22 +96,8 @@ namespace DiGit.ViewModel
 
         public string RootPath { get; set; }
 
-        public string ClipboardPath
-        {
-            get
-            {
-                if (_clipboardPathClass.RelativePath.Length > 0)
-                    return string.Format("Open {0}", _clipboardPathClass.DisplayPath);
-                return "No path found in Clipboard";
 
-            }
-        }
-
-        public FolderCBViewModel ClipboardFolder
-        {
-            get; 
-            set;
-        }
+        public FolderCBViewModel ClipboardFolder{ get; set;}
         
 
         public ObservableCollection<FolderViewModel> FavoriteFoldersViewModels
@@ -148,24 +120,7 @@ namespace DiGit.ViewModel
             }
         }
 
-        public PathClassViewModel RootPathClass
-        {
-            get
-            {
-                return new PathClassViewModel(new PathClass(Repo));
-            }
-        }
-
-        public List<PathClassViewModel> FavoriteFolders
-        {
-            get
-            {
-                return ConfigurationHelper.Configuration.Folders.Where(f => 
-                    PathHelper.Exists(Repo.Info.WorkingDirectory, f.path)).Select(f => 
-                        new PathClassViewModel(new PathClass(Repo, f.path) { DisplayLength = Properties.Settings.Default.MenuPathLengthWide, IsFavorite = true})).ToList();
-            }
-
-        }
+        
 
         public List<ICommand> UserCommandList
         {
@@ -176,12 +131,6 @@ namespace DiGit.ViewModel
 
         }
 
-        private ObservableCollection<ICommand> CreateCommandList()
-        {
-            List<ICommand> list =
-                ConfigurationHelper.Configuration.Commands.Select(c => new UserCommand(c, Repository)).Cast<ICommand>().ToList();
-            return new ObservableCollection<ICommand>(list);
-        }
 
         public void Refresh()
         {
@@ -236,16 +185,6 @@ namespace DiGit.ViewModel
         }
 
 
-        //void repoTracker_OnStatusChanged(object sender, EventArgs e)
-        //{
-        //    Status = string.Format("{0}: {1}", DateTime.Now.ToLongTimeString(), _repo.Info.Message);
-        //    if (!_repo.Head.Name.Equals(CurrentBranch))
-        //        CurrentBranch = _repo.Head.Name;
-        //}
-
-        //public CommandsListViewModel CommandsListViewModel { get; set; }
-
-
         public string CurrentBranch
         {
             get { return _currentBranch; }
@@ -293,6 +232,16 @@ namespace DiGit.ViewModel
         {
             get { return (bool)GetValue(IsShowMenuProperty); }
             set { SetValue(IsShowMenuProperty, value); }
+        }
+
+
+        public double BubbleOpacity
+        {
+            get { return ConfigurationHelper.Configuration.Settings.VisualSettings.BubblesOpacity; }
+            set
+            {
+                ConfigurationHelper.Configuration.Settings.VisualSettings.BubblesOpacity = value;
+            }
         }
     }
 }

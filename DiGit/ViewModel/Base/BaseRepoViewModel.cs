@@ -34,14 +34,6 @@ namespace DiGit.ViewModel.Base
             set { _repo = value; }
         }
 
-        public double BubbleOpacity
-        {
-            get { return ConfigurationHelper.Configuration.Settings.VisualSettings.BubblesOpacity; }
-            set
-            {
-                ConfigurationHelper.Configuration.Settings.VisualSettings.BubblesOpacity = value;
-            }
-        }
 
 
     }

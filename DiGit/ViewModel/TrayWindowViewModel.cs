@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using DiGit.Commands;
@@ -29,6 +30,8 @@ namespace DiGit.ViewModel
         public ICommand ShowUpdateCommand { get; set; }
         public ICommand OpenConfigFolderCommand { get; set; }
         public ICommand ReloadConfigurationCommand { get; set; }
+        public ICommand SaveConfigurationCommand { get; set; }
+        public ICommand SaveAsConfigurationCommand { get; set; }
         public ICommand ShowTipsCommand { get; set; }
         
         private TaskbarIcon _taskbarIcon;
@@ -56,8 +59,36 @@ namespace DiGit.ViewModel
 
             ShowUpdateCommand = new ShowSingleViewCommand(typeof(UpdateView));
             CheckUpdateCommand = ShowUpdateCommand;
-            OpenConfigFolderCommand = new RelayCommand(() => Utils.OpenContainingFolder(ConfigurationHelper.ConfigFile));
-            ReloadConfigurationCommand = new RelayCommand(() => ConfigurationHelper.Load());
+
+            #region TEMP - Configuration handling
+
+            OpenConfigFolderCommand = new RelayCommand(
+                delegate
+                {
+                    ConfigurationHelper.Save();
+                    Utils.OpenContainingFolder(ConfigurationHelper.ConfigFile);
+                });
+            ReloadConfigurationCommand = new RelayCommand(delegate
+            {
+                ConfigurationHelper.Load();
+                Msg.Show("Loaded. Note that the Load (Beta) might not reload all the information. For full refresh restart DiGit.");
+            });
+            SaveConfigurationCommand = new RelayCommand(delegate
+            {
+                ConfigurationHelper.Save();
+                Msg.Show("Settings saved to {0}", ConfigurationHelper.ConfigFile);
+            });
+            SaveAsConfigurationCommand = new RelayCommand(delegate
+            {
+                string file = ConfigurationHelper.ConfigFile;// Path.GetFileName(ConfigurationHelper.ConfigFile);
+                if (DialogHelper.BrowseSaveFileByExtensions(new[]{"xml"}, true, ref file))
+                {
+                    ConfigurationHelper.Save();
+                }
+            });
+            
+            #endregion
+
             ShowTipsCommand = new RelayCommand(() => new ShowSingleViewCommand(typeof(TipsView)).Execute(null));
 
             HotkeyHelper.OnHotkeyChanged += (sender, args) => OnPropertyChanged("ShowHideHeader");
@@ -105,6 +136,15 @@ namespace DiGit.ViewModel
             get
             {
                 return string.Format("{0} {1}{2}", AppInfo.AppName, AppInfo.AppVersionString, UpdateManager.UpdateAvailable ? " (update available)" : "");
+            }
+        }
+
+        public double BubbleOpacity
+        {
+            get { return ConfigurationHelper.Configuration.Settings.VisualSettings.BubblesOpacity; }
+            set
+            {
+                ConfigurationHelper.Configuration.Settings.VisualSettings.BubblesOpacity = value;
             }
         }
     }

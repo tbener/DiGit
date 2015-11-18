@@ -109,6 +109,7 @@
     <Compile Include="Commands\WindowCommands.cs" />
     <Compile Include="Converters\VersionToBooleanConverter.cs" />
     <Compile Include="Helpers\ClipboardNotification.cs" />
+    <Compile Include="Helpers\DialogHelper.cs" />
     <Compile Include="Model\AppInfo.cs" />
     <Compile Include="Helpers\BackgroundTasksManager.cs" />
     <Compile Include="Helpers\ConfigurationHelper.cs" />
@@ -144,7 +145,6 @@
     <Compile Include="ViewModel\BubbleViewModel.cs" />
     <Compile Include="ViewModel\FolderCBViewModel.cs" />
     <Compile Include="ViewModel\FolderViewModel.cs" />
-    <Compile Include="ViewModel\PathClassViewModel.cs" />
     <Compile Include="ViewModel\RepositoryViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\Settings\BaseSettingsViewModel.cs" />
@@ -354,7 +354,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Versioning\DiGitVersionInfo.xml" />
+    <None Include="Versioning\DiGitVersionInfo.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\unlocked.png" />

@@ -54,6 +54,12 @@
                         <MenuItem 
                               Header="Reload (beta)"
                               Command="{Binding ReloadConfigurationCommand}"/>
+                        <MenuItem 
+                              Header="Save"
+                              Command="{Binding SaveConfigurationCommand}"/>
+                        <MenuItem 
+                              Header="Save backup as..."
+                              Command="{Binding SaveAsConfigurationCommand}"/>
                     </MenuItem>
 
                     <MenuItem x:Name="MnuTips" 

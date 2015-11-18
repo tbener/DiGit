@@ -40,6 +40,7 @@ namespace DiGit.ViewModel
         /// <param name="repo"></param>
         public FolderCBViewModel(Repository repo) : base(repo, _cpConfigFolder)
         {
+            DisplayLength = Properties.Settings.Default.MenuPathLength;
             OnChange += (sender, args) => Refresh();
             FolderViewModel.OnChange += (sender, args) => Refresh();
         }

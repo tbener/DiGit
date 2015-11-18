@@ -78,5 +78,23 @@ namespace DiGit.Helpers
         }
 
         #endregion
+
+        /// <summary>
+        /// Returns true if the given file path is a folder.
+        /// </summary>
+        /// <param name="path">File path</param>
+        /// <returns>True if a folder</returns>
+        public static bool IsFolder(string path)
+        {
+            try
+            {
+                return ((File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory);
+            }
+            catch
+            {
+                var extension = Path.GetExtension(path);
+                return extension != null && extension.Length == 0;
+            }
+        }
     }
 }
