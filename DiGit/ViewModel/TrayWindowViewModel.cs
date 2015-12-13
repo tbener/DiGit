@@ -99,6 +99,9 @@ namespace DiGit.ViewModel
             {
                 OnPropertyChanged("CheckUpdateHeader");
                 OnPropertyChanged("ToolTipText");
+#if DEBUG
+                _taskbarIcon.ShowBalloonTip("Checking for updates...", "", BalloonIcon.Info);
+#endif
             };
 
         }

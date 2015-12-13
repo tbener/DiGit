@@ -198,7 +198,22 @@
                         <MenuItem.ItemsSource>
                             <CompositeCollection>
                                 <CollectionContainer Collection="{Binding Source={StaticResource FavoriteFoldersItems}}" />
-                                <Separator/>
+                                <Separator>
+                                    <Separator.Style>
+                                        <Style TargetType="{x:Type Separator}">
+                                            <Setter Property="Height" Value="1"/>
+                                            <Setter Property="Margin" Value="0,4,0,4"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Separator">
+                                                        <Border BorderBrush="{StaticResource SolidBorderBrush}"
+                BorderThickness="1"/>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Separator.Style>
+                                </Separator>
                                 <CollectionContainer Collection="{Binding Source={StaticResource RecentFoldersItems}}" />
                             </CompositeCollection>
                         </MenuItem.ItemsSource>

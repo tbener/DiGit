@@ -37,6 +37,7 @@
       <ComponentRef Id="comp_5C79D5B1_69AF_4FEE_AF5A_B6F41559F9AB" />
       <ComponentRef Id="comp_2AAD3D30_F6F3_4CD4_8E14_21DBF5C45307" />
       <ComponentRef Id="digit_version_log" />
+      <ComponentRef Id="SchedulerK" />
     </Feature>
     <Property Id="WixShellExecTarget" Value="[TARGETDIR]$(var.DiGit.TargetFileName)" />
     <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
@@ -404,6 +405,9 @@
           </Component>
           <Component Id="BondTech.HotKeyManagement.WPF.4">
             <File Source="$(var.BondTech.HotKeyManagement.WPF.4.TargetPath)" KeyPath="yes" />
+          </Component>
+          <Component Id="SchedulerK">
+            <File Source="$(var.DiGit.TargetDir)\SchedulerK.dll" KeyPath="yes" />
           </Component>
         </Directory>
       </Directory>

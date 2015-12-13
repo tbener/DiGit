@@ -1,98 +1,58 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Timers;
 
 namespace SchedulerK
 {
 
-    public delegate void DeletedEventHandler(object sender);
-    public delegate bool ActivatedEventHandler(object sender);
 
-    public class EventClass : IComparable
+    public class EventClass : IEventClass
     {
 
         public event DeletedEventHandler OnDeleted;
-        public event ActivatedEventHandler OnActivated;
+        public virtual event ActivatedEventHandler OnActivated;
+        public event EventTimeChangedEventHandler OnTimeChanged;
 
         public EventClass()
         {
             IsActive = true;
         }
 
-        public EventClass(DateTime dateTime) : this()
+        public EventClass(DateTime dateTime)
+            : this()
         {
-            EventTime = dateTime;
+            _eventTime = dateTime;
         }
-        public EventClass(TimeSpan timeSpan) : this(DateTime.Now.Add(timeSpan)){}
 
-        public Int32 EventID;
-
-        private object _Tag;
-        private string _Description;
+        public EventClass(TimeSpan interval)
+        {
+            Interval = interval;
+            _eventTime = DateTime.MinValue;
+        }
 
         /// <summary>
         /// Gets or sets the destination time for the event
         /// </summary>
-        public DateTime EventTime { get; set; }
+        private DateTime _eventTime;
 
-        /// <summary>
-        /// The offset from EventTime of which the event should occure
-        /// </summary>
-        public TimeSpan Offset { get; set; }
-
-        /// <summary>
-        /// Determines whether this event is of a recurrence type
-        /// </summary>
-        public bool IsRecurrence { get; set; }
+        public TimeSpan Interval { get; set; }
 
         /// <summary>
         /// Determines whether this event is active and will raise an event
         /// </summary>
         public bool IsActive { get; set; }
 
-        /// <summary>
-        /// Gets or sets the recurrence class of this event
-        /// </summary>
-        public RecurrenceClass Recurrence { get; set; }
+        public object Tag { get; set; }
 
-        public object Tag
+        public string Description { get; set; }
+
+        public int EventId { get; set; }
+
+        public virtual void Compute()
         {
-            // if part of recurrence get its Tag.
-            get
-            {
-                if (_Tag == null && IsRecurrence)
-                {
-                    if (Recurrence.Tag != null)
-                    {
-                        _Tag = Recurrence.Tag;
-                    }
-                }
-                return _Tag;
-            }
-            set { _Tag = value; }
+            if (_eventTime == DateTime.MinValue)
+                DateTimeEvent = _eventTime.Add(Interval);
         }
 
-        /// <summary>
-        /// Get or set the description of the event
-        /// </summary>
-        public string Description
-        {
-            // if part of recurrence get its Description.
-            get
-            {
-                if (_Description == "" && IsRecurrence)
-                {
-                    if (Recurrence.Description != "")
-                    {
-                        _Description = Recurrence.Description;
-                    }
-                }
-                return _Description;
-            }
-            set { _Description = value; }
-        }
+        public bool IsDone { get; set; }
 
 
         /// <summary>
@@ -102,9 +62,19 @@ namespace SchedulerK
         {
             get
             {
-                return EventTime.Add(Offset);
+                return _eventTime;
+            }
+            set
+            {
+                if (_eventTime != value)
+                {
+                    _eventTime = value;
+                    if (OnTimeChanged != null)
+                        OnTimeChanged(this);
+                }
             }
         }
+
 
 
         /// <summary>
@@ -115,19 +85,18 @@ namespace SchedulerK
         /// <returns></returns>
         public int CompareTo(object evt)
         {
-            EventClass otherEvt = (EventClass)evt;
+            var otherEvt = (IEventClass)evt;
             return DateTimeEvent.CompareTo(otherEvt.DateTimeEvent);
         }
         /// <summary>
         /// This method is called by Scheduler object to raise a specific event for
         /// the current event class.
         /// </summary>
-        internal bool Activate()
+        public virtual void Activate()
         {
-
+            IsDone = true;
             if (OnActivated != null)
-                return OnActivated(this);
-            return true;
+                OnActivated(this);
         }
 
         ~EventClass()
@@ -136,6 +105,10 @@ namespace SchedulerK
                 OnDeleted(this);
         }
 
+        public override string ToString()
+        {
+            return string.Format("Event at: {0}", DateTimeEvent);
+        }
     }
 
 

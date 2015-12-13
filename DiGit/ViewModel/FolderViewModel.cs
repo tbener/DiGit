@@ -76,7 +76,12 @@ namespace DiGit.ViewModel
 
         public static List<DiGitConfigFolder> FolderList
         {
-            get { return _folderList ?? (_folderList = ConfigurationHelper.Configuration.Folders.ToList()); }
+            get
+            {
+                if (ConfigurationHelper.Configuration.Folders != null)
+                    return _folderList ?? (_folderList = ConfigurationHelper.Configuration.Folders.ToList());
+                return new List<DiGitConfigFolder>();
+            }
         }
 
         private void AddConfigFolderToList()

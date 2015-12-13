@@ -1,84 +1,64 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SchedulerK
 {
-    public class RecurrenceClass
+    public sealed class RecurrenceClass : EventClass
     {
-        public Int32 RecurrenceID;
-        public eRecurrenceTypes RecurrenceType;
-        public object Tag;
-        public string Description;
+        public override event ActivatedEventHandler OnActivated;
 
-        public DateTime dateTimeValue;
-        public Int32 numberValue;
+        #region CTOR
 
-        public TimeSpan Interval;
-        public DateTime StartDate;
-        public DateTime EndDate;
-        public Int32 EndAfterCount = 0;
-        public TimeSpan Offset;
-
-        public RecurrenceClass()
+        /// <summary>
+        /// Create a Recurrence class with given interval with a given first event.
+        /// </summary>
+        /// <param name="interval">Recurrence interval</param>
+        /// <param name="firstEventTime">Indicates first event time. If it occurs in the past it will be calculated to the next future event</param>
+        public RecurrenceClass(TimeSpan interval, DateTime firstEventTime)
+            : base(interval)
         {
+            DateTimeEvent = firstEventTime;
         }
 
-        #region GetOccurrences
-
-        public DateTime GetOccurrences()
-        {
-            return GetOccurrences(DateTime.Now, DateTime.Now)[0];
-        }
-
-        public DateTime[] GetOccurrences(DateTime fromTime, DateTime toTime)
-        {
-            DateTime dtStart = fromTime;
-            if (StartDate > fromTime) dtStart = StartDate;
-
-            bool boolHasRange = (toTime > fromTime);
-            TimeSpan timeSpan;
-
-            DateTime[] dtResult = new DateTime[0];
-
-            switch (RecurrenceType)
-            {
-                case eRecurrenceTypes.eRecurrenceTypes_Hourly:
-                    dtResult[0] = dtStart.Date.AddHours(dtStart.Hour).AddMinutes(dateTimeValue.Minute);
-                    if (dtResult[0] < DateTime.Now) dtResult[0] = dtResult[0].AddHours(1);
-                    timeSpan = new TimeSpan(1, 0, 0);
-                    break;
-                case eRecurrenceTypes.eRecurrenceTypes_Daily:
-                    timeSpan = new TimeSpan(1, 0, 0, 0);
-                    break;
-                case eRecurrenceTypes.eRecurrenceTypes_Weekly:
-                    timeSpan = new TimeSpan(7, 0, 0, 0);
-                    break;
-                default:
-                    timeSpan = new TimeSpan(1, 0, 0);
-                    break;
-            }
-
-            DateTime next;
-            if (boolHasRange)
-            {
-                int i = 0;
-                do
-                {
-                    next = dtResult[i].Add(timeSpan);
-                    if (next < toTime)
-                        dtResult[++i] = next;
-                    else
-                        break;
-                } while (i < 100);
-            }
-
-            return dtResult;
-
-        }
+        /// <summary>
+        /// Create a Recurrence class with interval that will begin when the scheduler is activated
+        /// </summary>
+        /// <param name="interval">Recurrence interval</param>
+        public RecurrenceClass(TimeSpan interval)
+            : this(interval, DateTime.MinValue)
+        { }
 
 
         #endregion
+
+        public override void Activate()
+        {
+            if (OnActivated != null)
+                OnActivated(this);
+            Compute();
+        }
+
+        /// <summary>
+        /// Compute next event time
+        /// </summary>
+        /// 
+        /// 
+        public override void Compute()
+        {
+            DateTime dt = DateTimeEvent;
+
+            if (dt == DateTime.MinValue)
+                dt = DateTime.Now;
+
+            while (dt <= DateTime.Now)
+                dt = dt.Add(Interval);
+
+            DateTimeEvent = dt;
+        }
+
+
+        public override string ToString()
+        {
+            return string.Format("Recurrence, next event: {0}, every {1}", DateTimeEvent, Interval);
+        }
     }
 }

@@ -1,127 +1,132 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Timers;
-using System.Collections;
 
 namespace SchedulerK
 {
-    public delegate void TimeElapsed(object sender, EventClass evt);
+    public delegate void EventActivated(object sender, IEventClass evt);
 
-    public class SchedulerClass
+    public class Scheduler
     {
+        private const string TEMPLATE_ERR_OCCURRED = "An error occurred while trying to {0}";
+
         #region Members
 
-        private Timer _timer;
-        private bool _Enabled = false;
+        private readonly Timer _timer;
+        private bool _enabled;
 
-        private SortedDictionary<EventClass, Int32> _sortedEvents = new SortedDictionary<EventClass, Int32>();
-        private Hashtable _events = new Hashtable();
-        private Int32 _newEventId = 0;
-        private Int32 _newRecurrenceId = 0;
+        private readonly List<IEventClass> _eventList = new List<IEventClass>();
 
         #endregion
 
         #region Constructors + Destructors
 
-        public SchedulerClass()
+        public Scheduler()
         {
             _timer = new Timer();
             _timer.Enabled = false;
-            _timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
+            _timer.Elapsed += timer_Elapsed;
+            DefaultInterval = new TimeSpan(1, 0, 0);    // set default interval to 1 hour
         }
 
-        ~SchedulerClass()
+        ~Scheduler()
         {
             Stop();
         }
 
         #endregion
 
+        #region Static Handling
+
+        private static Scheduler _staticScheduler;
+
+        public static Scheduler SharedInstance
+        {
+            get { return _staticScheduler ?? (_staticScheduler = new Scheduler()); }
+        }
+
+        #endregion
+
         #region Public properties
 
-        public bool Enabled
-        {
-            get { return _Enabled; }
-            set { _Enabled = value; }
-        }
-
-        public EventClass GetEvent(int evtId)
-        {
-            if (_events.ContainsKey(evtId))
-                return _events[evtId] as EventClass;
-            return null;
-        }
+        public TimeSpan DefaultInterval { get; set; }
 
         #endregion
 
         #region Public delegates
 
-        public event TimeElapsed timerElapsedEvent;
+        public event EventActivated TimerElapsedEvent;
 
         #endregion
 
         #region Public Methods
 
-        #region AddEvent / AddEventRecurrence
-
-        public EventClass SetEvent(EventClass evt)
+        public IEventClass Add(IEventClass evt)
         {
             try
             {
-                _sortedEvents[evt] = evt.EventID;
-                _events[evt.EventID] = evt;
-
-                // todo: this should be considered to be done on a different thread
-                SetNextTimer();
+                if (!_eventList.Contains(evt))
+                {
+                    evt.OnActivated += OnEventActivated;
+                    _eventList.Add(evt);
+                    if (_enabled)
+                    {
+                        evt.Compute();
+                        SetNextTimer();
+                    }
+                }
 
                 return evt;
             }
-            catch { return null; }
+            catch (Exception ex)
+            {
+                throw new Exception(string.Format(TEMPLATE_ERR_OCCURRED, "add an event"), ex);
+            }
         }
 
-        public EventClass AddEvent(DateTime dateTime, string tag, string description)
+        public void Remove(IEventClass evt)
         {
-            EventClass evt = new EventClass(dateTime);
-            evt.EventID = _newEventId++;
-            evt.Tag = tag;
-            evt.Description = description;
-
-            return SetEvent(evt);
+            try
+            {
+                if (_eventList.Contains(evt))
+                {
+                    evt.OnActivated -= OnEventActivated;
+                    _eventList.Remove(evt);
+                    if (_enabled) SetNextTimer();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(string.Format(TEMPLATE_ERR_OCCURRED, "remove an event"), ex);
+            }
         }
+
+        //public EventClass AddEvent(DateTime dateTime, string tag, string description)
+        //{
+        //    EventClass evt = new EventClass(dateTime);
+        //    evt.EventID = _newEventId++;
+        //    evt.Tag = tag;
+        //    evt.Description = description;
+
+        //    return SetEvent(evt);
+        //}
 
         //public RecurrenceClass AddEventRecurrence(RecurrenceClass rec)
         //{
         //    //AddEvent(rec.NextEvent);
         //}
 
-        //RecurrenceType As EvtTimer_RecurrenceTypeConst, DateValue As Date, Optional NumberValue As Long = -1, Optional Tag As String, Optional ID As String, Optional Description As String, Optional EndBy As Date = 0, Optional Count As Long = 0, Optional SecondsOffset As Long = 0) 
-        public RecurrenceClass AddEventRecurrence(eRecurrenceTypes recurType, DateTime dt, Int32 num, string tag, string description, DateTime startDate, DateTime endDate, Int32 endAfterCount, TimeSpan offset)
+
+        public IEventClass GetNextEvent()
         {
-            RecurrenceClass rec = new RecurrenceClass();
-            rec.RecurrenceType = recurType;
-            rec.RecurrenceID = _newRecurrenceId++;
-            rec.dateTimeValue = dt;
-            rec.numberValue = num;
-            rec.Tag = tag;
-            rec.Description = description;
-            rec.StartDate = startDate;
-            rec.EndDate = endDate;
-            rec.EndAfterCount = endAfterCount;
-            rec.Offset = offset;
-
-            // todo:
-
-            // Compute next event
-
-            // add to event list
-            //rec.NextEvent =  AddEvent(...);
-
-            // trigger ?
-
-
-            return rec;
+            if (_eventList.Count > 0)
+            {
+                _eventList.Sort();
+                return _eventList.First();
+            }
+            return null;
         }
 
         #endregion
@@ -129,21 +134,26 @@ namespace SchedulerK
 
         #region Control Methods
 
-        public void Start()
+        public Scheduler Start()
         {
-            _Enabled = true;
+            _eventList.ForEach(e => e.Compute());
+            _enabled = true;
             SetNextTimer();
+            return this;
         }
 
 
         public void Stop()
         {
-            _Enabled = false;
+            _enabled = false;
             _timer.Stop();
         }
 
-
-        #endregion
+        public void Clear()
+        {
+            Stop();
+            _eventList.Clear();
+        }
 
         #endregion
 
@@ -152,30 +162,27 @@ namespace SchedulerK
 
         private void SetNextTimer()
         {
-            TimeSpan timeSpan;
-            EventClass evt = null;
+            IEventClass evt;
 
             _timer.Stop();
-            if (!this._Enabled) return;
+            if (!_enabled) return;
 
-            // we will raise event for every scheduled event
-            // that is in range - 
-            // the range means in the past or in the next 0.5 second.
-            while (_sortedEvents.Count > 0)
+            // we will raise event for every scheduled event that its time has passed
+            while (_eventList.Count > 0)
             {
-                evt = _sortedEvents.Keys.First();
+                _eventList.Sort();
+                evt = _eventList.First();
+
                 if (evt.DateTimeEvent <= DateTime.Now)
                 {
-                    // RAISE THE SCHEDULER EVENTS!!!
-                    if (timerElapsedEvent != null && evt.IsActive)
+                    evt.Activate();
+
+                    if (evt.IsDone)
                     {
-                        if (evt.Activate())     // event specific
-                            timerElapsedEvent(this, evt);   // scheduler event
+                        // reccurence - add back to re-sort
+                        _eventList.Remove(evt);
                     }
 
-                    // remove from list
-                    RemoveEvent(evt);
-                    evt = null;
                 }
                 else
                 {
@@ -184,13 +191,19 @@ namespace SchedulerK
             }
 
             // set the next timer
-            if (evt != null)
+            if (_eventList.Count > 0)
             {
+                _eventList.Sort();
+                evt = _eventList.First();
                 try
                 {
-                    timeSpan = evt.DateTimeEvent - DateTime.Now;
+                    TimeSpan timeSpan = evt.DateTimeEvent - DateTime.Now;
                     if (timeSpan.TotalMilliseconds > 0)
+                    {
+                        if (timeSpan > DefaultInterval) timeSpan = DefaultInterval;
                         _timer.Interval = timeSpan.TotalMilliseconds;
+                        Debug.Print("Set timer to {0}", DateTime.Now.Add(timeSpan).ToShortTimeString());
+                    }
                     else
                     {
                         SetNextTimer();
@@ -199,7 +212,8 @@ namespace SchedulerK
                 }
                 catch
                 {
-                    _timer.Interval = 60000;
+                    _timer.Interval = DefaultInterval.Milliseconds;
+                    Debug.Print("Set timer to {0}", DateTime.Now.Add(DefaultInterval).ToShortTimeString());
                 }
 
                 _timer.Start();
@@ -207,39 +221,19 @@ namespace SchedulerK
 
         }
 
-        #endregion
+        private void OnEventActivated(IEventClass evt)
+        {
+            if (TimerElapsedEvent != null)
+                TimerElapsedEvent(this, evt);
+        }
 
         void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             SetNextTimer();
         }
 
-        public void RemoveEvent(EventClass evt)
-        {
-            try
-            {
-                if (_sortedEvents.ContainsKey(evt))
-                {
-                    _sortedEvents.Remove(evt);
-                    _events.Remove(evt.EventID);
-                    SetNextTimer();
-                }
-            }
-            catch
-            { }
-        }
+        #endregion
 
-        public void RemoveEvent(int evtId)
-        {
-            var evt = _events[evtId];
-            if (evt != null)
-                RemoveEvent((EventClass)evt);
-        }
-
-        private class Utils
-        {
-
-        }
     }
 
 }

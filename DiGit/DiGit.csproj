@@ -156,9 +156,6 @@
     <Compile Include="View\AddRepositoryView.xaml.cs">
       <DependentUpon>AddRepositoryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\BasicPage1.xaml.cs">
-      <DependentUpon>BasicPage1.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\BubbleView.xaml.cs">
       <DependentUpon>BubbleView.xaml</DependentUpon>
     </Compile>
@@ -199,10 +196,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ResourceDictionary\--CommandsListResourceDictionary.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ResourceDictionary\CommandsListMenuResourceDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -215,11 +208,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ResourceDictionary\--CommandsListMenu.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ResourceDictionary\Controls\MenuItem_Test.xaml">
+    <Page Include="ResourceDictionary\Controls\MenuItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -256,10 +245,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AddRepositoryView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\BasicPage1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -351,6 +336,10 @@
     <ProjectReference Include="..\NotifyIconWpf\NotifyIconWpf.csproj">
       <Project>{7ac63864-7638-41c4-969c-d3197ef2bed9}</Project>
       <Name>NotifyIconWpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SchedulerK\SchedulerK.csproj">
+      <Project>{6144c0f3-3c00-4ad0-9cf2-c355e56d30a8}</Project>
+      <Name>SchedulerK</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

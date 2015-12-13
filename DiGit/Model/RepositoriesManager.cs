@@ -53,6 +53,8 @@ namespace DiGit.Model
                     configRepository = new DiGitConfigRepository();
                 configRepository.Repository = repo;
                 _repos.Add(configRepository.path, configRepository);
+                // don't remove the config saving from here. it's required for first init
+                ConfigurationHelper.Save();
                 return true;
             }
             catch (Exception ex)

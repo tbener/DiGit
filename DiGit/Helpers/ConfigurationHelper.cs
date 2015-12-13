@@ -114,7 +114,11 @@ namespace DiGit.Helpers
         public static bool Save(string file = "")
         {
             if (file == "") file = ConfigFile;
-            if (_configRoot == null) _configRoot = new DiGitConfig();
+            if (_configRoot == null)
+            {
+                _configRoot = new DiGitConfig();
+                Upgrade();
+            }
             try
             {
                 _configRoot.Repositories = RepositoriesManager.Repos.ToArray();

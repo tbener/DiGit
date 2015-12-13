@@ -32,6 +32,7 @@ namespace DiGit.Versioning
         {
             if (Working) return;
             Working = true;
+            UserManager.AddLog("Check Update", "Start");
             try
             {
                 LastReadError = null;
@@ -40,6 +41,7 @@ namespace DiGit.Versioning
                 string file = GetFileName();
                 VersionInfo = SerializeHelper.Load(typeof(DiGitVersionInfo), file) as DiGitVersionInfo;
                 SetData();
+                UserManager.AddLog("Check Update", "Success");
             }
             catch (FileNotFoundException ex1)
             {
@@ -51,7 +53,11 @@ namespace DiGit.Versioning
             }
             finally
             {
-                if (LastReadError != null) ResetVars();
+                if (LastReadError != null)
+                {
+                    ResetVars();
+                    UserManager.AddLog("Check Update", "Error", LastReadError.Message);
+                }
                 LastReadDateTime = DateTime.Now;
                 Working = false;
             }

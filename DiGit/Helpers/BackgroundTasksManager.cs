@@ -7,6 +7,7 @@ using DiGit.Model;
 using DiGit.Properties;
 using DiGit.Versioning;
 using DiGit.Versioning;
+using SchedulerK;
 
 namespace DiGit.Helpers
 {
@@ -14,6 +15,29 @@ namespace DiGit.Helpers
     {
         public static void Start()
         {
+            Scheduler sch = Scheduler.SharedInstance;
+            sch.TimerElapsedEvent += SchedulerOnTimerElapsedEvent;
+
+            // Daily update check
+            // Check for updates a few seconds after startup and then every day on the same time
+            RecurrenceClass rec = new RecurrenceClass(new TimeSpan(1, 0, 0, 0), DateTime.Now.AddSeconds(Settings.Default.ReadInfoDelaySec))
+            {
+                Description = "Check update"
+            };
+            rec.OnActivated += @class => UpdateManager.CheckRemoteAsync();
+            sch.Add(rec);
+
+            // Update user info on server a few seconds after startup
+            EventClass evt = new EventClass(DateTime.Now.AddSeconds(Settings.Default.WriteInfoDelaySec))
+            {
+                Description = "Update user info"
+            };
+            evt.OnActivated += @class => Task.Factory.StartNew(UserManager.UpdateInfo).ContinueWith(task => ConfigurationHelper.Configuration.ver = AppInfo.AppVersion.ToString());
+            sch.Add(evt);
+
+            sch.Start();
+
+            /*
             var t = new System.Timers.Timer();
             t.Interval = Settings.Default.ReadInfoDelaySec * 1000;
             t.AutoReset = false;
@@ -31,6 +55,16 @@ namespace DiGit.Helpers
             t.AutoReset = true;
             t.Elapsed += (sender, args) => UpdateManager.CheckRemoteAsync();
             t.Start();
+             */
+        }
+
+        private static void SchedulerOnTimerElapsedEvent(object sender, IEventClass evt)
+        {
+            Scheduler s = Scheduler.SharedInstance;
+            IEventClass nextEvent = s.GetNextEvent();
+            string message = string.Format("Next event: '{0}' on {1}", nextEvent.Description,
+                evt.DateTimeEvent.ToString("g"));
+            UserManager.AddLog("Scheduler event", evt.Description, message);
         }
     }
 }

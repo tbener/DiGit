@@ -106,7 +106,6 @@ namespace DiGit.ViewModel
                 {
                     RepositoriesManager.Add(Repo, null);
                     BubblesManager.Refresh();
-                    ConfigurationHelper.Save();
                 }
                 else
                 {

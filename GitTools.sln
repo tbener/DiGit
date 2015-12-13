@@ -9,6 +9,8 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "DiGitSetup", "DiGitSetup\Di
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BondTech.HotKeyManagement.WPF.4", "BondTech.HotKeyManagement.WPF.4\BondTech.HotKeyManagement.WPF.4.csproj", "{C78F31C0-EC07-4194-90D4-9CB771AD41A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulerK", "SchedulerK\SchedulerK.csproj", "{6144C0F3-3C00-4AD0-9CF2-C355E56D30A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,16 @@ Global
 		{C78F31C0-EC07-4194-90D4-9CB771AD41A1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C78F31C0-EC07-4194-90D4-9CB771AD41A1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C78F31C0-EC07-4194-90D4-9CB771AD41A1}.Release|x86.ActiveCfg = Release|Any CPU
+		{6144C0F3-3C00-4AD0-9CF2-C355E56D30A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6144C0F3-3C00-4AD0-9CF2-C355E56D30A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6144C0F3-3C00-4AD0-9CF2-C355E56D30A8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6144C0F3-3C00-4AD0-9CF2-C355E56D30A8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6144C0F3-3C00-4AD0-9CF2-C355E56D30A8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6144C0F3-3C00-4AD0-9CF2-C355E56D30A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6144C0F3-3C00-4AD0-9CF2-C355E56D30A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6144C0F3-3C00-4AD0-9CF2-C355E56D30A8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6144C0F3-3C00-4AD0-9CF2-C355E56D30A8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6144C0F3-3C00-4AD0-9CF2-C355E56D30A8}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

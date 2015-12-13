@@ -14,8 +14,7 @@
                 <ResourceDictionary Source="ResourceDictionary/CommandsListMenuResourceDictionary.xaml"/>
                 <!--<ResourceDictionary Source="ResourceDictionary/DefaultControlsResourceDictionary.xaml"/>-->
                 <ResourceDictionary Source="ResourceDictionary/ThemesResourceDictionary.xaml" />
-
-                <ResourceDictionary Source="ResourceDictionary/Controls/MenuItem_Test.xaml"/>
+                <ResourceDictionary Source="ResourceDictionary/Controls/MenuItem.xaml"/>
             </ResourceDictionary.MergedDictionaries>
     	</ResourceDictionary>
          

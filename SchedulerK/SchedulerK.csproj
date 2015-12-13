@@ -41,8 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventClass.cs" />
+    <Compile Include="IEventClass.cs" />
     <Compile Include="RecurrenceClass.cs" />
-    <Compile Include="General.cs" />
     <Compile Include="SchedulerK.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
