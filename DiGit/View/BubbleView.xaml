@@ -16,8 +16,13 @@
         >
     <Window.Resources>
 
-        <ContextMenu Style="{StaticResource ContextMenuCommandsStyleTest}" x:Key="CommandsContextMenu" Opened="CommandsContextMenu_Opened" Closed="CommandsContextMenu_Closed" ItemsSource="{Binding UserCommandList}"/>
+        <ContextMenu Style="{StaticResource ContextMenuCommandsStyleTest}" x:Key="CommandsContextMenu1" Opened="CommandsContextMenu_Opened" Closed="CommandsContextMenu_Closed" ItemsSource="{Binding UserCommandList}"/>
 
+        <ContextMenu x:Key="CommandsContextMenu">
+            <MenuItem Header="test">
+                <MenuItem Header="sub 1"></MenuItem>
+            </MenuItem>
+        </ContextMenu>
 
     </Window.Resources>
 

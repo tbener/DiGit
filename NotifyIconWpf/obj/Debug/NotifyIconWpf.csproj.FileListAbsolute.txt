@@ -14,3 +14,4 @@ C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\obj
 C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\obj\Debug\NotifyIconWpf.csproj.GenerateResource.Cache
 C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.dll
 C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\NotifyIconWpf\obj\Debug\NotifyIconWpf.csprojResolveAssemblyReference.cache

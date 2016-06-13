@@ -3,3 +3,8 @@ C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\SchedulerK\bin\De
 C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\SchedulerK\obj\Debug\SchedulerK.csprojResolveAssemblyReference.cache
 C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\SchedulerK\obj\Debug\SchedulerK.dll
 C:\Users\TBener\Documents\Visual Studio 2012\Projects\GitTools\SchedulerK\obj\Debug\SchedulerK.pdb
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\SchedulerTestApp\SchedulerK\bin\Debug\SchedulerK.dll
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\SchedulerTestApp\SchedulerK\bin\Debug\SchedulerK.pdb
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\SchedulerTestApp\SchedulerK\obj\Debug\SchedulerK.csprojResolveAssemblyReference.cache
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\SchedulerTestApp\SchedulerK\obj\Debug\SchedulerK.dll
+C:\Users\TBener\Documents\Visual Studio 2012\Projects\SchedulerTestApp\SchedulerK\obj\Debug\SchedulerK.pdb

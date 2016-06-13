@@ -82,6 +82,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
@@ -110,6 +111,7 @@
     <Compile Include="Converters\VersionToBooleanConverter.cs" />
     <Compile Include="Helpers\ClipboardNotification.cs" />
     <Compile Include="Helpers\DialogHelper.cs" />
+    <Compile Include="Helpers\ServerCommunicationHelper.cs" />
     <Compile Include="Model\AppInfo.cs" />
     <Compile Include="Helpers\BackgroundTasksManager.cs" />
     <Compile Include="Helpers\ConfigurationHelper.cs" />
@@ -129,6 +131,7 @@
     <Compile Include="Configuration\ConfigurationEx.cs" />
     <Compile Include="Model\RepoTracker.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Model\UserStat.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Resource.Designer.cs">
       <AutoGen>True</AutoGen>
