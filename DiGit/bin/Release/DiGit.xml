@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<DiGitConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ver="1.0.208.21227" isBetaUser="false">
+  <Repositories>
+    <Repository path="C:\CM\DBMOTION\" />
+    <Repository path="C:\CM\DBMOTION_LEGACY\" />
+    <Repository path="C:\CM\DBMOTION_REF\" />
+  </Repositories>
+  <Settings>
+    <ShowHideHotkey modifiers="Ctrl+Shift" key="G" />
+    <VisualSettings _bubblesOpacity="0.84" />
+  </Settings>
+  <Commands>
+    <Command header="Switch" fileName="C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" arguments="/command:switch /path:{rep_path}" />
+    <Command header="Push" fileName="C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" arguments="/command:push /path:{rep_path}" />
+    <Command header="Pull" fileName="C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" arguments="/command:pull /path:{rep_path}" />
+    <Command header="Commit" fileName="C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" arguments="/command:commit /path:{rep_path}" />
+    <Command header="Merge" fileName="C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" arguments="/command:merge /path:{rep_path}" />
+    <Command header="Show log" fileName="C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" arguments="/command:log /path:{rep_path}" />
+    <Command header="Sync" fileName="C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" arguments="/command:sync /path:{rep_path}" />
+  </Commands>
+  <Folders>
+    <Folder path="dbm_Configuration\ConfigurationCenter\src\ConfigCenter" isFavorite="true" />
+    <Folder path="dbm_Configuration\ConfigurationCenter\src" lastUsage="2015-11-09T23:35:57.215509+02:00" />
+    <Folder path="dbm_System\ImplementationKits\Northwind" isFavorite="true" lastUsage="2015-11-10T14:39:54.129806+02:00" />
+    <Folder path="dbm_System\ImplementationKits" isFavorite="true" lastUsage="2015-11-10T10:53:26.1691077+02:00" />
+    <Folder path="dbm_System\Updates\Resources" lastUsage="2015-11-15T11:49:49.0827826+02:00" />
+  </Folders>
+</DiGitConfig>
