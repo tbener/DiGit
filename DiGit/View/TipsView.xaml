@@ -33,6 +33,25 @@
 
         <ScrollViewer>
             <StackPanel DockPanel.Dock="Top">
+                <Expander Tag="1.0.207" IsExpanded="True" Header="New in 1.0.209">
+                    <StackPanel Margin="30, 6">
+                        <BulletDecorator>
+                            <BulletDecorator.Bullet>
+                                <Ellipse Height="5" Width="5" Fill="Black" />
+                            </BulletDecorator.Bullet>
+                            <TextBlock Text="  Adjustments to Windows 10." />
+                        </BulletDecorator>
+                        <BulletDecorator>
+                            <BulletDecorator.Bullet>
+                                <Ellipse Height="5" Width="5" Fill="Black" />
+                            </BulletDecorator.Bullet>
+                            <TextBlock Text="  Added: Hide all but this." />
+                        </BulletDecorator>
+
+
+                    </StackPanel>
+                </Expander>
+
                 <Expander Tag="1.0.208" IsExpanded="True" Header="New in 1.0.208">
                     <StackPanel>
                         <TextBlock Text="Favorite dynamic folders" Style="{StaticResource Heading2}" Margin="0 6"/>
@@ -59,7 +78,7 @@
                     </StackPanel>
                 </Expander>
 
-                <Expander Tag="1.0.207" IsExpanded="True" Header="New in 1.0.207">
+                <Expander Tag="1.0.207" IsExpanded="False" Header="New in 1.0.207">
                     <StackPanel>
                         <TextBlock Text="Commands can be customized" Style="{StaticResource Heading2}" Margin="0 6"/>
                         <TextBlock Text="Customize your commands through XML file (no UI)." />

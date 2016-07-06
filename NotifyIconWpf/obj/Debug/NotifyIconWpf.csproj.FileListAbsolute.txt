@@ -1,4 +1,5 @@
 C:\Users\TBENER\Documents\Visual Studio 2015\Projects\GitTools\NotifyIconWpf\bin\Debug\Hardcodet.Wpf.TaskbarNotification.dll
 C:\Users\TBENER\Documents\Visual Studio 2015\Projects\GitTools\NotifyIconWpf\bin\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
+C:\Users\TBENER\Documents\Visual Studio 2015\Projects\GitTools\NotifyIconWpf\obj\Debug\NotifyIconWpf.csprojResolveAssemblyReference.cache
 C:\Users\TBENER\Documents\Visual Studio 2015\Projects\GitTools\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.dll
 C:\Users\TBENER\Documents\Visual Studio 2015\Projects\GitTools\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.pdb

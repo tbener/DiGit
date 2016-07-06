@@ -4,18 +4,40 @@
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                   xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+                  xmlns:settings="clr-namespace:DiGit.View.Settings"
                   xmlns:hk="clr-namespace:BondTech.HotKeyManagement.WPF._4;assembly=HotKeyManagement.WPF.4" x:Class="DiGit.View.SettingsView"
                   mc:Ignorable="d" 
                   d:DesignHeight="300" d:DesignWidth="300"
-                  Title="DiGit Settings"
-                  Style="{StaticResource BlankWindow}">
-    <StackPanel Orientation="Vertical">
+                  Title="DiGit Settings" IsTitleVisible="True"
+                  Style="{StaticResource BlankWindow}"
+                  WindowStartupLocation="CenterScreen" Icon="/DiGit;component/Resources/Images/App.ico">
+
+       
+    <Grid Style="{StaticResource ContentRoot}">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <mui:ModernTab SelectedSource="/View/Settings/BubblesView.xaml" Layout="List">
+            <mui:ModernTab.Links>
+                <mui:Link DisplayName="Repositories" Source="/View/Settings/BubblesView.xaml"/>
+                <mui:Link DisplayName="Commands" Source="/View/Settings/UserCommandsView.xaml"/>
+            </mui:ModernTab.Links>
+        </mui:ModernTab>
+
+        <Grid Grid.Row="1" Margin="{StaticResource StatusMargin}" >
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Cancel" IsDefault="True" Margin="8"/>
+                <Button Content="OK" IsCancel="True" Margin="8"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+    <!--<mui:ModernWindow.MenuLinkGroups>
+        <mui:LinkGroup DisplayName="Settings">
+            <mui:LinkGroup.Links>
+                <mui:Link DisplayName="Repositories" Source="/View/Settings/BubblesView.xaml" />
+            </mui:LinkGroup.Links>
+        </mui:LinkGroup>
         
-        <TextBox Text="{Binding P}" />
-        <TextBox  Text="{Binding L}" Width="70"/>
-
-        <Button Command="{Binding GoCommand}" Width="70">GO</Button>
-        <TextBlock Text="{Binding results}" Height="36" Margin="30" />
-
-    </StackPanel>
+    </mui:ModernWindow.MenuLinkGroups>-->
 </mui:ModernWindow>

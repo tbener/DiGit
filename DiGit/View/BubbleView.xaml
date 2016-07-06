@@ -221,7 +221,9 @@
                     <Separator/>
                     <MenuItem Header="Hide" Command="{Binding HideCommand}"/>
                     <MenuItem Header="Hide All" Command="{Binding HideAllCommand}"/>
+                    <MenuItem Header="Hide All But This" Command="{Binding HideAllButThisCommand}"/>
                     <MenuItem Header="Show All" Command="{Binding ShowAllCommand}" />
+                    <MenuItem Header="Rearrange" Command="{Binding RearrangeCommand}" />
                     <Separator/>
                     <MenuItem Template="{DynamicResource MenuItemBubbleVisualSettingsControlTemplate}"/>
                     <Separator/>

@@ -25,11 +25,11 @@ namespace DiGit.Helpers
                     Msg.ShowE(error.Message);
                 else
                     Msg.ShowE(error);
-#if DEBUG
-            else
-                if (error.GetType() != typeof(System.IO.IOException))
-                    Msg.ShowE(error, "THIS MESSAGE IS DISPLAYED ONLY IN DEBUG MODE");
-#endif
+//#if DEBUG
+//            else
+//                if (error.GetType() != typeof(System.IO.IOException))
+//                    Msg.ShowE(error, "THIS MESSAGE IS DISPLAYED ONLY IN DEBUG MODE\n");
+//#endif
 
             if (evtLogException != null)
                 Msg.ShowE(evtLogException, "An error occured while trying to write to Event Log.");

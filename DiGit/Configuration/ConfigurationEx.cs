@@ -78,6 +78,7 @@ namespace DiGit.Configuration
 
     public partial class DiGitConfigSettingsVisualSettings : INotifyPropertyChanged
     {
+        private HorizontalAlignment anchor = HorizontalAlignment.Right;
 
         [XmlIgnore]
         public double BubblesOpacity
@@ -87,6 +88,21 @@ namespace DiGit.Configuration
             {
                 this._bubblesOpacity = Math.Round(value, 2, MidpointRounding.AwayFromZero);
                 OnPropertyChanged("BubbleOpacity");
+            }
+        }
+
+        [XmlIgnore]
+        public HorizontalAlignment PositionAnchor
+        {
+            get
+            {
+                Enum.TryParse(this._positionAnchor, out anchor);
+                return anchor;
+            }
+            set
+            {
+                anchor = value;
+                _positionAnchor = anchor.ToString();
             }
         }
 

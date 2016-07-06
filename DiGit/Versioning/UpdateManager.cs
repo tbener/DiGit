@@ -36,8 +36,7 @@ namespace DiGit.Versioning
             try
             {
                 LastReadError = null;
-                if (OnUpdateInfoChanged != null)
-                    OnUpdateInfoChanged(null, new EventArgs());
+                OnUpdateInfoChanged?.Invoke(null, new EventArgs());
                 string file = GetFileName();
                 VersionInfo = SerializeHelper.Load(typeof(DiGitVersionInfo), file) as DiGitVersionInfo;
                 SetData();
@@ -61,8 +60,7 @@ namespace DiGit.Versioning
                 LastReadDateTime = DateTime.Now;
                 Working = false;
             }
-            if (OnUpdateInfoChanged != null)
-                OnUpdateInfoChanged(null, new EventArgs());
+            OnUpdateInfoChanged?.Invoke(null, new EventArgs());
         }
 
         /// <summary>
@@ -74,10 +72,10 @@ namespace DiGit.Versioning
         /// <returns></returns>
         private static string GetFileName()
         {
-            string file = GetFileName(Environment.MachineName);
+            string file = GetFileName(Environment.UserName);
             if (File.Exists(file))
             {
-                string fileDone = GetFileName(Environment.MachineName + "_Done");
+                string fileDone = GetFileName(Environment.UserName + "_Done");
                 File.Move(file, fileDone);
                 return fileDone;
             }
@@ -117,8 +115,7 @@ namespace DiGit.Versioning
             else
                 UpdateRequired = false;
             if (UpdateAvailable)
-                if (OnUpdateRequired != null)
-                    OnUpdateRequired(null, new EventArgs());
+                OnUpdateRequired?.Invoke(null, new EventArgs());
 
         }
 

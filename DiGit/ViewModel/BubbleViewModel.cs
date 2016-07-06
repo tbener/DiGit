@@ -24,6 +24,7 @@ namespace DiGit.ViewModel
 
         public ICommand HideCommand { get; set; }
         public ICommand HideAllCommand { get; set; }
+        public ICommand HideAllButThisCommand { get; set; }
         public ICommand ShowAllCommand { get; set; }
         public ICommand ClickCommand { get; set; }
         public ICommand DblClkCommand { get; set; }
@@ -36,6 +37,7 @@ namespace DiGit.ViewModel
         public ICommand ClipboardPathCommand { get; set; }
         public ICommand OpenFavFolderCommand { get; set; }
         public ICommand SetFavorite { get; set; }
+        public ICommand RearrangeCommand { get; set;}
 
         public ObservableCollection<ICommand> CommandsList { get; set; }
 
@@ -47,9 +49,7 @@ namespace DiGit.ViewModel
             ClickCommand = new RelayCommand(ShowHideMenu);
             DblClkCommand = new OpenFolderCommand(new PathClass(repo));
             RefreshCommand = new RelayCommand(Refresh);
-
-
-
+            RearrangeCommand = new RelayCommand(BubblesManager.RepositionAll);
 
             HideAllCommand = new RelayCommand(() => BubblesManager.ShowAll(false), () => RepositoriesManager.Repos.Any());
             ShowAllCommand = new RelayCommand(() => BubblesManager.ShowAll(true), () => RepositoriesManager.Repos.Any());
@@ -160,6 +160,7 @@ namespace DiGit.ViewModel
         {
             //BubblesManager.ShowView(view, true);
             HideCommand = new RelayCommand(() => BubblesManager.ShowView(view, false));
+            HideAllButThisCommand = new RelayCommand(() => BubblesManager.HideAllButThis(view));
             view.LocationChanged += (s, e) =>
             {
                 if (((BubbleView)s).IsLoaded)
@@ -183,7 +184,6 @@ namespace DiGit.ViewModel
             IsShowMenu = !IsShowMenu;
 
         }
-
 
         public string CurrentBranch
         {

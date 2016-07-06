@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DiGitVersionInfo>
   <Setup URI="O:\IT-Department\Software\Tools\DiGit\DiGitSetup.msi"/>
+  <Version version="1.0.209" notifyVersion="All">
+    <Change type="Feature">Adjustments to Windows 10</Change>
+    <Change type="Feature">Add Hide all but this</Change>
+  </Version>
   <Version version="1.0.208" notifyVersion="All">
     <Change type="Feature">Favorite folders + Clipboard support</Change>
     <Change type="Feature">Recent folders</Change>

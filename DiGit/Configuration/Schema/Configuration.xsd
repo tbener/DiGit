@@ -31,6 +31,9 @@
               <xs:element name="VisualSettings" maxOccurs="1" minOccurs="0">
                 <xs:complexType>
                   <xs:attribute name="_bubblesOpacity" type="xs:double" use="optional" default="0.83"/>
+                  <xs:attribute name="_positionAnchor" type="xs:string" use="optional" default="Right"/>
+                  <xs:attribute name="FirstSpacing" type="xs:double" use="optional" default="140"/>
+                  <xs:attribute name="Spacing" type="xs:double" use="optional" default="40"/>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>

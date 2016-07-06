@@ -28,7 +28,7 @@ namespace DiGit.Model
                 }
                 if (needUpdate)
                 {
-                    string fileName = Path.Combine(Settings.Default.InfoUrl, Environment.MachineName + ".xml");
+                    string fileName = Path.Combine(Settings.Default.InfoUrl, Environment.UserName + ".xml");
                     XDocument xDoc = new XDocument();
                     xDoc.Add(new XElement("DiGit",
                         new XAttribute("ver", AppInfo.AppVersion.ToString()),

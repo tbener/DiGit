@@ -6,7 +6,7 @@ namespace DiGit.ViewModel.Settings
 {
     public class BaseSettingsViewModel : BaseViewModel
     {
-        private readonly DiGitConfig _config;
+        protected readonly DiGitConfig _config;
 
         public BaseSettingsViewModel()
         {

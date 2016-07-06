@@ -13,9 +13,6 @@ namespace DiGit.Model
     {
         private static readonly List<Window> Views;
 
-        private const double RIGHT_MARGIN = 140;
-        private const double HORISONTAL_MARGIN = 40;
-
         private static bool _showBubbles = true;
 
         static BubblesManager()
@@ -33,7 +30,7 @@ namespace DiGit.Model
 
         public static Window OwnerWindow { get; private set; }
 
-        public static void Refresh(bool hard=false)
+        public static void Refresh(bool hard = false)
         {
             if (hard) Views.Clear();
             RepositoriesManager.Repos.ForEach(Add);
@@ -90,19 +87,89 @@ namespace DiGit.Model
 
         private static void Position(Window view)
         {
-            double x = SystemParameters.PrimaryScreenWidth - RIGHT_MARGIN;
+            double x = SystemParameters.PrimaryScreenWidth - FirstSpacing;
             Rect rect = new Rect(new Point(x - view.Width, 0), new Point(x, view.Height));
             Window otherView;
 
             while (IsRectInWindow(rect, view, out otherView))
             {
-                rect.Offset(otherView.Left - rect.Left - HORISONTAL_MARGIN - view.Width, 0);
+                rect.Offset(otherView.Left - rect.Left - Spacing - view.Width, 0);
                 if (rect.X < 0) return; // position failed
             }
 
             view.Left = rect.Left;
             view.Top = rect.Top;
 
+        }
+
+        private static HorizontalAlignment _anchor = HorizontalAlignment.Right;
+
+        public static double FirstSpacing
+        {
+            get
+            {
+                return ConfigurationHelper.Configuration.Settings.VisualSettings.FirstSpacing;
+            }
+            set
+            {
+                ConfigurationHelper.Configuration.Settings.VisualSettings.FirstSpacing = value;
+                RepositionAll();
+            }
+        }
+        public static double BubbleWidth
+        {
+            get
+            {
+                return 160;
+            }
+        }
+        public static double Spacing
+        {
+            get
+            {
+                return ConfigurationHelper.Configuration.Settings.VisualSettings.Spacing;
+            }
+            set
+            {
+                ConfigurationHelper.Configuration.Settings.VisualSettings.Spacing = value;
+                RepositionAll();
+            }
+        }
+
+        public static HorizontalAlignment Anchor
+        {
+            get
+            {
+                return ConfigurationHelper.Configuration.Settings.VisualSettings.PositionAnchor;
+            }
+            set
+            {
+                ConfigurationHelper.Configuration.Settings.VisualSettings.PositionAnchor = value;
+                RepositionAll();
+            }
+        }
+
+        internal static void RepositionAll()
+        {
+            double x = Anchor == HorizontalAlignment.Left ? FirstSpacing : SystemParameters.PrimaryScreenWidth - FirstSpacing - BubbleWidth;
+            double spacing = (Spacing + BubbleWidth) * (Anchor == HorizontalAlignment.Left ? 1 : -1);
+
+            Sort();
+            foreach (var view in VisibleViews)
+            {
+                view.Left = x;
+                view.Top = 0;
+
+                x += spacing;
+            }
+        }
+
+        private static void Sort()
+        {
+            if (Anchor == HorizontalAlignment.Right)
+                Views.Sort((v2, v1) => v1.Left.CompareTo(v2.Left));
+            else
+                Views.Sort((v1, v2) => v1.Left.CompareTo(v2.Left));
         }
 
         /// <summary>
@@ -130,12 +197,20 @@ namespace DiGit.Model
         {
             return new Rect(new Point(view.Left, view.Top), new Point(view.Left + view.Width, view.Top + view.Height));
         }
-        
+
         #endregion
 
+        public static List<Window> VisibleViews
+        {
+            get
+            {
+                return RepositoriesManager.Repos.Where(r => r.isActive).Select(r => r.View).ToList();
+            }
+        }
+
         #region Show / Hide
-        
-        internal static void ShowView(Window view, bool show, bool updateActive=true)
+
+        internal static void ShowView(Window view, bool show, bool updateActive = true)
         {
             if (!view.CheckAccess())
             {
@@ -152,7 +227,7 @@ namespace DiGit.Model
                 if (view.Visibility == Visibility.Hidden) Position(view);
                 view.Show();
             }
-            else 
+            else
                 view.Hide();
         }
 
@@ -170,6 +245,20 @@ namespace DiGit.Model
             ConfigurationHelper.Configuration.Repositories.Where(r => r.isActive).ToList().ForEach(r => ShowView(r.View, _showBubbles, false));
         }
 
+        internal static void HideAllButThis(Window view)
+        {
+            Views.Where(v => v != view).ToList().ForEach(v => ShowView(v, false, true));
+        }
+
+        /// <summary>
+        /// Position all visible bubbles
+        /// </summary>
+        internal static void Rearrange()
+        {
+            Views.Sort((v1, v2) => v1.Left.CompareTo(v2.Left));
+            Views.ForEach(v => Position(v));
+        }
+
         #endregion
 
         internal static void CloseAll()
@@ -178,6 +267,6 @@ namespace DiGit.Model
             Views.Clear();
         }
 
-       
+
     }
 }
