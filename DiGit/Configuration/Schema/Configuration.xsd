@@ -8,12 +8,10 @@
             <xs:sequence>
               <xs:element name="Repository" maxOccurs="unbounded">
                 <xs:complexType>
-                  <xs:simpleContent>
-                    <xs:extension base="xs:string">
-                      <xs:attribute name="path" type="xs:string" use="required" />
-                      <xs:attribute name="isActive" type="xs:boolean" use="optional" default="true" />
-                    </xs:extension>
-                  </xs:simpleContent>
+                  <xs:attribute name="path" type="xs:string" use="required" />
+                  <xs:attribute name="isActive" type="xs:boolean" use="optional" default="true" />
+                  <xs:attribute name="left" type="xs:double" use="optional" default="-1000" />
+                  <xs:attribute name="top" type="xs:double" use="optional" default="-1000"/>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
@@ -28,12 +26,18 @@
                   <xs:attribute name="key" type="xs:string" use="required" />
                 </xs:complexType>
               </xs:element>
-              <xs:element name="VisualSettings" maxOccurs="1" minOccurs="0">
+              <xs:element name="VisualSettings" maxOccurs="0" minOccurs="0">
                 <xs:complexType>
                   <xs:attribute name="_bubblesOpacity" type="xs:double" use="optional" default="0.83"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Bubbles" maxOccurs="1" minOccurs="0">
+                <xs:complexType>
+                  <xs:attribute name="_opacity" type="xs:double" use="optional" default="0.83"/>
                   <xs:attribute name="_positionAnchor" type="xs:string" use="optional" default="Right"/>
-                  <xs:attribute name="FirstSpacing" type="xs:double" use="optional" default="140"/>
-                  <xs:attribute name="Spacing" type="xs:double" use="optional" default="40"/>
+                  <xs:attribute name="firstSpacing" type="xs:double" use="optional" default="140"/>
+                  <xs:attribute name="spacing" type="xs:double" use="optional" default="40"/>
+                  <xs:attribute name="autoArrange" type="xs:boolean" use="optional" default="true" />
                 </xs:complexType>
               </xs:element>
             </xs:sequence>

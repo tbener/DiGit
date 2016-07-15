@@ -10,15 +10,17 @@ using DiGit.Helpers;
 using DiGit.Model;
 using LibGit2Sharp;
 using Microsoft.Win32;
+using System.Collections.Generic;
 
 namespace DiGit.Configuration
 {
-    
 
-    public partial class DiGitConfigRepository
+
+    public partial class DiGitConfigRepository : IComparable
     {
         private Repository _repository;
         private Window _view;
+        private bool _isNew = false;
 
         [XmlIgnore]
         public Window View
@@ -28,7 +30,34 @@ namespace DiGit.Configuration
             {
                 _view = value;
                 _view.Visibility = this.isActive ? Visibility.Visible : Visibility.Hidden;
+                _view.Left = left;
+                _view.Top = top;
             }
+        }
+
+        public void UpdateLocation()
+        {
+            if (_view != null)
+            {
+                left = _view.Left;
+                top = _view.Top;
+            }
+        }
+
+        [XmlIgnore]
+        public bool IsNew
+        {
+            get
+            {
+                if (_isNew)
+                {
+                    _isNew = false;
+                    return true;
+                }
+                return false;
+            }
+            set { _isNew = value; }
+
         }
 
         [XmlIgnore]
@@ -42,15 +71,45 @@ namespace DiGit.Configuration
             }
         }
 
-        
+        public int CompareTo(object obj)
+        {
+            var otherRepo = (DiGitConfigRepository)obj;
+            return View.Left.CompareTo(otherRepo.View.Left);
+        }
     }
 
     public partial class DiGitConfig
     {
+        private List<DiGitConfigRepository> _repoList;
+
         public DiGitConfig()
         {
-            
+
         }
+
+        [XmlIgnore]
+        public List<DiGitConfigRepository> RepositoryList
+        {
+            get
+            {
+                if (_repoList == null)
+                {
+                    if (Repositories == null)
+                        _repoList = new List<DiGitConfigRepository>();
+                    else
+                        _repoList = new List<DiGitConfigRepository>(Repositories);
+
+                }
+
+                return _repoList;
+            }
+            set
+            {
+                _repoList = value;
+            }
+        }
+
+
         [XmlIgnore]
         public bool StartWithWindows
         {
@@ -76,18 +135,18 @@ namespace DiGit.Configuration
 
     }
 
-    public partial class DiGitConfigSettingsVisualSettings : INotifyPropertyChanged
+    public partial class DiGitConfigSettingsBubbles : INotifyPropertyChanged
     {
         private HorizontalAlignment anchor = HorizontalAlignment.Right;
 
         [XmlIgnore]
-        public double BubblesOpacity
+        public double Opacity
         {
-            get { return this._bubblesOpacity; }
+            get { return this._opacity; }
             set
             {
-                this._bubblesOpacity = Math.Round(value, 2, MidpointRounding.AwayFromZero);
-                OnPropertyChanged("BubbleOpacity");
+                this._opacity = Math.Round(value, 2, MidpointRounding.AwayFromZero);
+                OnPropertyChanged("Opacity");
             }
         }
 
@@ -165,9 +224,9 @@ namespace DiGit.Configuration
 
         public DiGitConfigSettingsShowHideHotkey()
         {
-            
+
         }
-        
+
         public DiGitConfigSettingsShowHideHotkey(ModifierKeys modifiersKeys, string key)
         {
             Set(modifiersKeys, key);
@@ -214,7 +273,7 @@ namespace DiGit.Configuration
                 p.StartInfo.FileName = fileName;
                 if (!String.IsNullOrEmpty(arguments))
                 {
-                    if (repo != null) 
+                    if (repo != null)
                         args = arguments.Replace("{rep_path}", "\"" + repo.Info.WorkingDirectory + "\"");
                     p.StartInfo.Arguments = args;
                 }
@@ -243,5 +302,5 @@ namespace DiGit.Configuration
     }
 
 
-    
+
 }

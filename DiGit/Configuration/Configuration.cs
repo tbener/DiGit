@@ -114,10 +114,14 @@ namespace DiGit.Configuration {
         
         private bool isActiveField;
         
-        private string valueField;
+        private double leftField;
+        
+        private double topField;
         
         public DiGitConfigRepository() {
             this.isActiveField = true;
+            this.leftField = -1000D;
+            this.topField = -1000D;
         }
         
         /// <remarks/>
@@ -144,13 +148,26 @@ namespace DiGit.Configuration {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public string Value {
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(-1000D)]
+        public double left {
             get {
-                return this.valueField;
+                return this.leftField;
             }
             set {
-                this.valueField = value;
+                this.leftField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(-1000D)]
+        public double top {
+            get {
+                return this.topField;
+            }
+            set {
+                this.topField = value;
             }
         }
     }
@@ -166,6 +183,8 @@ namespace DiGit.Configuration {
         private DiGitConfigSettingsShowHideHotkey showHideHotkeyField;
         
         private DiGitConfigSettingsVisualSettings visualSettingsField;
+        
+        private DiGitConfigSettingsBubbles bubblesField;
         
         /// <remarks/>
         public DiGitConfigSettingsShowHideHotkey ShowHideHotkey {
@@ -184,6 +203,16 @@ namespace DiGit.Configuration {
             }
             set {
                 this.visualSettingsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public DiGitConfigSettingsBubbles Bubbles {
+            get {
+                return this.bubblesField;
+            }
+            set {
+                this.bubblesField = value;
             }
         }
     }
@@ -233,17 +262,8 @@ namespace DiGit.Configuration {
         
         private double _bubblesOpacityField;
         
-        private string _positionAnchorField;
-        
-        private double firstSpacingField;
-        
-        private double spacingField;
-        
         public DiGitConfigSettingsVisualSettings() {
             this._bubblesOpacityField = 0.83D;
-            this._positionAnchorField = "Right";
-            this.firstSpacingField = 140D;
-            this.spacingField = 40D;
         }
         
         /// <remarks/>
@@ -255,6 +275,45 @@ namespace DiGit.Configuration {
             }
             set {
                 this._bubblesOpacityField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+    public partial class DiGitConfigSettingsBubbles {
+        
+        private double _opacityField;
+        
+        private string _positionAnchorField;
+        
+        private double firstSpacingField;
+        
+        private double spacingField;
+        
+        private bool autoArrangeField;
+        
+        public DiGitConfigSettingsBubbles() {
+            this._opacityField = 0.83D;
+            this._positionAnchorField = "Right";
+            this.firstSpacingField = 140D;
+            this.spacingField = 40D;
+            this.autoArrangeField = true;
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(0.83D)]
+        public double _opacity {
+            get {
+                return this._opacityField;
+            }
+            set {
+                this._opacityField = value;
             }
         }
         
@@ -273,7 +332,7 @@ namespace DiGit.Configuration {
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         [System.ComponentModel.DefaultValueAttribute(140D)]
-        public double FirstSpacing {
+        public double firstSpacing {
             get {
                 return this.firstSpacingField;
             }
@@ -285,12 +344,24 @@ namespace DiGit.Configuration {
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         [System.ComponentModel.DefaultValueAttribute(40D)]
-        public double Spacing {
+        public double spacing {
             get {
                 return this.spacingField;
             }
             set {
                 this.spacingField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(true)]
+        public bool autoArrange {
+            get {
+                return this.autoArrangeField;
+            }
+            set {
+                this.autoArrangeField = value;
             }
         }
     }

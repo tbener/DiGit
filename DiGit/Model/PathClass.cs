@@ -35,7 +35,7 @@ namespace DiGit.Model
                     // If exists - check if it is in one of the repositories
                     if (PathHelper.Exists(text))
                     {
-                        foundRepo = RepositoriesManager.Repos.Find(r => text.StartsWith(r.path) && text.Length > r.path.Length);
+                        foundRepo = ConfigurationHelper.Configuration.RepositoryList.Find(r => text.StartsWith(r.path) && text.Length > r.path.Length);
                         if (foundRepo != null)
                             relPath = text.Substring(foundRepo.path.Length);
                     }
@@ -44,7 +44,7 @@ namespace DiGit.Model
                 {
                     // Relative path
                     // Check is at least one repository has it
-                    foundRepo = RepositoriesManager.Repos.Find(r => PathHelper.Exists(DiGit.Helpers.PathHelper.GetFullPath(r.path, text)));
+                    foundRepo = ConfigurationHelper.Configuration.RepositoryList.Find(r => PathHelper.Exists(DiGit.Helpers.PathHelper.GetFullPath(r.path, text)));
                     if (foundRepo != null)
                         relPath = text;
                 }

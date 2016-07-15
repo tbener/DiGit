@@ -33,7 +33,8 @@ namespace DiGit.ViewModel
         public ICommand SaveConfigurationCommand { get; set; }
         public ICommand SaveAsConfigurationCommand { get; set; }
         public ICommand ShowTipsCommand { get; set; }
-        
+        public ICommand ResetToDefaultPositionCommand { get; set; }
+
         private TaskbarIcon _taskbarIcon;
 
         public TrayWindowViewModel(TaskbarIcon taskbarIcon)
@@ -44,6 +45,7 @@ namespace DiGit.ViewModel
             ShowCommand = new ShowAllCommand();
             HideCommand = new HideAllCommand();
             AddRepoCommand = new AddRepositoryCommand();
+            ResetToDefaultPositionCommand = new RelayCommand(BubblesManager.ResetPositionsToDefault);
 
             ShowAboutCommand = new ShowSingleViewCommand(typeof(AboutView));
 
@@ -144,10 +146,20 @@ namespace DiGit.ViewModel
 
         public double BubbleOpacity
         {
-            get { return ConfigurationHelper.Configuration.Settings.VisualSettings.BubblesOpacity; }
+            get { return ConfigurationHelper.Configuration.Settings.Bubbles.Opacity; }
             set
             {
-                ConfigurationHelper.Configuration.Settings.VisualSettings.BubblesOpacity = value;
+                ConfigurationHelper.Configuration.Settings.Bubbles.Opacity = value;
+            }
+        }
+
+        public bool AutoArrange
+        {
+            get { return ConfigurationHelper.Configuration.Settings.Bubbles.autoArrange; }
+            set
+            {
+                ConfigurationHelper.Configuration.Settings.Bubbles.autoArrange = value;
+                if (value) BubblesManager.Arrange();
             }
         }
     }

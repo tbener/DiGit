@@ -20,14 +20,18 @@ namespace DiGit
             string step = "Load configuration";
             try
             {
-                ConfigurationHelper.Load("", false);
+                if (!ConfigurationHelper.Load("", false))
+                    ConfigurationHelper.CreateDefault();
 
-                step = "Load repositories";
-                if (RepositoriesManager.Repos.Count == 0)
+                step = "Read repositories";
+                RepositoriesManager.ReadRepositories(false);
+
+                step = "Check if no repository exists";
+                if (ConfigurationHelper.Configuration.Repositories == null || ConfigurationHelper.Configuration.Repositories.Length == 0)
                     new AddRepositoryCommand().Execute(null);
 
                 step = "Show Bubbles";
-                BubblesManager.Refresh(true);
+                BubblesManager.Refresh();
 
                 step = "App base startup";
                 base.OnStartup(e);

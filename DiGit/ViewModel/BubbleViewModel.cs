@@ -37,7 +37,9 @@ namespace DiGit.ViewModel
         public ICommand ClipboardPathCommand { get; set; }
         public ICommand OpenFavFolderCommand { get; set; }
         public ICommand SetFavorite { get; set; }
-        public ICommand RearrangeCommand { get; set;}
+        public ICommand ResetToDefaultPositionCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
+        public ICommand AddRepoCommand { get; set; }
 
         public ObservableCollection<ICommand> CommandsList { get; set; }
 
@@ -49,10 +51,12 @@ namespace DiGit.ViewModel
             ClickCommand = new RelayCommand(ShowHideMenu);
             DblClkCommand = new OpenFolderCommand(new PathClass(repo));
             RefreshCommand = new RelayCommand(Refresh);
-            RearrangeCommand = new RelayCommand(BubblesManager.RepositionAll);
+            DeleteCommand = new DeleteRepositoryCommand();
+            AddRepoCommand = new AddRepositoryCommand();
+            ResetToDefaultPositionCommand = new RelayCommand(BubblesManager.ResetPositionsToDefault);
 
-            HideAllCommand = new RelayCommand(() => BubblesManager.ShowAll(false), () => RepositoriesManager.Repos.Any());
-            ShowAllCommand = new RelayCommand(() => BubblesManager.ShowAll(true), () => RepositoriesManager.Repos.Any());
+            HideAllCommand = new RelayCommand(() => BubblesManager.ShowAll(false), () => ConfigurationHelper.Configuration.RepositoryList.Any());
+            ShowAllCommand = new RelayCommand(() => BubblesManager.ShowAll(true), () => ConfigurationHelper.Configuration.RepositoryList.Any());
             ExitCommand = new ExitCommand();
 
             ShowHideMenuCommand = new RelayCommand(ShowHideMenu);
@@ -65,9 +69,9 @@ namespace DiGit.ViewModel
 
             //CommandsList = CreateCommandList();
 
-            ConfigurationHelper.Configuration.Settings.VisualSettings.PropertyChanged += (sender, args) =>
+            ConfigurationHelper.Configuration.Settings.Bubbles.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == "BubbleOpacity")
+                if (args.PropertyName == "Opacity")
                     OnPropertyChanged("BubbleOpacity");
             };
 
@@ -94,11 +98,12 @@ namespace DiGit.ViewModel
 
         }
 
+
         public string RootPath { get; set; }
 
 
-        public FolderCBViewModel ClipboardFolder{ get; set;}
-        
+        public FolderCBViewModel ClipboardFolder { get; set; }
+
 
         public ObservableCollection<FolderViewModel> FavoriteFoldersViewModels
         {
@@ -120,7 +125,7 @@ namespace DiGit.ViewModel
             }
         }
 
-        
+
 
         public List<ICommand> UserCommandList
         {
@@ -224,10 +229,6 @@ namespace DiGit.ViewModel
         public static readonly DependencyProperty IsShowMenuProperty = DependencyProperty.Register(
             "IsShowMenu", typeof(bool), typeof(BubbleViewModel), new PropertyMetadata(default(bool)));
 
-
-
-
-
         public bool IsShowMenu
         {
             get { return (bool)GetValue(IsShowMenuProperty); }
@@ -237,11 +238,22 @@ namespace DiGit.ViewModel
 
         public double BubbleOpacity
         {
-            get { return ConfigurationHelper.Configuration.Settings.VisualSettings.BubblesOpacity; }
+            get { return ConfigurationHelper.Configuration.Settings.Bubbles.Opacity; }
             set
             {
-                ConfigurationHelper.Configuration.Settings.VisualSettings.BubblesOpacity = value;
+                ConfigurationHelper.Configuration.Settings.Bubbles.Opacity = value;
             }
         }
+
+        public bool AutoArrange
+        {
+            get { return ConfigurationHelper.Configuration.Settings.Bubbles.autoArrange; }
+            set
+            {
+                ConfigurationHelper.Configuration.Settings.Bubbles.autoArrange = value;
+                if (value) BubblesManager.Arrange();
+            }
+        }
+
     }
 }

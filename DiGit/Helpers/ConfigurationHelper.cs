@@ -36,6 +36,12 @@ namespace DiGit.Helpers
             }
         }
 
+        public static void CreateDefault()
+        {
+            _configRoot = new DiGitConfig();
+            Upgrade();
+        }
+
         public static bool Load(string file = "", bool showErr = true)
         {
             if (file == "") file = ConfigFile;
@@ -43,8 +49,7 @@ namespace DiGit.Helpers
             {
                 _configRoot = SerializeHelper.Load(typeof(DiGitConfig), file) as DiGitConfig;
                 Upgrade();
-                if (OnConfigurationLoaded != null)
-                    OnConfigurationLoaded(null, new EventArgs());
+                OnConfigurationLoaded?.Invoke(null, new EventArgs());
                 return true;
             }
             catch (Exception ex)
@@ -74,9 +79,6 @@ namespace DiGit.Helpers
             else
                 _configRoot.Settings.ShowHideHotkey.Apply();
 
-            if (_configRoot.Settings.VisualSettings == null) 
-                _configRoot.Settings.VisualSettings = new DiGitConfigSettingsVisualSettings();
-
             if (_configRoot.Commands == null)
             {
                 _configRoot.Commands = new[]
@@ -97,6 +99,16 @@ namespace DiGit.Helpers
                 {
                     new DiGitConfigFolder() {path=@"dbm_System\Updates\Resources"},
                 };
+            }
+
+            if (_configRoot.Settings.Bubbles == null)
+                _configRoot.Settings.Bubbles = new DiGitConfigSettingsBubbles();
+
+            // Settings.VisualSettings is going obsolete as of ver > 1.0.209
+            if (_configRoot.Settings.VisualSettings != null)
+            {
+                _configRoot.Settings.Bubbles.Opacity = _configRoot.Settings.VisualSettings._bubblesOpacity;
+                _configRoot.Settings.VisualSettings = null;
             }
         }
         
@@ -121,7 +133,8 @@ namespace DiGit.Helpers
             }
             try
             {
-                _configRoot.Repositories = RepositoriesManager.Repos.ToArray();
+                _configRoot.RepositoryList.ForEach(r => r.UpdateLocation());
+                _configRoot.Repositories = _configRoot.RepositoryList.ToArray();
                 _configRoot.Folders = FolderViewModel.FolderList.ToArray();
                 return SerializeHelper.Save(_configRoot, file);
             }

@@ -6,19 +6,19 @@ using DiGit.Configuration;
 using DiGit.Helpers;
 using DiGit.View;
 using DiGit.ViewModel;
+using System.ComponentModel;
 
 namespace DiGit.Model
 {
     public static class BubblesManager
     {
-        private static readonly List<Window> Views;
+        public static Window OwnerWindow { get; private set; }
 
+        private static List<DiGitConfigRepository> _repos;
         private static bool _showBubbles = true;
 
         static BubblesManager()
         {
-            Views = new List<Window>();
-
             OwnerWindow = new Window();
             OwnerWindow.WindowStyle = WindowStyle.ToolWindow;
             OwnerWindow.Left = 10000;
@@ -26,94 +26,119 @@ namespace DiGit.Model
             OwnerWindow.Width = 1;
             OwnerWindow.Show();
             OwnerWindow.Hide();
+
+            
         }
 
-        public static Window OwnerWindow { get; private set; }
 
-        public static void Refresh(bool hard = false)
+        public static void Refresh()
         {
-            if (hard) Views.Clear();
-            RepositoriesManager.Repos.ForEach(Add);
+            _repos = ConfigurationHelper.Configuration.RepositoryList;
+            if (_repos.Any())
+            {
+                _repos.ForEach(SetBubbleView);
+                Arrange();
+            }
         }
 
-        internal static BubbleView CreateBubble()
-        {
-            BubbleView bubble = new BubbleView();
-            bubble.Owner = OwnerWindow;
-            return bubble;
-        }
+
 
         #region Add
 
-        private static void Add(DiGitConfigRepository repo)
+        private static void SetBubbleView(DiGitConfigRepository repo)
         {
             if (repo.View == null)
             {
-                repo.View = CreateBubble();
+                repo.View = new BubbleView()
+                {
+                    Owner = OwnerWindow
+                };
                 BubbleViewModel vm = new BubbleViewModel(repo.Repository);
                 repo.View.DataContext = vm;
-                Add(repo.View, repo.isActive);
                 vm.Start(repo.View);
-            }
-            else
-            {
-                Add(repo.View, repo.isActive);
+
+                repo.View.LocationChanged += view_LocationChanged;
+                repo.View.MouseUp += view_MouseUp;
             }
         }
+        
 
-        private static void Add(Window view, bool active)
-        {
-
-            if (active) Position(view);
-            if (Views.Contains(view)) return;
-
-            Views.Add(view);
-            view.LocationChanged += new EventHandler(view_LocationChanged);
-        }
 
         #endregion
 
         #region Position
 
+        private static bool _locationChanged = false;
+
+        private static void view_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (_locationChanged)
+            {
+                if (ConfigurationHelper.Configuration.Settings.Bubbles.autoArrange)
+                {
+                    ArrangeAll();
+                }
+                _locationChanged = false;
+            }
+        }
+
+        
+
         private static void view_LocationChanged(object sender, EventArgs e)
         {
             Window view = sender as Window;
+            if (!view.IsActive) return;
+
+            _locationChanged = true;
+
             if (view != null)
             {
                 if (view.Top < 10)
                     view.Top = 0;
             }
-        }
 
-        private static void Position(Window view)
-        {
-            double x = SystemParameters.PrimaryScreenWidth - FirstSpacing;
-            Rect rect = new Rect(new Point(x - view.Width, 0), new Point(x, view.Height));
-            Window otherView;
 
-            while (IsRectInWindow(rect, view, out otherView))
+            if (ConfigurationHelper.Configuration.Settings.Bubbles.autoArrange)
             {
-                rect.Offset(otherView.Left - rect.Left - Spacing - view.Width, 0);
-                if (rect.X < 0) return; // position failed
+                // If AutoArrange: change other bubbles according to this one
+
+                var _views = GetActiveViews();
+                if (view.Top < 40)
+                {
+                    // If it's on top (user drags bubble sideway)
+                    // Change the spacing between the bubbles
+
+                    if (view == _views[0])
+                    {
+                        // If it's the first one - change the distance from the wall
+                        FirstSpacing = Anchor == HorizontalAlignment.Left ? view.Left : SystemParameters.PrimaryScreenWidth - view.Left - view.Width;
+                    }
+                    else
+                    {
+                        // For any other one - change the spacing
+                        int i = _views.IndexOf(view);
+                        Spacing = ((_views[0].Left - view.Left) / i) - BubbleWidth;
+                    }
+                }
+                else
+                    // If the bubble was dragged down and then to the side,
+                    // change the sort order according to the x axis value.
+                    Sort();
+
+                Arrange(view);
             }
-
-            view.Left = rect.Left;
-            view.Top = rect.Top;
-
         }
-
-        private static HorizontalAlignment _anchor = HorizontalAlignment.Right;
+        
 
         public static double FirstSpacing
         {
             get
             {
-                return ConfigurationHelper.Configuration.Settings.VisualSettings.FirstSpacing;
+                return ConfigurationHelper.Configuration.Settings.Bubbles.firstSpacing;
             }
             set
             {
-                ConfigurationHelper.Configuration.Settings.VisualSettings.FirstSpacing = value;
-                RepositionAll();
+                ConfigurationHelper.Configuration.Settings.Bubbles.firstSpacing = Math.Min(Math.Max(value, 0), 650);
             }
         }
         public static double BubbleWidth
@@ -127,38 +152,71 @@ namespace DiGit.Model
         {
             get
             {
-                return ConfigurationHelper.Configuration.Settings.VisualSettings.Spacing;
+                return ConfigurationHelper.Configuration.Settings.Bubbles.spacing;
             }
             set
             {
-                ConfigurationHelper.Configuration.Settings.VisualSettings.Spacing = value;
-                RepositionAll();
+                ConfigurationHelper.Configuration.Settings.Bubbles.spacing = Math.Min(Math.Max(value, -BubbleWidth + 40), 250);
             }
+        }
+
+        public static void ResetPositionsToDefault()
+        {
+            bool saveAutoArrange = ConfigurationHelper.Configuration.Settings.Bubbles.autoArrange;
+            ConfigurationHelper.Configuration.Settings.Bubbles = new DiGitConfigSettingsBubbles();
+            Arrange();
+            ConfigurationHelper.Configuration.Settings.Bubbles.autoArrange = saveAutoArrange;
+        }
+
+        private static T GetDefaultValue<T>(string propName)
+        {
+            var property = typeof(DiGit.Configuration.DiGitConfigSettingsBubbles).GetProperty(propName);
+            var attribute = property.GetCustomAttributes(typeof(DefaultValueAttribute), false).FirstOrDefault() as DefaultValueAttribute;
+            return (T)attribute.Value;
         }
 
         public static HorizontalAlignment Anchor
         {
             get
             {
-                return ConfigurationHelper.Configuration.Settings.VisualSettings.PositionAnchor;
+                return ConfigurationHelper.Configuration.Settings.Bubbles.PositionAnchor;
             }
             set
             {
-                ConfigurationHelper.Configuration.Settings.VisualSettings.PositionAnchor = value;
-                RepositionAll();
+                ConfigurationHelper.Configuration.Settings.Bubbles.PositionAnchor = value;
+                ArrangeAll();
             }
         }
 
-        internal static void RepositionAll()
+
+        internal static void ArrangeAll()
+        {
+            Arrange();
+        }
+
+        internal static void Arrange(Window exceptView = null)
         {
             double x = Anchor == HorizontalAlignment.Left ? FirstSpacing : SystemParameters.PrimaryScreenWidth - FirstSpacing - BubbleWidth;
             double spacing = (Spacing + BubbleWidth) * (Anchor == HorizontalAlignment.Left ? 1 : -1);
 
-            Sort();
-            foreach (var view in VisibleViews)
+            foreach (var repo in _repos.Where(r => r.isActive))
             {
-                view.Left = x;
-                view.Top = 0;
+                var view = repo.View;
+                if (ConfigurationHelper.Configuration.Settings.Bubbles.autoArrange || repo.IsNew)
+                {
+                    if (view != exceptView)
+                    {
+                        view.Left = x;
+                        view.Top = 0;
+                        view.Topmost = true;
+                    }
+                }
+
+                if (view.Left < 0) view.Left = 0;
+                if (view.Left > SystemParameters.PrimaryScreenWidth - BubbleWidth) view.Left = SystemParameters.PrimaryScreenWidth - BubbleWidth;
+
+                if (view.Top < 0) view.Top = 0;
+                if (view.Top > SystemParameters.PrimaryScreenHeight - view.Height) view.Top = SystemParameters.PrimaryScreenHeight - view.Height;
 
                 x += spacing;
             }
@@ -167,11 +225,12 @@ namespace DiGit.Model
         private static void Sort()
         {
             if (Anchor == HorizontalAlignment.Right)
-                Views.Sort((v2, v1) => v1.Left.CompareTo(v2.Left));
+                _repos.Sort((r2, r1) => r1.View.Left.CompareTo(r2.View.Left));
             else
-                Views.Sort((v1, v2) => v1.Left.CompareTo(v2.Left));
+                _repos.Sort((r1, r2) => r1.View.Left.CompareTo(r2.View.Left));
         }
 
+    
         /// <summary>
         /// Check if the rect intersects with one of the existing windows.
         /// </summary>
@@ -179,33 +238,35 @@ namespace DiGit.Model
         /// <param name="view"></param>
         /// <param name="otherView">The window that intersects with the rect</param>
         /// <returns>true if intersection found</returns>
-        private static bool IsRectInWindow(Rect rect, Window view, out Window otherView)
-        {
+        //private static bool IsRectInWindow(Rect rect, Window view, out Window otherView)
+        //{
 
-            otherView = Views.FirstOrDefault(v => !v.Equals(view) && v.Visibility == Visibility.Visible && rect.IntersectsWith(WindowToRect(v)));
-            if (otherView != null) return true;
+        //    otherView = Views.FirstOrDefault(v => !v.Equals(view) && v.Visibility == Visibility.Visible && rect.IntersectsWith(WindowToRect(v)));
+        //    if (otherView != null) return true;
 
-            return false;
-        }
+        //    return false;
+        //}
 
-        private static Rect WindowToRect(Point pt, Window view)
-        {
-            return new Rect(pt, new Point(pt.X + view.Width, pt.Y + view.Height));
-        }
+        //private static Rect WindowToRect(Point pt, Window view)
+        //{
+        //    return new Rect(pt, new Point(pt.X + view.Width, pt.Y + view.Height));
+        //}
 
-        private static Rect WindowToRect(Window view)
-        {
-            return new Rect(new Point(view.Left, view.Top), new Point(view.Left + view.Width, view.Top + view.Height));
-        }
+        //private static Rect WindowToRect(Window view)
+        //{
+        //    return new Rect(new Point(view.Left, view.Top), new Point(view.Left + view.Width, view.Top + view.Height));
+        //}
 
         #endregion
 
-        public static List<Window> VisibleViews
+        public static List<Window> GetActiveViews()
         {
-            get
-            {
-                return RepositoriesManager.Repos.Where(r => r.isActive).Select(r => r.View).ToList();
-            }
+            return _repos.Where(r => r.isActive).Select(r => r.View).ToList();
+        }
+
+        public static List<Window> GetAllViews()
+        {
+            return _repos.Select(r => r.View).ToList();
         }
 
         #region Show / Hide
@@ -218,13 +279,15 @@ namespace DiGit.Model
                 view.Dispatcher.Invoke(action);
                 return;
             }
-
+            
             if (updateActive)
-                ConfigurationHelper.Configuration.Repositories.FirstOrDefault(r => r.View == view).isActive = show;
+                _repos.FirstOrDefault(r => r.View == view).isActive = show;
+
+            Arrange();
 
             if (show)
             {
-                if (view.Visibility == Visibility.Hidden) Position(view);
+                //if (view.Visibility == Visibility.Hidden) Position(view);
                 view.Show();
             }
             else
@@ -234,37 +297,34 @@ namespace DiGit.Model
         internal static void ShowAll(bool show)
         {
             _showBubbles = show;
-            Views.ForEach(v => ShowView(v, show, show));   // updateActive = show because if the user shows all,
+            GetAllViews().ForEach(v => ShowView(v, show, show));   // updateActive = show because if the user shows all,
             // they all should become Active, but if he hides them all, the Active property should not changed.
         }
 
+        // Show / hide without change the isActive property
         internal static void ToggleShowHide()
         {
             _showBubbles = !_showBubbles;
 
-            ConfigurationHelper.Configuration.Repositories.Where(r => r.isActive).ToList().ForEach(r => ShowView(r.View, _showBubbles, false));
+            GetActiveViews().ForEach(v => ShowView(v, _showBubbles, false));
         }
 
         internal static void HideAllButThis(Window view)
         {
-            Views.Where(v => v != view).ToList().ForEach(v => ShowView(v, false, true));
+            GetActiveViews().Where(v => v != view).ToList().ForEach(v => ShowView(v, false, true));
         }
 
-        /// <summary>
-        /// Position all visible bubbles
-        /// </summary>
-        internal static void Rearrange()
-        {
-            Views.Sort((v1, v2) => v1.Left.CompareTo(v2.Left));
-            Views.ForEach(v => Position(v));
-        }
 
         #endregion
 
+        internal static void Close(Window view)
+        {
+            view.Close();
+        }
+
         internal static void CloseAll()
         {
-            Views.ForEach(v => v.Close());
-            Views.Clear();
+            GetAllViews().ForEach(v => v.Close());
         }
 
 

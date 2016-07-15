@@ -41,6 +41,9 @@
                               Command="{Binding HideCommand}"/>
                     <MenuItem Template="{DynamicResource MenuItemBubbleVisualSettingsControlTemplate}"/>
                     <Separator/>
+                    <MenuItem Header="Auto Arrange Bubbles" IsCheckable="True" IsChecked="{Binding AutoArrange}"  />
+                    <MenuItem Header="Reset to default positions" Command="{Binding ResetToDefaultPositionCommand}" />
+                    <Separator/>
                     <MenuItem x:Name="MnuSettings" 
                               Header="Settings..."
                               Visibility="{Binding ShowSettingsVisiblilty}"

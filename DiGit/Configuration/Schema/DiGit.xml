@@ -1,15 +1,27 @@
 <?xml version="1.0"?>
-<DiGitConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ver="1.0.205.17763" isBetaUser="true">
+<DiGitConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ver="1.0.209.37955" isBetaUser="false">
   <Repositories>
     <Repository path="C:\CM\DBMOTION\" />
     <Repository path="C:\CM\DBMOTION_LEGACY\" />
+    <Repository path="C:\Users\TBENER\Documents\Visual Studio 2015\Projects\GitTools\" isActive="true" >
+      <Bubble left="1" top="2"/>
+    </Repository>
   </Repositories>
   <Settings>
     <ShowHideHotkey modifiers="Ctrl+Shift" key="G" />
-    <VisualSettings BubblesOpacity="1"/>
+    <VisualSettings _bubblesOpacity="0.86" FirstSpacing="151" Spacing="41" />
   </Settings>
   <Commands>
-    <Command header="Sync" filename="C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" arguments="/command:sync /path:{rep_path}" helptext="Please help..." />
-    <Command header="Push" filename="C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" arguments="/command:push /path:{rep_path}" helptext="" />
+    <Command header="Switch" fileName="C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" arguments="/command:switch /path:{rep_path}" />
+    <Command header="Push" fileName="C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" arguments="/command:push /path:{rep_path}" />
+    <Command header="Pull" fileName="C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" arguments="/command:pull /path:{rep_path}" />
+    <Command header="Commit" fileName="C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" arguments="/command:commit /path:{rep_path}" />
+    <Command header="Merge" fileName="C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" arguments="/command:merge /path:{rep_path}" />
+    <Command header="Show log" fileName="C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" arguments="/command:log /path:{rep_path}" />
+    <Command header="Sync" fileName="C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe" arguments="/command:sync /path:{rep_path}" />
   </Commands>
+  <Folders>
+    <Folder path="dbm_System\Updates\Resources" />
+    <Folder path="dbm_Configuration/ConfigurationCenter/src/ConfigCenter/dataloading" lastUsage="2016-06-20T17:44:09.7566931+03:00" />
+  </Folders>
 </DiGitConfig>

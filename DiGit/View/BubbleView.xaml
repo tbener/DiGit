@@ -223,7 +223,12 @@
                     <MenuItem Header="Hide All" Command="{Binding HideAllCommand}"/>
                     <MenuItem Header="Hide All But This" Command="{Binding HideAllButThisCommand}"/>
                     <MenuItem Header="Show All" Command="{Binding ShowAllCommand}" />
-                    <MenuItem Header="Rearrange" Command="{Binding RearrangeCommand}" />
+                    <Separator/>
+                    <MenuItem Header="Auto Arrange Bubbles" IsCheckable="True" IsChecked="{Binding AutoArrange}"  />
+                    <MenuItem Header="Reset to default positions" Command="{Binding ResetToDefaultPositionCommand}" />
+                    <Separator/>
+                    <MenuItem Header="Delete..." Command="{Binding DeleteCommand}" CommandParameter="{Binding Repository}"/>
+                    <MenuItem Header="Add New Repository..." Command="{Binding AddRepoCommand}" />
                     <Separator/>
                     <MenuItem Template="{DynamicResource MenuItemBubbleVisualSettingsControlTemplate}"/>
                     <Separator/>
