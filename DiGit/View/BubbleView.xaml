@@ -280,7 +280,7 @@
                 </Viewbox>-->
 
                 <ToggleButton IsEnabled="False" IsChecked="{Binding LockExists}" ToolTipService.ShowOnDisabled="True" ToolTip="index.lock"
-                              HorizontalAlignment="Right" VerticalAlignment="Top" Width="16" Height="16" Margin="3">
+                              HorizontalAlignment="Right" VerticalAlignment="Top" Width="14" Height="14" Margin="5">
                     <ToggleButton.Template>
 
                         <ControlTemplate TargetType="{x:Type ToggleButton}">

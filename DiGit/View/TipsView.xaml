@@ -32,21 +32,26 @@
         <Button DockPanel.Dock="Bottom" Margin="0 4"  HorizontalAlignment="Right" Command="{Binding CloseCommand}" IsCancel="True" >Close</Button>
 
         <ScrollViewer>
+            <ScrollViewer.DataContext>
+                <XmlDataProvider Source="/Versioning/DiGitVersionInfo.xml" XPath="DiGitVersionInfo" />
+            </ScrollViewer.DataContext>
             <StackPanel DockPanel.Dock="Top">
-                <Expander Tag="1.0.207" IsExpanded="True" Header="New in 1.0.209">
+                <Expander Tag="1.0.211" IsExpanded="True" Header="New in 1.0.211">
                     <StackPanel Margin="30, 6">
-                        <BulletDecorator>
-                            <BulletDecorator.Bullet>
-                                <Ellipse Height="5" Width="5" Fill="Black" />
-                            </BulletDecorator.Bullet>
-                            <TextBlock Text="  Adjustments to Windows 10." />
-                        </BulletDecorator>
-                        <BulletDecorator>
-                            <BulletDecorator.Bullet>
-                                <Ellipse Height="5" Width="5" Fill="Black" />
-                            </BulletDecorator.Bullet>
-                            <TextBlock Text="  Added: Hide all but this." />
-                        </BulletDecorator>
+                        <ListView ItemsSource="{Binding XPath=./Version[@version\=\'1.0.211\']/*}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate >
+                                    <BulletDecorator>
+                                        <BulletDecorator.Bullet>
+                                            <Ellipse Height="5" Width="5" Fill="Black" />
+                                        </BulletDecorator.Bullet>
+                                        <TextBlock Text="{Binding XPath=text()}" Margin="8, 0, 0, 0"/>
+                                    </BulletDecorator>
+                                </DataTemplate>
+                                    
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        
 
 
                     </StackPanel>

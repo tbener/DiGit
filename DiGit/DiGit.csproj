@@ -351,9 +351,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Versioning\DiGitVersionInfo.xml">
+    <Resource Include="Versioning\DiGitVersionInfo.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\unlocked.png" />

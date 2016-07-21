@@ -49,7 +49,7 @@
                               Visibility="{Binding ShowSettingsVisiblilty}"
                               Command="{Binding ShowSettingsCommand}"/>
                     
-                    <MenuItem 
+                    <!--<MenuItem 
                               Header="Settings">
                         <MenuItem 
                               Header="Open containing folder"
@@ -63,7 +63,7 @@
                         <MenuItem 
                               Header="Save backup as..."
                               Command="{Binding SaveAsConfigurationCommand}"/>
-                    </MenuItem>
+                    </MenuItem>-->
 
                     <MenuItem x:Name="MnuTips" 
                               Header="What's new..."
