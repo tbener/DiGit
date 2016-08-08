@@ -33,7 +33,9 @@ namespace DiGit.Model
                     xDoc.Add(new XElement("DiGit",
                         new XAttribute("ver", AppInfo.AppVersion.ToString()),
                         new XAttribute("date", DateTime.Now.ToString(CultureInfo.InvariantCulture)),
-                        new XAttribute("isBetaUser", ConfigurationHelper.Configuration.isBetaUser)
+                        new XAttribute("isBetaUser", ConfigurationHelper.Configuration.isBetaUser),
+                        new XElement("AdditionalInfo",
+                            new XAttribute("configFilePath", ConfigurationHelper.ConfigFile))
                         ));
                     xDoc.Save(fileName);
                     Settings.Default.UserRegistered = false;

@@ -79,6 +79,7 @@ namespace DiGit.Model
                     ArrangeAll();
                 }
                 _locationChanged = false;
+                ConfigurationHelper.Save();
             }
         }
 

@@ -4,12 +4,14 @@ using DiGit.Model;
 using DiGit.Versioning;
 using DiGit.View;
 using DiGit.ViewModel.Base;
+using DiGit.Helpers;
 
 namespace DiGit.ViewModel
 {
     public class AboutViewModel : BaseDialogViewModel
     {
         public ICommand ShowUpdateCommand { get; set; }
+        public ICommand OpenConfigFolderCommand { get; set; }
 
         public AboutViewModel()
         {
@@ -20,11 +22,28 @@ namespace DiGit.ViewModel
                 OnPropertyChanged("UpdateInfo");
                 OnPropertyChanged("UpdateLink");
             };
+
+            OpenConfigFolderCommand = new RelayCommand(
+                delegate
+                {
+                    Utils.OpenContainingFolder(ConfigurationHelper.ConfigFile);
+                });
         }
 
         public string Version
         {
             get { return AppInfo.AppVersionFull(); }
+        }
+
+        public string ConfigFilePathDisplay
+        {
+            get { return PathHelper.ShortDisplay(ConfigurationHelper.ConfigFile, Properties.Settings.Default.MenuPathLength); }
+        }
+        
+
+        public string ConfigFilePathToolTip
+        {
+            get { return string.Format("{0} (Click to open containg folder)", ConfigurationHelper.ConfigFile); }
         }
 
         public string Description

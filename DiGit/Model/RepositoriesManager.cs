@@ -20,11 +20,14 @@ namespace DiGit.Model
             {
                 if (configRepository == null)
                 {
-                    configRepository = new DiGitConfigRepository() { IsNew = true } ;
+                    configRepository = new DiGitConfigRepository() { IsNew = true, Repository = repo };
                     ConfigurationHelper.Configuration.RepositoryList.Add(configRepository);
                     ConfigurationHelper.Save();
                 }
-                configRepository.Repository = repo;
+                else
+                {
+                    configRepository.Repository = repo;
+                }
                 _repos.Add(configRepository.path, configRepository);
                 
 
@@ -73,9 +76,13 @@ namespace DiGit.Model
             _repos = new Dictionary<string, DiGitConfigRepository>();
             var config = ConfigurationHelper.Configuration;
 
+            List<DiGitConfigRepository> reposToDelete = new List<DiGitConfigRepository>();
+            bool hadError = false;
+
             if (File.Exists(ConfigurationHelper.ConfigFile))
             {
                 if (config.Repositories != null)
+                {
                     foreach (DiGitConfigRepository configRepository in config.RepositoryList)
                     {
                         try
@@ -85,11 +92,25 @@ namespace DiGit.Model
                         }
                         catch (Exception ex)
                         {
-                            ErrorHandler.Handle(ex, "Could not load repository: {0}.", configRepository.path);
-                            return false;
+                            hadError = true;
+
+                            if (string.IsNullOrEmpty(configRepository.path))
+                                ErrorHandler.Handle(new Exception("Empty path saved for repository - deleting."), false);
+                            else
+                                ErrorHandler.Handle(ex, "Could not load repository: {0}.", configRepository.path);
+
+                            reposToDelete.Add(configRepository);
                         }
                     }
+
+                    if (hadError)
+                    {
+                        config.RepositoryList.RemoveAll(reposToDelete.Contains);
+                        ConfigurationHelper.Save();
+                    }
+                }
             }
+
 
             return _repos.Count > 0;
            
