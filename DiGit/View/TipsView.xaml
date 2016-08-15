@@ -36,7 +36,24 @@
                 <XmlDataProvider Source="/Versioning/DiGitVersionInfo.xml" XPath="DiGitVersionInfo" />
             </ScrollViewer.DataContext>
             <StackPanel DockPanel.Dock="Top">
-                <Expander Tag="1.0.211" IsExpanded="True" Header="New in 1.0.211">
+                <Expander Tag="1.0.212" IsExpanded="True" Header="New in 1.0.212 (beta)">
+                    <StackPanel Margin="30, 6">
+                        <ListView ItemsSource="{Binding XPath=./Version[@version\=\'1.0.212\']/*}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate >
+                                    <BulletDecorator>
+                                        <BulletDecorator.Bullet>
+                                            <Ellipse Height="5" Width="5" Fill="Black" />
+                                        </BulletDecorator.Bullet>
+                                        <TextBlock Text="{Binding XPath=text()}" Margin="8, 0, 0, 0"/>
+                                    </BulletDecorator>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+                </Expander>
+                
+                <Expander Tag="1.0.211" IsExpanded="True" Header="New in 1.0.211 (beta)">
                     <StackPanel Margin="30, 6">
                         <ListView ItemsSource="{Binding XPath=./Version[@version\=\'1.0.211\']/*}">
                             <ListView.ItemTemplate>
@@ -51,13 +68,10 @@
                                     
                             </ListView.ItemTemplate>
                         </ListView>
-                        
-
-
                     </StackPanel>
                 </Expander>
 
-                <Expander Tag="1.0.208" IsExpanded="True" Header="New in 1.0.208">
+                <Expander Tag="1.0.208" IsExpanded="False" Header="New in 1.0.208">
                     <StackPanel>
                         <TextBlock Text="Favorite dynamic folders" Style="{StaticResource Heading2}" Margin="0 6"/>
 

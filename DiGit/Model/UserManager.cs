@@ -28,6 +28,7 @@ namespace DiGit.Model
                 }
                 if (needUpdate)
                 {
+                    var evt = SchedulerK.Scheduler.SharedInstance.GetNextEvent();
                     string fileName = Path.Combine(Settings.Default.InfoUrl, Environment.UserName + ".xml");
                     XDocument xDoc = new XDocument();
                     xDoc.Add(new XElement("DiGit",
@@ -35,8 +36,9 @@ namespace DiGit.Model
                         new XAttribute("date", DateTime.Now.ToString(CultureInfo.InvariantCulture)),
                         new XAttribute("isBetaUser", ConfigurationHelper.Configuration.isBetaUser),
                         new XElement("AdditionalInfo",
-                            new XAttribute("configFilePath", ConfigurationHelper.ConfigFile))
-                        ));
+                            new XAttribute("configFilePath", ConfigurationHelper.ConfigFile),
+                            new XAttribute("nextScheduledEvent", evt.ToString())
+                        )));
                     xDoc.Save(fileName);
                     Settings.Default.UserRegistered = false;
                     Settings.Default.Save();

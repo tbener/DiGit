@@ -12,10 +12,21 @@ namespace DiGit.Model
 {
     public static class BubblesManager
     {
-        public static Window OwnerWindow { get; private set; }
+
+        #region Private variables
 
         private static List<DiGitConfigRepository> _repos;
         private static bool _showBubbles = true;
+        private static bool _locationChanged = false;
+
+        #endregion
+
+        #region Properties
+        public static Window OwnerWindow { get; private set; }
+
+        #endregion
+
+        #region CTOR
 
         static BubblesManager()
         {
@@ -26,10 +37,11 @@ namespace DiGit.Model
             OwnerWindow.Width = 1;
             OwnerWindow.Show();
             OwnerWindow.Hide();
-
-            
         }
 
+        #endregion
+
+        #region Refresh \ Set View
 
         public static void Refresh()
         {
@@ -41,18 +53,11 @@ namespace DiGit.Model
             }
         }
 
-
-
-        #region Add
-
         private static void SetBubbleView(DiGitConfigRepository repo)
         {
             if (repo.View == null)
             {
-                repo.View = new BubbleView()
-                {
-                    Owner = OwnerWindow
-                };
+                repo.View = new BubbleView(OwnerWindow);
                 BubbleViewModel vm = new BubbleViewModel(repo.Repository);
                 repo.View.DataContext = vm;
                 vm.Start(repo.View);
@@ -61,14 +66,35 @@ namespace DiGit.Model
                 repo.View.MouseUp += view_MouseUp;
             }
         }
-        
+
 
 
         #endregion
 
         #region Position
 
-        private static bool _locationChanged = false;
+        internal static void Arrange(Window exceptView = null)
+        {
+            double x = Anchor == HorizontalAlignment.Left ? FirstSpacing : SystemParameters.PrimaryScreenWidth - FirstSpacing - BubbleWidth;
+            double spacing = (Spacing + BubbleWidth) * (Anchor == HorizontalAlignment.Left ? 1 : -1);
+
+            foreach (var repo in _repos.Where(r => r.isActive))
+            {
+                var view = repo.View;
+                var isNew = repo.IsNew;
+                if ((ConfigurationHelper.Configuration.Settings.Bubbles.autoArrange || isNew) && view != exceptView)
+                {
+                    view.Left = x;
+                    // get the screen this view is on, to get the top y
+                    view.Top = System.Windows.Forms.Screen.FromPoint(new System.Drawing.Point((int)x, (int)view.Top)).Bounds.Top;
+                    //view.Top = System.Windows.Forms.Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(view).Handle).Bounds.Top;
+                    view.Topmost = true;
+                    view.BringIntoView();
+                }
+
+                x += spacing;
+            }
+        }
 
         private static void view_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -76,14 +102,12 @@ namespace DiGit.Model
             {
                 if (ConfigurationHelper.Configuration.Settings.Bubbles.autoArrange)
                 {
-                    ArrangeAll();
+                    Arrange(); 
                 }
                 _locationChanged = false;
                 ConfigurationHelper.Save();
             }
         }
-
-        
 
         private static void view_LocationChanged(object sender, EventArgs e)
         {
@@ -92,10 +116,15 @@ namespace DiGit.Model
 
             _locationChanged = true;
 
+            // default screen top (for primary screen)
+            int screenTop = 0;
+
             if (view != null)
             {
-                if (view.Top < 10)
-                    view.Top = 0;
+                // get the top y of current screen
+                screenTop = System.Windows.Forms.Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(view).Handle).Bounds.Top;
+                if (view.Top < screenTop + 10)
+                    view.Top = screenTop;
             }
 
 
@@ -104,7 +133,8 @@ namespace DiGit.Model
                 // If AutoArrange: change other bubbles according to this one
 
                 var _views = GetActiveViews();
-                if (view.Top < 40)
+                
+                if (view.Top < screenTop + 40)
                 {
                     // If it's on top (user drags bubble sideway)
                     // Change the spacing between the bubbles
@@ -126,10 +156,30 @@ namespace DiGit.Model
                     // change the sort order according to the x axis value.
                     Sort();
 
+                // while keep dragging this bubble, arrange the others
                 Arrange(view);
             }
         }
-        
+
+        public static void ResetPositionsToDefault()
+        {
+            bool saveAutoArrange = ConfigurationHelper.Configuration.Settings.Bubbles.autoArrange;
+            ConfigurationHelper.Configuration.Settings.Bubbles = new DiGitConfigSettingsBubbles();
+            Arrange();
+            ConfigurationHelper.Configuration.Settings.Bubbles.autoArrange = saveAutoArrange;
+        }
+
+        private static void Sort()
+        {
+            if (Anchor == HorizontalAlignment.Right)
+                _repos.Sort((r2, r1) => r1.View.Left.CompareTo(r2.View.Left));
+            else
+                _repos.Sort((r1, r2) => r1.View.Left.CompareTo(r2.View.Left));
+        }
+
+        #endregion
+
+        #region Position properties
 
         public static double FirstSpacing
         {
@@ -139,9 +189,10 @@ namespace DiGit.Model
             }
             set
             {
-                ConfigurationHelper.Configuration.Settings.Bubbles.firstSpacing = Math.Min(Math.Max(value, 0), 650);
+                ConfigurationHelper.Configuration.Settings.Bubbles.firstSpacing = value; 
             }
         }
+
         public static double BubbleWidth
         {
             get
@@ -157,23 +208,8 @@ namespace DiGit.Model
             }
             set
             {
-                ConfigurationHelper.Configuration.Settings.Bubbles.spacing = Math.Min(Math.Max(value, -BubbleWidth + 40), 250);
+                ConfigurationHelper.Configuration.Settings.Bubbles.spacing = Math.Max(value, -BubbleWidth + 40); // Math.Min(Math.Max(value, -BubbleWidth + 40), 250);
             }
-        }
-
-        public static void ResetPositionsToDefault()
-        {
-            bool saveAutoArrange = ConfigurationHelper.Configuration.Settings.Bubbles.autoArrange;
-            ConfigurationHelper.Configuration.Settings.Bubbles = new DiGitConfigSettingsBubbles();
-            Arrange();
-            ConfigurationHelper.Configuration.Settings.Bubbles.autoArrange = saveAutoArrange;
-        }
-
-        private static T GetDefaultValue<T>(string propName)
-        {
-            var property = typeof(DiGit.Configuration.DiGitConfigSettingsBubbles).GetProperty(propName);
-            var attribute = property.GetCustomAttributes(typeof(DefaultValueAttribute), false).FirstOrDefault() as DefaultValueAttribute;
-            return (T)attribute.Value;
         }
 
         public static HorizontalAlignment Anchor
@@ -185,80 +221,12 @@ namespace DiGit.Model
             set
             {
                 ConfigurationHelper.Configuration.Settings.Bubbles.PositionAnchor = value;
-                ArrangeAll();
+                Arrange();
             }
         }
-
-
-        internal static void ArrangeAll()
-        {
-            Arrange();
-        }
-
-        internal static void Arrange(Window exceptView = null)
-        {
-            double x = Anchor == HorizontalAlignment.Left ? FirstSpacing : SystemParameters.PrimaryScreenWidth - FirstSpacing - BubbleWidth;
-            double spacing = (Spacing + BubbleWidth) * (Anchor == HorizontalAlignment.Left ? 1 : -1);
-
-            foreach (var repo in _repos.Where(r => r.isActive))
-            {
-                var view = repo.View;
-                if (ConfigurationHelper.Configuration.Settings.Bubbles.autoArrange || repo.IsNew)
-                {
-                    if (view != exceptView)
-                    {
-                        view.Left = x;
-                        view.Top = 0;
-                        view.Topmost = true;
-                    }
-                }
-
-                if (view.Left < 0) view.Left = 0;
-                if (view.Left > SystemParameters.PrimaryScreenWidth - BubbleWidth) view.Left = SystemParameters.PrimaryScreenWidth - BubbleWidth;
-
-                if (view.Top < 0) view.Top = 0;
-                if (view.Top > SystemParameters.PrimaryScreenHeight - view.Height) view.Top = SystemParameters.PrimaryScreenHeight - view.Height;
-
-                x += spacing;
-            }
-        }
-
-        private static void Sort()
-        {
-            if (Anchor == HorizontalAlignment.Right)
-                _repos.Sort((r2, r1) => r1.View.Left.CompareTo(r2.View.Left));
-            else
-                _repos.Sort((r1, r2) => r1.View.Left.CompareTo(r2.View.Left));
-        }
-
-    
-        /// <summary>
-        /// Check if the rect intersects with one of the existing windows.
-        /// </summary>
-        /// <param name="rect"></param>
-        /// <param name="view"></param>
-        /// <param name="otherView">The window that intersects with the rect</param>
-        /// <returns>true if intersection found</returns>
-        //private static bool IsRectInWindow(Rect rect, Window view, out Window otherView)
-        //{
-
-        //    otherView = Views.FirstOrDefault(v => !v.Equals(view) && v.Visibility == Visibility.Visible && rect.IntersectsWith(WindowToRect(v)));
-        //    if (otherView != null) return true;
-
-        //    return false;
-        //}
-
-        //private static Rect WindowToRect(Point pt, Window view)
-        //{
-        //    return new Rect(pt, new Point(pt.X + view.Width, pt.Y + view.Height));
-        //}
-
-        //private static Rect WindowToRect(Window view)
-        //{
-        //    return new Rect(new Point(view.Left, view.Top), new Point(view.Left + view.Width, view.Top + view.Height));
-        //}
-
         #endregion
+
+        #region GetViews helpers
 
         public static List<Window> GetActiveViews()
         {
@@ -269,6 +237,8 @@ namespace DiGit.Model
         {
             return _repos.Select(r => r.View).ToList();
         }
+
+        #endregion
 
         #region Show / Hide
 
@@ -318,6 +288,8 @@ namespace DiGit.Model
 
         #endregion
 
+        #region Close views
+
         internal static void Close(Window view)
         {
             view.Close();
@@ -328,6 +300,43 @@ namespace DiGit.Model
             GetAllViews().ForEach(v => v.Close());
         }
 
+        #endregion
 
+        #region Not in use. keep for now...
+
+        /// <summary>
+        /// Check if the rect intersects with one of the existing windows.
+        /// </summary>
+        /// <param name="rect"></param>
+        /// <param name="view"></param>
+        /// <param name="otherView">The window that intersects with the rect</param>
+        /// <returns>true if intersection found</returns>
+        //private static bool IsRectInWindow(Rect rect, Window view, out Window otherView)
+        //{
+
+        //    otherView = Views.FirstOrDefault(v => !v.Equals(view) && v.Visibility == Visibility.Visible && rect.IntersectsWith(WindowToRect(v)));
+        //    if (otherView != null) return true;
+
+        //    return false;
+        //}
+
+        //private static Rect WindowToRect(Point pt, Window view)
+        //{
+        //    return new Rect(pt, new Point(pt.X + view.Width, pt.Y + view.Height));
+        //}
+
+        //private static Rect WindowToRect(Window view)
+        //{
+        //    return new Rect(new Point(view.Left, view.Top), new Point(view.Left + view.Width, view.Top + view.Height));
+        //}
+
+        //private static T GetDefaultValue<T>(string propName)
+        //{
+        //    var property = typeof(DiGitConfigSettingsBubbles).GetProperty(propName);
+        //    var attribute = property.GetCustomAttributes(typeof(DefaultValueAttribute), false).FirstOrDefault() as DefaultValueAttribute;
+        //    return (T)attribute.Value;
+        //}
+
+        #endregion
     }
 }

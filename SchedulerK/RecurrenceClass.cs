@@ -58,7 +58,7 @@ namespace SchedulerK
 
         public override string ToString()
         {
-            return string.Format("Recurrence, next event: {0}, every {1}", DateTimeEvent, Interval);
+            return string.Format("Recurrence, next event: {0}, every {1} ({2})", DateTimeEvent, Interval, Description);
         }
     }
 }

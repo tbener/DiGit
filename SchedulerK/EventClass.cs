@@ -107,7 +107,7 @@ namespace SchedulerK
 
         public override string ToString()
         {
-            return string.Format("Event at: {0}", DateTimeEvent);
+            return string.Format("Event at: {0} ({2})", DateTimeEvent, Description);
         }
     }
 

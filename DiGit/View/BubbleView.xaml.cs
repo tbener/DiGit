@@ -9,9 +9,11 @@ namespace DiGit.View
     /// </summary>
     public partial class BubbleView : Window
     {
-        public BubbleView()
+        public BubbleView(Window ownerWindow)
         {
             InitializeComponent();
+
+            Owner = ownerWindow;
 
             MouseDown += delegate
             {
