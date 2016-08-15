@@ -81,8 +81,7 @@ namespace DiGit.Model
             foreach (var repo in _repos.Where(r => r.isActive))
             {
                 var view = repo.View;
-                var isNew = repo.IsNew;
-                if ((ConfigurationHelper.Configuration.Settings.Bubbles.autoArrange || isNew) && view != exceptView)
+                if ((ConfigurationHelper.Configuration.Settings.Bubbles.autoArrange || repo.IsNew) && view != exceptView)
                 {
                     view.Left = x;
                     // get the screen this view is on, to get the top y
