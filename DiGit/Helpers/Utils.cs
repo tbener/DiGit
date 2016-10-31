@@ -119,7 +119,8 @@ namespace DiGit.Helpers
         {
             Process p = new Process();
             p.StartInfo.FileName = "Explorer.exe";
-            p.StartInfo.Arguments = "/Select," + fileName;
+            p.StartInfo.WorkingDirectory = Path.GetDirectoryName(fileName);
+            p.StartInfo.Arguments = "/Select," + Path.GetFileName(fileName);
             p.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
             p.Start();
         }
