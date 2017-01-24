@@ -87,27 +87,33 @@ namespace DiGit.ViewModel
         private void AddConfigFolderToList()
         {
             if (_folderList.Contains(ConfigFolder)) return;
+            // add to main list
             _folderList.Add(ConfigFolder);
+            // add to every repo that this path exists in
             foreach (KeyValuePair<Repository, ObservableCollection<FolderViewModel>> keyValuePair in ListByRepo)
             {
                 if (PathHelper.Exists(keyValuePair.Key.Info.WorkingDirectory, ConfigFolder.path))
                     keyValuePair.Value.Add(new FolderViewModel(keyValuePair.Key, ConfigFolder));
             }
+            // the mru is limitted (by default to 10)
             if (!ConfigFolder.isFavorite)
                 SizeFoldersMru();
         }
 
         private static void SizeFoldersMru()
         {
+            // get the list of folder that aren't in favorites
             var mruList = FolderList.Where(dcf => !dcf.isFavorite).ToList();
             int max = Math.Max(3, Properties.Settings.Default.FoldersMRU);
             if (mruList.Count() > max)
             {
                 List<DiGitConfigFolder> toRemove = mruList.OrderByDescending(dcf => dcf.lastUsage).ToList().GetRange(max, mruList.Count() - max);
                 FolderList.RemoveAll(toRemove.Contains);
+                // loop on list of every repo
                 foreach (KeyValuePair<Repository, ObservableCollection<FolderViewModel>> keyValuePair in ListByRepo)
                 {
-                    foreach (var vm in keyValuePair.Value)
+                    
+                    foreach (var vm in keyValuePair.Value.ToList())
                     {
                         if (!FolderList.Contains(vm.ConfigFolder)) keyValuePair.Value.Remove(vm);
                     }
