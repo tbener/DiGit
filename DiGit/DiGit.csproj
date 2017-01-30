@@ -143,7 +143,7 @@
     <Compile Include="ViewModel\Base\BaseViewModel.cs" />
     <Compile Include="ViewModel\Base\BaseWindowViewModel.cs" />
     <Compile Include="ViewModel\BubbleViewModel.cs" />
-    <Compile Include="ViewModel\FolderCBViewModel.cs" />
+    <Compile Include="ViewModel\FolderCbViewModel.cs" />
     <Compile Include="ViewModel\FolderViewModel.cs" />
     <Compile Include="ViewModel\RepositoryViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />

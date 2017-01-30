@@ -18,7 +18,7 @@ namespace DiGit.ViewModel
     /// Every Clipboard change the class instance checks against its repository.
     /// All instances share the same DiGitConfigFolder so any change (usage, favorite) applies to all.
     /// </summary>
-    public class FolderCBViewModel : FolderViewModel
+    public class FolderCbViewModel : FolderViewModel
     {
         // The DiGitConfigFolder class that is shared between all FolderCBViewModel instances
         private static DiGitConfigFolder _cpConfigFolder;
@@ -28,7 +28,7 @@ namespace DiGit.ViewModel
         /// <summary>
         /// Static constructor to initialize the shared DiGitConfigFolder
         /// </summary>
-        static FolderCBViewModel()
+        static FolderCbViewModel()
         {
             CheckClipboard(null, null);
             ClipboardNotification.ClipboardUpdate += CheckClipboard;
@@ -38,7 +38,7 @@ namespace DiGit.ViewModel
         /// Override base contructor
         /// </summary>
         /// <param name="repo"></param>
-        public FolderCBViewModel(Repository repo) : base(repo, _cpConfigFolder)
+        public FolderCbViewModel(Repository repo) : base(repo, _cpConfigFolder)
         {
             DisplayLength = Properties.Settings.Default.MenuPathLength;
             OnChange += (sender, args) => Refresh();
@@ -115,15 +115,6 @@ namespace DiGit.ViewModel
                 return ConfigFolder.path != string.Empty && base.Exists;
             }
         }
-
-        //public override bool IsFavorite
-        //{
-        //    get { return base.IsFavorite; }
-        //    set
-        //    {
-        //        base.IsFavorite = value;
-        //        if (OnChange != null) OnChange(this, null);
-        //    }
-        //}
+        
     }
 }

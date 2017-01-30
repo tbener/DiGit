@@ -81,7 +81,7 @@ namespace DiGit.ViewModel
             RootPathCommand = new OpenFolderCommand(rootPathClass);
             RootPath = string.Format("Open {0}", rootPathClass.DisplayPath);
 
-            ClipboardFolder = new FolderCBViewModel(repo);
+            ClipboardFolder = new FolderCbViewModel(repo);
 
             ConfigurationHelper.OnConfigurationLoaded += (sender, args) =>
             {
@@ -102,7 +102,7 @@ namespace DiGit.ViewModel
         public string RootPath { get; set; }
 
 
-        public FolderCBViewModel ClipboardFolder { get; set; }
+        public FolderCbViewModel ClipboardFolder { get; set; }
 
 
         public ObservableCollection<FolderViewModel> FavoriteFoldersViewModels
