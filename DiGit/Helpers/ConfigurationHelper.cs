@@ -6,6 +6,8 @@ using DiGit.Model;
 using DiGit.Properties;
 using DiGit.View;
 using DiGit.ViewModel;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace DiGit.Helpers
 {
@@ -63,16 +65,19 @@ namespace DiGit.Helpers
         // Fill in missing entries from older versions
         private static void Upgrade()
         {
+            bool isUpgrade = false;
+
             Version prevVer;
             if (Version.TryParse(_configRoot.ver, out prevVer))
             {
                 if (AppInfo.AppVersion.Build > Version.Parse(_configRoot.ver).Build)
                 {
+                    isUpgrade = true;
                     new ShowSingleViewCommand(typeof(TipsView)).Execute(null);
                 }
             }
-           
-            if (_configRoot.Settings == null) 
+
+            if (_configRoot.Settings == null)
                 _configRoot.Settings = new DiGitConfigSettings();
             if (_configRoot.Settings.ShowHideHotkey == null)
                 _configRoot.Settings.ShowHideHotkey = new DiGitConfigSettingsShowHideHotkey(ModifierKeys.Control | ModifierKeys.Shift, "G");
@@ -93,6 +98,20 @@ namespace DiGit.Helpers
                 };
             }
 
+            if (isUpgrade)
+                // Add Gated Checkin if not exists
+                if (!_configRoot.Commands.Any(cmd => cmd.header.StartsWith("Gated", StringComparison.CurrentCultureIgnoreCase)))
+                {
+                    List<DiGitConfigCommand> listCommands = new List<DiGitConfigCommand>(_configRoot.Commands);
+                    listCommands.Insert(2, new DiGitConfigCommand()
+                    {
+                        header = "Gated Push",
+                        arguments = "{rep_path}",
+                        fileName = @"C:\Program Files\Gated Client\Gated CheckIn Client.exe"
+                    });
+                    _configRoot.Commands = listCommands.ToArray();
+                }
+
             if (_configRoot.Folders == null)
             {
                 _configRoot.Folders = new[]
@@ -111,13 +130,13 @@ namespace DiGit.Helpers
                 _configRoot.Settings.VisualSettings = null;
             }
         }
-        
+
         private static DiGitConfigCommand GetUserCommand(string header, string cmd)
         {
             return new DiGitConfigCommand()
             {
                 header = header,
-                arguments = string.Format("/command:{0} /path:{1}", cmd, "{rep_path}"), 
+                arguments = string.Format("/command:{0} /path:{1}", cmd, "{rep_path}"),
                 fileName = @"C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe"
             };
         }

@@ -43,7 +43,7 @@ namespace DiGit.ViewModel
 
         public string ConfigFilePathToolTip
         {
-            get { return string.Format("{0} (Click to open containg folder)", ConfigurationHelper.ConfigFile); }
+            get { return string.Format("{0} (Click to open containing folder)", ConfigurationHelper.ConfigFile); }
         }
 
         public string Description

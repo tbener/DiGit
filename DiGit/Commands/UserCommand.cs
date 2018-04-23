@@ -8,6 +8,7 @@ using System.Windows.Input;
 using DiGit.Configuration;
 using DiGit.Helpers;
 using LibGit2Sharp;
+using System.IO;
 
 namespace DiGit.Commands
 {
@@ -16,9 +17,20 @@ namespace DiGit.Commands
         private readonly DiGitConfigCommand _command;
         private readonly Repository _repo;
 
+        private string _fileName = "";
+
+        private string FileName {
+            get
+            {
+                if (_fileName == "")
+                    _fileName = _command.fileName.Replace("{rep_path}", _repo.Info.WorkingDirectory);
+                return _fileName;
+            }
+        }
+
         public bool CanExecute(object parameter)
         {
-            return true;
+            return File.Exists(FileName);
         }
 
         public event EventHandler CanExecuteChanged;
@@ -32,23 +44,22 @@ namespace DiGit.Commands
 
         public void Execute(object parameter)
         {
-            string fileName = "", args = "";
+            string args = "";
             try
             {
-                fileName = _command.fileName.Replace("{rep_path}", _repo.Info.WorkingDirectory);
                 if (!String.IsNullOrEmpty(_command.arguments))
-                    args = _command.arguments.Replace("{rep_path}", "\"" + _repo.Info.WorkingDirectory + "\"");
+                    args = _command.arguments.Replace("{rep_path}", _repo.Info.WorkingDirectory.TrimEnd('\\'));
             }
             catch (Exception ex)
             {
                 ErrorHandler.Handle(ex,
                     "An error occurred while trying to build the command '{0}'. FileName result: {1}. Arguments result: {2}",
-                    _command.header, fileName, args);
+                    _command.header, _fileName, args);
             }
             try
             {
                 Process p = new Process();
-                p.StartInfo.FileName = fileName;
+                p.StartInfo.FileName = FileName;
                 if (!String.IsNullOrEmpty(_command.arguments))
                 {
                     p.StartInfo.Arguments = args;
@@ -59,7 +70,7 @@ namespace DiGit.Commands
             }
             catch (Exception ex)
             {
-                ErrorHandler.Handle(ex, "An error occurred while trying to run command '{0}'. FileName: {1}. Arguments: {2}", _command.header, fileName, args);
+                ErrorHandler.Handle(ex, "An error occurred while trying to run command '{0}'. FileName: {1}. Arguments: {2}", _command.header, _fileName, args);
             }
         }
 

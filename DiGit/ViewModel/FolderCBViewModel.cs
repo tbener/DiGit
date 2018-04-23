@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using DiGit.Configuration;
 using DiGit.Helpers;
-using DiGit.Model;
 using LibGit2Sharp;
 
 namespace DiGit.ViewModel
@@ -55,7 +50,7 @@ namespace DiGit.ViewModel
         private static void SetConfigFolder(string relPath)
         {
             _cpConfigFolder = FolderList.Find(f => f.path.Equals(relPath, StringComparison.OrdinalIgnoreCase)) ?? new DiGitConfigFolder(){path=relPath};
-            if (OnChange != null) OnChange(null, null);
+            OnChange?.Invoke(null, null);
         }
 
         private static void CheckClipboard(object sender, EventArgs args)
@@ -80,7 +75,7 @@ namespace DiGit.ViewModel
                 {
                     // Relative path
                     // Check is at least one repository has it
-                    foundRepo = ConfigurationHelper.Configuration.RepositoryList.Find(r => PathHelper.Exists(DiGit.Helpers.PathHelper.GetFullPath(r.path, text)));
+                    foundRepo = ConfigurationHelper.Configuration.RepositoryList.Find(r => PathHelper.Exists(PathHelper.GetFullPath(r.path, text)));
                     if (foundRepo != null) relPath = text;
                 }
 
@@ -99,13 +94,7 @@ namespace DiGit.ViewModel
             set { _cpConfigFolder = value; }
         }
 
-        public override string DisplayText
-        {
-            get
-            {
-                return (Exists) ? string.Format("Open {0}", DisplayPath) : "No path found in Clipboard";
-            }
-        }
+        public override string DisplayText => (Exists) ? $"Open {DisplayPath}" : "No path found in Clipboard";
 
         public override bool Exists
         {

@@ -260,47 +260,5 @@ namespace DiGit.Configuration
         }
     }
 
-    public partial class DiGitConfigCommand : ICommand
-    {
-
-        public void Execute(object parameter)
-        {
-            string args = arguments;
-            Repository repo = parameter as Repository;
-            try
-            {
-                Process p = new Process();
-                p.StartInfo.FileName = fileName;
-                if (!String.IsNullOrEmpty(arguments))
-                {
-                    if (repo != null)
-                        args = arguments.Replace("{rep_path}", "\"" + repo.Info.WorkingDirectory + "\"");
-                    p.StartInfo.Arguments = args;
-                }
-                if (!String.IsNullOrEmpty(windowStyle))
-                    p.StartInfo.WindowStyle = (ProcessWindowStyle)Enum.Parse(typeof(ProcessWindowStyle), windowStyle);
-                p.Start();
-            }
-            catch (Exception ex)
-            {
-                ErrorHandler.Handle(ex, "An error ocurred occurred while trying to run command: {0} {1}", fileName, args == "{rep_path}" ? arguments : args);
-            }
-        }
-
-        public override string ToString()
-        {
-            return header;
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public event EventHandler CanExecuteChanged;
-
-    }
-
-
 
 }

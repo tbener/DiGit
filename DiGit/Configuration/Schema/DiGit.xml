@@ -2,7 +2,7 @@
 <DiGitConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ver="1.0.209.37955" isBetaUser="false">
   <Repositories>
     <Repository path="C:\CM\DBMOTION\" />
-    <Repository path="C:\CM\DBMOTION_LEGACY\" />
+    <Repository path="C:\CM\DBMOTION_1\" />
     <Repository path="C:\Users\TBENER\Documents\Visual Studio 2015\Projects\GitTools\" isActive="true" >
       <Bubble left="1" top="2"/>
     </Repository>

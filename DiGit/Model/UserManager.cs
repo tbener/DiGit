@@ -37,6 +37,7 @@ namespace DiGit.Model
                         new XAttribute("isBetaUser", ConfigurationHelper.Configuration.isBetaUser),
                         new XElement("AdditionalInfo",
                             new XAttribute("configFilePath", ConfigurationHelper.ConfigFile),
+                            new XAttribute("appPath", AppInfo.AppPath),
                             new XAttribute("nextScheduledEvent", evt.ToString())
                         )));
                     xDoc.Save(fileName);
