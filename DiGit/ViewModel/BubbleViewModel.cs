@@ -11,13 +11,12 @@ using DiGit.Helpers;
 using DiGit.View;
 using System.Collections.ObjectModel;
 using System.Threading;
-
+using System.IO;
 
 namespace DiGit.ViewModel
 {
     public class BubbleViewModel : BaseRepoViewModel
     {
-        private bool _lockFileExists;
         private string _currentBranch = string.Empty;
         private string _status = string.Empty;
         private bool _flagMoved;
@@ -63,8 +62,7 @@ namespace DiGit.ViewModel
 
             CurrentBranch = repo.Head.Name;
             var repoTracker = new RepoTracker(repo);
-            repoTracker.OnLockFileCreated += (s, e) => { LockExists = true; };
-            repoTracker.OnLockFileDeleted += (s, e) => { LockExists = false; };
+            repoTracker.OnLockFileChanged += (s, e) => { OnPropertyChanged("LockExists"); };
             repoTracker.OnBranchChanged += (s, e) => Refresh();
 
             //CommandsList = CreateCommandList();
@@ -159,6 +157,8 @@ namespace DiGit.ViewModel
                 }
             } while (counter-- > 0);
 
+            OnPropertyChanged("LockExists");
+
         }
 
         public void Start(Window view)
@@ -212,10 +212,10 @@ namespace DiGit.ViewModel
 
         public bool LockExists
         {
-            get { return _lockFileExists; }
+            get { return File.Exists(PathHelper.GetFullPath(Repo.Info.Path, "index.lock")); }
             set
             {
-                _lockFileExists = value;
+                //_lockFileExists = PathHelper.Exists(Repo.Info.Path, "index.lock");
                 OnPropertyChanged("LockExists");
             }
         }
