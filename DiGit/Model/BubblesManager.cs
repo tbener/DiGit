@@ -31,6 +31,7 @@ namespace DiGit.Model
         static BubblesManager()
         {
             OwnerWindow = new Window();
+            OwnerWindow.ShowInTaskbar = false;
             OwnerWindow.WindowStyle = WindowStyle.ToolWindow;
             OwnerWindow.Left = 10000;
             OwnerWindow.Top = 1000;
