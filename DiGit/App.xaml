@@ -10,11 +10,7 @@
          
     	<ResourceDictionary>
     		<ResourceDictionary.MergedDictionaries>
-    			<ResourceDictionary Source="ResourceDictionary/BubbleResourceDictionary.xaml"/>
-                <ResourceDictionary Source="ResourceDictionary/CommandsListMenuResourceDictionary.xaml"/>
-                <!--<ResourceDictionary Source="ResourceDictionary/DefaultControlsResourceDictionary.xaml"/>-->
-                <ResourceDictionary Source="ResourceDictionary/ThemesResourceDictionary.xaml" />
-                <ResourceDictionary Source="ResourceDictionary/Controls/MenuItem.xaml"/>
+                <ResourceDictionary Source="ResourceDictionary/MainResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
     	</ResourceDictionary>
          

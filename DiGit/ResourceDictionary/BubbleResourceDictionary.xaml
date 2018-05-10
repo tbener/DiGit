@@ -6,7 +6,7 @@
         <Setter Property="Background">
             <Setter.Value>
                 <RadialGradientBrush RadiusX="1" RadiusY="1">
-                    <GradientStop Color="#FF88CBF1" Offset="0.539"/>
+                    <GradientStop Color="#FF88CBF1" Offset="0.5"/>
                     <GradientStop Color="#FFDCE8EC" Offset="0"/>
                 </RadialGradientBrush>
             </Setter.Value>

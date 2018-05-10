@@ -15,7 +15,7 @@
       <Value Profile="(Default)">DiGitVersionInfo{0}.xml</Value>
     </Setting>
     <Setting Name="ReadInfoDelaySec" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">5</Value>
+      <Value Profile="(Default)">3</Value>
     </Setting>
     <Setting Name="WriteInfoDelaySec" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">10</Value>

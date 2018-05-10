@@ -10,6 +10,10 @@ using DiGit.View;
 using DiGit.Versioning;
 using DiGit.ViewModel.Base;
 using Hardcodet.Wpf.TaskbarNotification;
+using DiGit.View.NotifyIconBalloons;
+using DiGit.ViewModel.NotifyIconBalloons;
+using System.Windows.Controls.Primitives;
+using System.Windows.Threading;
 
 namespace DiGit.ViewModel
 {
@@ -83,12 +87,12 @@ namespace DiGit.ViewModel
             SaveAsConfigurationCommand = new RelayCommand(delegate
             {
                 string file = ConfigurationHelper.ConfigFile;// Path.GetFileName(ConfigurationHelper.ConfigFile);
-                if (DialogHelper.BrowseSaveFileByExtensions(new[]{"xml"}, true, ref file))
+                if (DialogHelper.BrowseSaveFileByExtensions(new[] { "xml" }, true, ref file))
                 {
                     ConfigurationHelper.Save();
                 }
             });
-            
+
             #endregion
 
             ShowTipsCommand = new RelayCommand(() => new ShowSingleViewCommand(typeof(TipsView)).Execute(null));
@@ -96,12 +100,13 @@ namespace DiGit.ViewModel
             HotkeyHelper.OnHotkeyChanged += (sender, args) => OnPropertyChanged("ShowHideHeader");
             // todo: currently the only balloon is for update, so no distinction about what to do.
             _taskbarIcon.TrayBalloonTipClicked += (sender, args) => ShowUpdateCommand.Execute(null);
-            UpdateManager.OnUpdateRequired += UpdateManager_OnUpdateRequired;
-            UpdateManager.OnUpdateInfoChanged += delegate(object sender, EventArgs args)
+            UpdateManager.OnUpdateInfoChanged += delegate (object sender, EventArgs args)
             {
                 OnPropertyChanged("CheckUpdateHeader");
                 OnPropertyChanged("ToolTipText");
+
 #if DEBUG
+                // ShowBalloonTip doesn't work in Windows 10
                 _taskbarIcon.ShowBalloonTip("Checking for updates...", "", BalloonIcon.Info);
 #endif
             };
@@ -109,11 +114,6 @@ namespace DiGit.ViewModel
         }
 
         public string ShowSettingsVisiblilty { get; set; }
-        
-        private void UpdateManager_OnUpdateRequired(object sender, System.EventArgs arg)
-        {
-            _taskbarIcon.ShowBalloonTip("New DiGit version found", "Click for details", BalloonIcon.Info);
-        }
 
 
         public bool StartWithWindows
@@ -128,12 +128,12 @@ namespace DiGit.ViewModel
 
         public string ShowHideHeader
         {
-            get{ return string.Format("Show/hide ({0})", HotkeyHelper.HotkeyShortcut); }
+            get { return string.Format("Show/hide ({0})", HotkeyHelper.HotkeyShortcut); }
         }
 
         public string CheckUpdateHeader
         {
-            get { return UpdateManager.UpdateAvailable ? "*** Update..." : "Check update..."; }
+            get { return UpdateManager.UpdateAvailable ? "Update Available..." : "Check update..."; }
         }
 
         public string ToolTipText

@@ -24,6 +24,8 @@ namespace DiGit.View
         {
             InitializeComponent();
             this.DataContext = new TrayWindowViewModel(this.TaskbarIcon);
+
+            
         }
     }
 }

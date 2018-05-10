@@ -15,7 +15,7 @@ namespace DiGit.ViewModel
 
         public AboutViewModel()
         {
-            ShowUpdateCommand = ShowUpdateCommand = new ShowSingleViewCommand(typeof(UpdateView));
+            ShowUpdateCommand = new ShowSingleViewCommand(typeof(UpdateView));
 
             UpdateManager.OnUpdateInfoChanged += delegate
             {

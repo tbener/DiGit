@@ -2,7 +2,7 @@
 
 <?define UpgradeCode=60cdae80-62eb-4d2f-bc41-f3ab3c1ceb61?>
 <!--<?define VERSION=!(bind.FileVersion.$(var.DiGit.TargetFileName))?>-->
-<?define VERSION=1.0.214?>
+<?define VERSION=1.0.215?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product Id="*" Name="DiGit" Language="1033" Version="$(var.VERSION)" Manufacturer="Tal Bener (Allscripts)" UpgradeCode="$(var.UpgradeCode)">
@@ -38,6 +38,8 @@
       <ComponentRef Id="comp_2AAD3D30_F6F3_4CD4_8E14_21DBF5C45307" />
       <ComponentRef Id="digit_version_log" />
       <ComponentRef Id="SchedulerK" />
+      <ComponentRef Id="Microsoft.Expression.Interactions" />
+      <ComponentRef Id="Microsoft.Expression.Effects" />
     </Feature>
     <Property Id="WixShellExecTarget" Value="[TARGETDIR]$(var.DiGit.TargetFileName)" />
     <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
@@ -408,6 +410,12 @@
           </Component>
           <Component Id="SchedulerK">
             <File Source="$(var.DiGit.TargetDir)\SchedulerK.dll" KeyPath="yes" />
+          </Component>
+          <Component Id="Microsoft.Expression.Interactions">
+            <File Source="$(var.DiGit.TargetDir)\Microsoft.Expression.Interactions.dll" KeyPath="yes" />
+          </Component>
+          <Component Id="Microsoft.Expression.Effects">
+            <File Source="$(var.DiGit.TargetDir)\Microsoft.Expression.Effects.dll" KeyPath="yes" />
           </Component>
         </Directory>
       </Directory>

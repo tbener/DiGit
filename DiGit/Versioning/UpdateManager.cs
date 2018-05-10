@@ -9,6 +9,7 @@ using DiGit.Helpers;
 using DiGit.Model;
 using DiGit.Properties;
 using DiGit.Versioning;
+using DiGit.View;
 
 namespace DiGit.Versioning
 {
@@ -115,8 +116,16 @@ namespace DiGit.Versioning
             else
                 UpdateRequired = false;
             if (UpdateAvailable)
+            {
                 OnUpdateRequired?.Invoke(null, new EventArgs());
+                ShowUpdateAvailableMessage();
+            }
 
+        }
+
+        private static void ShowUpdateAvailableMessage()
+        {
+            NotificationHelper.ShowUpdateNotification(LastVersionInfo.version);
         }
 
         public static List<DiGitVersionInfoVersion> GetGreaterOrEqualVersions()

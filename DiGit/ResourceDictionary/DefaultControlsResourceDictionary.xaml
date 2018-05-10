@@ -6,11 +6,11 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Controls/Button.xaml"/>
-        <ResourceDictionary Source="Controls/TextBox.xaml"/>
+        <ResourceDictionary Source="Controls/MenuItem.xaml"/>
+        <!--<ResourceDictionary Source="Controls/TextBox.xaml"/>
         <ResourceDictionary Source="Controls/ListBox.xaml"/>
         <ResourceDictionary Source="Controls/Window.xaml"/>
-        <ResourceDictionary Source="Controls/Checkbox.xaml"/>
-        <ResourceDictionary Source="Controls/MenuItem_Test.xaml"/>
+        <ResourceDictionary Source="Controls/Checkbox.xaml"/>-->
         <!--<ResourceDictionary Source="CommandsListMenu.xaml"/>-->
     </ResourceDictionary.MergedDictionaries>
 
