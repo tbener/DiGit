@@ -14,7 +14,7 @@
         x:Name="balloon"
         Focusable="True"
         Style="{DynamicResource NotificationWindowStyle}"
-        Width="324.245"
+        Width="340"
         Height="136">
 
 
@@ -93,29 +93,33 @@
     <Grid x:Name="LayoutRoot">
 
 
-        <Border HorizontalAlignment="Stretch"
-                Style="{DynamicResource NotificationBorderStyle}" >
-            
+        <Border x:Name="border" HorizontalAlignment="Stretch" 
+                Margin="10"
+                Style="{StaticResource NotificationBorderStyle}"
+                 >
+
             <Border.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF97D2F3" Offset="1"/>
-                    <GradientStop Color="#FFDCE8EC" Offset="0.515"/>
+                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0">
+                    <GradientStop Color="#FFA5C7E1" Offset="0.925"/>
+                    <GradientStop Color="#FFE5EDF5" Offset="0.109"/>
+                    <GradientStop Color="#FFE5EDF5" Offset="0.264"/>
+                    <GradientStop Color="#FFACCBE3" Offset="0.004"/>
                 </LinearGradientBrush>
             </Border.Background>
 
             <Border.Effect>
-                <DropShadowEffect Color="#FF747474" Opacity="0.535" ShadowDepth="10" />
+                <DropShadowEffect Color="#FF747474" Opacity="0.4" ShadowDepth="10" Direction="135" />
             </Border.Effect>
         </Border>
         <Image HorizontalAlignment="Left"
-               Margin="5,16,0,0"
-               Width="67"
+               Margin="5,0,0,0"
+               Width="64"
+               Height="64"
                Source="/Resources/images/App.ico"
                Stretch="Fill"
-               Height="60"
-               VerticalAlignment="Top" />
+               VerticalAlignment="Center" />
 
-        <TextBlock Margin="80,14,10,0"
+        <TextBlock Margin="80,20,10,0" 
                    VerticalAlignment="Top"
                    Height="23"
                    Text="{Binding Header}"
@@ -130,7 +134,7 @@
         </TextBlock>
         <Path Fill="#FFFFFFFF"
               Stretch="Fill"
-              Margin="80,38.2,34,0"
+              Margin="80,42,34,0"
               VerticalAlignment="Top"
               Height="1"
               Data="M26,107 L220.04123,107"
@@ -148,13 +152,14 @@
 
         <Button x:Name="btnClose" 
                     Command="{Binding CloseCommand}"
-                    ToolTip="Hide" 
-                    Style="{DynamicResource ImageButtonStyle}"
+                    ToolTip="Close" 
+                    Style="{DynamicResource NotificationCloseButtonStyle}"
                     HorizontalAlignment="Right" 
-                    Margin="0,10,10,0" 
+                    
+                    Margin="0,17,18,0" 
                     VerticalAlignment="Top" 
                     Width="16" 
-                    Height="16">
+                    Height="16" >
             <Image             
                 Source="/Resources/Images/Close.png" 
                 x:Name="imgClose"

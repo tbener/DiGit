@@ -109,11 +109,11 @@
     <Compile Include="Commands\RepositoryCommands.cs" />
     <Compile Include="Commands\UserCommand.cs" />
     <Compile Include="Commands\WindowCommands.cs" />
-    <Compile Include="Converters\IsNullConverter.cs" />
     <Compile Include="Converters\VersionToBooleanConverter.cs" />
     <Compile Include="Helpers\ClipboardNotification.cs" />
     <Compile Include="Helpers\DialogHelper.cs" />
     <Compile Include="Helpers\NotificationHelper.cs" />
+    <Compile Include="Helpers\ThreadHelper.cs" />
     <Compile Include="Model\AppInfo.cs" />
     <Compile Include="Helpers\BackgroundTasksManager.cs" />
     <Compile Include="Helpers\ConfigurationHelper.cs" />
@@ -376,6 +376,7 @@
   <ItemGroup>
     <Resource Include="Versioning\DiGitVersionInfo.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Resource>
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,11 @@
         <Setter Property="AllowsTransparency" Value="True"/>
         <Setter Property="WindowStyle" Value="None"/>
         <Setter Property="Background" Value="Transparent"/>
+        <!--<Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="border" Property="CornerRadius" Value="35,0,0,35"/>
+            </Trigger>
+        </Style.Triggers>-->
     </Style>
 
 
@@ -15,6 +20,12 @@
     </Border.Background>-->
     
     <Style x:Key="NotificationBorderStyle" TargetType="{x:Type Border}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window},
+                                               Path=IsMouseOver}" Value="True">
+                <Setter Property="CornerRadius" Value="35,4,4,35"/>
+            </DataTrigger>
+        </Style.Triggers>
         <!--<Setter Property="Background">
             <Setter.Value>
                 <SolidColorBrush x:Name="WindowBorderBackground" Color="{DynamicResource WindowBackgroundColor}" />
@@ -33,10 +44,21 @@
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>-->
-        <!--<Setter Property="CornerRadius" Value="0,0,48,48"/>-->
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="35,35,4,35"/>
         <Setter Property="BorderBrush" Value="#FF1A67A8"/>
 
+    </Style>
+
+    <Style x:Key="NotificationCloseButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Template" Value="{DynamicResource ImageButtonTemplate}"/>
+        <Setter Property="Visibility" Value="Hidden"/>
+
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window},
+                                               Path=IsMouseOver}" Value="True">
+                <Setter Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>

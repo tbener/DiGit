@@ -24,6 +24,11 @@ namespace DiGit.ViewModel.NotifyIconBalloons
         public string Message { get; set; }
         public string NotesText { get; set; }
 
+        public override void CloseView(Window view)
+        {
+            view.Close();
+        }
+
 
         public override Point OnSetPosition(Window view)
         {

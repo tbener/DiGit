@@ -36,9 +36,6 @@ namespace DiGit
                 step = "App base startup";
                 base.OnStartup(e);
 
-                step = "Initialize notification manager";
-                NotificationHelper.Initialize();
-
                 step = "Init Update Manager";
                 BackgroundTasksManager.Start();
             }

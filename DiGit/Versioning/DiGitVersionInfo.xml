@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DiGitVersionInfo>
   <Setup URI="O:\IT-Department\Software\Tools\DiGit\DiGitSetup.msi"/>
-  <Version version="1.0.215" notifyVersion="All">
+  <Version version="1.0.216" notifyVersion="All">
     <Change type="feature">Support Gated Check-in</Change>
+    <Change type="feature">New notifications look and feel</Change>
     <Change type="fix">Hide from Alt+Tab</Change>
     <Change type="fix">Fixed - Windows 10 stopped displaying notifications</Change>
     <Change type="fix">Minor bug fixes</Change>

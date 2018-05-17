@@ -10,23 +10,33 @@ using System.Windows.Threading;
 using Hardcodet.Wpf.TaskbarNotification;
 using DiGit.View;
 using DiGit.Commands;
+using System.Windows;
 
 namespace DiGit.Helpers
 {
+    
+
     public static class NotificationHelper
     {
         private static NotifyBalloonView _balloonView;
         private static NotifyBalloonViewModel _balloonViewModel;
 
-        public static void Initialize()
+        static void InitView()
         {
             try
             {
-                _balloonView = new NotifyBalloonView();
-                _balloonViewModel = new NotifyBalloonViewModel(_balloonView);
-                _balloonView.DataContext = _balloonViewModel;
+                if (_balloonView == null)
+                {
+                    _balloonView = new NotifyBalloonView();
+                    _balloonViewModel = new NotifyBalloonViewModel(_balloonView);
+                    _balloonView.DataContext = _balloonViewModel;
 
-                
+                    _balloonView.Closed += (s, e) =>
+                    {
+                        _balloonView = null;
+                        _balloonViewModel = null;
+                    };
+                }
             }
             catch (Exception ex)
             {
@@ -34,30 +44,15 @@ namespace DiGit.Helpers
             }
         }
 
-        //private void ShowUpdateAvailableBalloon()
-        //{
-        //    NotifyBalloonView balloonView = new NotifyBalloonView();
-        //    NotifyBalloonViewModel balloonViewModel = new NotifyBalloonViewModel()
-        //    {
-        //        Header = "DiGit update available",
-        //        Message = $"Version {UpdateManager.LastVersionInfo.version} found. Click for more details.",
-        //        NotesText = $"Current version: {AppInfo.AppVersionString}"
-        //    };
-        //    balloonView.DataContext = balloonViewModel;
-        //    balloonViewModel.ClickCommand = new ShowSingleViewCommand(typeof(UpdateView));
-
-        //    _taskbarIcon.ShowCustomBalloon(balloonView, PopupAnimation.Slide, 5000);
-        //}
-
         private static void ShowNotification()
         {
-            if (!_balloonView.Dispatcher.CheckAccess())
+            if (ThreadHelper.NeedInvoke())
             {
-                _balloonView.Dispatcher.Invoke(
-                    DispatcherPriority.Normal,
-                        new Action(ShowNotification));
+                ThreadHelper.InvokeOnUiThread(new Action(ShowNotification));
                 return;
             }
+
+            InitView();
 
             _balloonViewModel.ClickCommand = Command;
             _balloonViewModel.Header = Header;
@@ -65,7 +60,9 @@ namespace DiGit.Helpers
             _balloonViewModel.Duration = Duration;
 
             _balloonViewModel.StartShow();
+
         }
+        
 
         public static void ShowNotification(string header, string message, ICommand clickCommand)
         {
