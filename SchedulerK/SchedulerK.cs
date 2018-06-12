@@ -223,8 +223,7 @@ namespace SchedulerK
 
         private void OnEventActivated(IEventClass evt)
         {
-            if (TimerElapsedEvent != null)
-                TimerElapsedEvent(this, evt);
+            TimerElapsedEvent?.Invoke(this, evt);
         }
 
         void timer_Elapsed(object sender, ElapsedEventArgs e)

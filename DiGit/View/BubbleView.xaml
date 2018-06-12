@@ -232,6 +232,8 @@
                     <Separator/>
                     <MenuItem Template="{DynamicResource MenuItemBubbleVisualSettingsControlTemplate}"/>
                     <Separator/>
+                    <MenuItem Header="About..." Command="{Binding ShowAboutCommand}"/>
+                    <Separator/>
                     <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
                 </ContextMenu>
             </Border.ContextMenu>

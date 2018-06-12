@@ -36,6 +36,14 @@ namespace DiGit.Configuration {
         
         private bool isBetaUserField;
         
+        private System.DateTime versionUpdatedField;
+        
+        private bool versionUpdatedFieldSpecified;
+        
+        private System.DateTime lastUpdatedField;
+        
+        private bool lastUpdatedFieldSpecified;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("Repository", IsNullable=false)]
         public DiGitConfigRepository[] Repositories {
@@ -98,6 +106,50 @@ namespace DiGit.Configuration {
             }
             set {
                 this.isBetaUserField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public System.DateTime versionUpdated {
+            get {
+                return this.versionUpdatedField;
+            }
+            set {
+                this.versionUpdatedField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool versionUpdatedSpecified {
+            get {
+                return this.versionUpdatedFieldSpecified;
+            }
+            set {
+                this.versionUpdatedFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public System.DateTime lastUpdated {
+            get {
+                return this.lastUpdatedField;
+            }
+            set {
+                this.lastUpdatedField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool lastUpdatedSpecified {
+            get {
+                return this.lastUpdatedFieldSpecified;
+            }
+            set {
+                this.lastUpdatedFieldSpecified = value;
             }
         }
     }

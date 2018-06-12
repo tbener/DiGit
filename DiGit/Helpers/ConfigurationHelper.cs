@@ -66,9 +66,10 @@ namespace DiGit.Helpers
         private static void Upgrade()
         {
             bool isUpgrade = false;
+            bool isNew = _configRoot.ver == null;
 
             Version prevVer;
-            if (Version.TryParse(_configRoot.ver, out prevVer))
+            if (!isNew && Version.TryParse(_configRoot.ver, out prevVer))
             {
                 if (AppInfo.AppVersion.Build > Version.Parse(_configRoot.ver).Build)
                 {
@@ -76,6 +77,14 @@ namespace DiGit.Helpers
                     new ShowSingleViewCommand(typeof(TipsView)).Execute(null);
                 }
             }
+
+            if (isNew || isUpgrade)
+            {
+                _configRoot.versionUpdated = DateTime.Now;
+                _configRoot.versionUpdatedSpecified = true;
+            }
+
+            _configRoot.ver = AppInfo.AppVersion.ToString();
 
             if (_configRoot.Settings == null)
                 _configRoot.Settings = new DiGitConfigSettings();
@@ -98,7 +107,8 @@ namespace DiGit.Helpers
                 };
             }
 
-            if (isUpgrade)
+            if (isNew || isUpgrade)
+            {
                 // Add Gated Checkin if not exists
                 if (!_configRoot.Commands.Any(cmd => cmd.header.StartsWith("Gated", StringComparison.CurrentCultureIgnoreCase)))
                 {
@@ -111,6 +121,7 @@ namespace DiGit.Helpers
                     });
                     _configRoot.Commands = listCommands.ToArray();
                 }
+            }
 
             if (_configRoot.Folders == null)
             {
@@ -147,14 +158,15 @@ namespace DiGit.Helpers
             if (file == "") file = ConfigFile;
             if (_configRoot == null)
             {
-                _configRoot = new DiGitConfig();
-                Upgrade();
+                CreateDefault();
             }
             try
             {
                 _configRoot.RepositoryList.ForEach(r => r.UpdateLocation());
                 _configRoot.Repositories = _configRoot.RepositoryList.ToArray();
                 _configRoot.Folders = FolderViewModel.FolderList.ToArray();
+                _configRoot.lastUpdated = DateTime.Now;
+                _configRoot.lastUpdatedSpecified = true;
                 return SerializeHelper.Save(_configRoot, file);
             }
             catch (Exception ex)

@@ -75,6 +75,8 @@
       </xs:sequence>
       <xs:attribute name="ver" type="xs:string" use="required" />
       <xs:attribute name="isBetaUser" type="xs:boolean" use="required" />
+      <xs:attribute name="versionUpdated" type="xs:dateTime" use="optional" />
+      <xs:attribute name="lastUpdated" type="xs:dateTime" use="optional" />
     </xs:complexType>
   </xs:element>
 </xs:schema>

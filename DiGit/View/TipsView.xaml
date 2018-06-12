@@ -36,9 +36,9 @@
                 <XmlDataProvider Source="/Versioning/DiGitVersionInfo.xml" XPath="DiGitVersionInfo" />
             </ScrollViewer.DataContext>
             <StackPanel DockPanel.Dock="Top">
-                <Expander Tag="1.0.216" IsExpanded="True" Header="New in 1.0.216">
+                <Expander Tag="1.0.218" IsExpanded="True" Header="New in 1.0.218">
                     <StackPanel Margin="30, 6">
-                        <ListView ItemsSource="{Binding XPath=./Version[@version\=\'1.0.216\']/*}">
+                        <ListView ItemsSource="{Binding XPath=./Version[@version\=\'1.0.218\']/*}">
                             <ListView.ItemTemplate>
                                 <DataTemplate >
                                     <BulletDecorator>

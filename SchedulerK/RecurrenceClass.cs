@@ -32,8 +32,7 @@ namespace SchedulerK
 
         public override void Activate()
         {
-            if (OnActivated != null)
-                OnActivated(this);
+            OnActivated?.Invoke(this);
             Compute();
         }
 
@@ -58,7 +57,7 @@ namespace SchedulerK
 
         public override string ToString()
         {
-            return string.Format("Recurrence, next event: {0}, every {1} ({2})", DateTimeEvent, Interval, Description);
+            return string.Format("Name: {2}. Recurrence, every {1}. Next event: {0}", DateTimeEvent.ToString("g"), Interval, Description);
         }
     }
 }

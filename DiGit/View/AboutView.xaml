@@ -21,6 +21,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="20"/>
                 <RowDefinition Height="20"/>
+                <RowDefinition Height="20"/>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
@@ -33,11 +34,23 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Version:" />
             <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Version}" />
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Author:" />
-            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Author}" />
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Author}"/>
+            <TextBlock Grid.Row="2" Grid.Column="1">
+                <TextBlock.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="mnuAddrepo" 
+                              Header="Copy Email Address" 
+                              Command="{Binding CopyEmailCommand}"/>
+                    </ContextMenu>
+                </TextBlock.ContextMenu>
+                <Hyperlink Command="{Binding EmailCommand}">
+                    <TextBlock Text="{Binding AuthorEmail}" />
+                </Hyperlink>
+            </TextBlock>
 
-            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Description}" VerticalAlignment="Center" />
+            <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Description}" VerticalAlignment="Center" />
 
-            <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
+            <StackPanel Orientation="Vertical" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
                 <TextBlock Text="{Binding UpdateInfo}"/>
                 <TextBlock>
                     <Hyperlink Command="{Binding ShowUpdateCommand}">

@@ -76,5 +76,13 @@ namespace DiGit.Model
                 return "Tal Bener (Allscripts)";
             }
         }
+
+        public static string AppAuthorEmail
+        {
+            get
+            {
+                return "tal.bener@allscripts.com";
+            }
+        }
     }
 }

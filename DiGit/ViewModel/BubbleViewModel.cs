@@ -39,6 +39,7 @@ namespace DiGit.ViewModel
         public ICommand ResetToDefaultPositionCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand AddRepoCommand { get; set; }
+        public ICommand ShowAboutCommand { get; set; }
 
         public ObservableCollection<ICommand> CommandsList { get; set; }
 
@@ -56,6 +57,7 @@ namespace DiGit.ViewModel
 
             HideAllCommand = new RelayCommand(() => BubblesManager.ShowAll(false), () => ConfigurationHelper.Configuration.RepositoryList.Any());
             ShowAllCommand = new RelayCommand(() => BubblesManager.ShowAll(true), () => ConfigurationHelper.Configuration.RepositoryList.Any());
+            ShowAboutCommand = new ShowSingleViewCommand(typeof(AboutView));
             ExitCommand = new ExitCommand();
 
             ShowHideMenuCommand = new RelayCommand(ShowHideMenu);

@@ -5,6 +5,7 @@ using DiGit.Versioning;
 using DiGit.View;
 using DiGit.ViewModel.Base;
 using DiGit.Helpers;
+using System.Windows;
 
 namespace DiGit.ViewModel
 {
@@ -12,6 +13,8 @@ namespace DiGit.ViewModel
     {
         public ICommand ShowUpdateCommand { get; set; }
         public ICommand OpenConfigFolderCommand { get; set; }
+        public ICommand EmailCommand { get; set; }
+        public ICommand CopyEmailCommand { get; set; }
 
         public AboutViewModel()
         {
@@ -28,6 +31,24 @@ namespace DiGit.ViewModel
                 {
                     Utils.OpenContainingFolder(ConfigurationHelper.ConfigFile);
                 });
+
+            EmailCommand = new RelayCommand(SendEmail);
+            CopyEmailCommand = new RelayCommand(CopyEmail);
+        }
+
+        public void SendEmail()
+        {
+            System.Diagnostics.Process.Start($"mailto:{AuthorEmail}");
+        }
+
+        public void CopyEmail()
+        {
+            Clipboard.SetText(AuthorEmail);
+        }
+
+        public string AuthorEmail
+        {
+            get { return AppInfo.AppAuthorEmail; }
         }
 
         public string Version

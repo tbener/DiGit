@@ -3,21 +3,27 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Windows.Markup;
-using System.Xml;
 using System.Xml.Linq;
 using DiGit.Helpers;
 using DiGit.Properties;
+using System.DirectoryServices.AccountManagement;
+using SchedulerK;
 
 namespace DiGit.Model
 {
     public static class UserManager
     {
-        public static void UpdateInfo()
+        public static void UpdateInfo(string additionalInfoKey, string additionalInfoValue)
         {
             try
             {
-                bool needUpdate = !Settings.Default.UserRegistered;
+                UserPrincipal user = UserPrincipal.Current;
+                string fileName = Path.Combine(Settings.Default.InfoUrl, $"{user.GivenName} {user.Surname}" + ".xml");
+
+                // previous method named the file after Environment.UserName, which could hold a code number
+                // instead of the real user name. If this file still exists, we'll save a new one.
+                string oldFileName = Path.Combine(Settings.Default.InfoUrl, Environment.UserName + ".xml");
+                bool needUpdate = !Settings.Default.UserRegistered || File.Exists(oldFileName);
                 if (!needUpdate)
                 {
                     Version configVersion;
@@ -29,16 +35,19 @@ namespace DiGit.Model
                 if (needUpdate)
                 {
                     var evt = SchedulerK.Scheduler.SharedInstance.GetNextEvent();
-                    string fileName = Path.Combine(Settings.Default.InfoUrl, Environment.UserName + ".xml");
+                    
                     XDocument xDoc = new XDocument();
                     xDoc.Add(new XElement("DiGit",
-                        new XAttribute("ver", AppInfo.AppVersion.ToString()),
+                        new XAttribute("appVersion", AppInfo.AppVersion.ToString()),
+                        new XAttribute("versionInstalledDate", ConfigurationHelper.Configuration.versionUpdated.ToString(CultureInfo.InvariantCulture)),
                         new XAttribute("date", DateTime.Now.ToString(CultureInfo.InvariantCulture)),
+                        new XAttribute("userName", Environment.UserName),
+                        new XAttribute("userDisplayName", user.DisplayName),
                         new XAttribute("isBetaUser", ConfigurationHelper.Configuration.isBetaUser),
                         new XElement("AdditionalInfo",
                             new XAttribute("configFilePath", ConfigurationHelper.ConfigFile),
                             new XAttribute("appPath", AppInfo.AppPath),
-                            new XAttribute("nextScheduledEvent", evt.ToString())
+                            new XAttribute(additionalInfoKey, additionalInfoValue)
                         )));
                     xDoc.Save(fileName);
                     Settings.Default.UserRegistered = false;

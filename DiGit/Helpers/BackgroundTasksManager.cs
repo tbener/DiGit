@@ -17,23 +17,25 @@ namespace DiGit.Helpers
         {
             Scheduler sch = Scheduler.SharedInstance;
             sch.TimerElapsedEvent += SchedulerOnTimerElapsedEvent;
-
+            
             // Daily update check
             // Check for updates a few seconds after startup and then every day on the same time
             RecurrenceClass rec = new RecurrenceClass(new TimeSpan(1, 0, 0, 0), DateTime.Now.AddSeconds(Settings.Default.ReadInfoDelaySec))
             {
-                Description = "Check update"
+                Description = "Check update",
+                Tag = "check_update"
             };
-            rec.OnActivated += @class => UpdateManager.CheckRemoteAsync();
+            //rec.OnActivated += @class => UpdateManager.CheckRemoteAsync();
+            rec.OnActivated += RecurrenceCheckUpdate_OnActivated;
             sch.Add(rec);
 
-            // Update user info on server a few seconds after startup
-            EventClass evt = new EventClass(DateTime.Now.AddSeconds(Settings.Default.WriteInfoDelaySec))
-            {
-                Description = "Update user info"
-            };
-            evt.OnActivated += @class => Task.Factory.StartNew(UserManager.UpdateInfo).ContinueWith(task => ConfigurationHelper.Configuration.ver = AppInfo.AppVersion.ToString());
-            sch.Add(evt);
+            //// Update user info on server a few seconds after startup
+            //EventClass evt = new EventClass(DateTime.Now.AddSeconds(Settings.Default.WriteInfoDelaySec))
+            //{
+            //    Description = "Update user info"
+            //};
+            //evt.OnActivated += @class => Task.Factory.StartNew(UserManager.UpdateInfo).ContinueWith(task => ConfigurationHelper.Configuration.ver = AppInfo.AppVersion.ToString());
+            //sch.Add(evt);
 
             sch.Start();
 
@@ -58,6 +60,18 @@ namespace DiGit.Helpers
              */
         }
 
+        private static void RecurrenceCheckUpdate_OnActivated(IEventClass evt)
+        {
+            //When to check for updates:
+            // On the first day - every hour.
+            // After that - every day.
+            evt.Interval = ConfigurationHelper.Configuration.versionUpdated.AddDays(1) > DateTime.Now ? new TimeSpan(0, 1, 0, 0) : new TimeSpan(1, 0, 0, 0);
+            evt.Compute();
+
+            UserManager.UpdateInfo("nextScheduledEvent", evt.ToString());
+            UpdateManager.CheckRemoteAsync();
+        }
+
         private static void SchedulerOnTimerElapsedEvent(object sender, IEventClass evt)
         {
             Scheduler s = Scheduler.SharedInstance;
@@ -65,6 +79,8 @@ namespace DiGit.Helpers
             string message = string.Format("Next event: '{0}' on {1}", nextEvent.Description,
                 evt.DateTimeEvent.ToString("g"));
             UserManager.AddLog("Scheduler event", evt.Description, message);
+
+            
         }
     }
 }
