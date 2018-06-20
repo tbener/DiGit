@@ -39,7 +39,7 @@
                 <TextBlock.ContextMenu>
                     <ContextMenu>
                         <MenuItem x:Name="mnuAddrepo" 
-                              Header="Copy Email Address" 
+                              Header="Copy" 
                               Command="{Binding CopyEmailCommand}"/>
                     </ContextMenu>
                 </TextBlock.ContextMenu>

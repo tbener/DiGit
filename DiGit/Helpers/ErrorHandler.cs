@@ -31,8 +31,9 @@ namespace DiGit.Helpers
 //                    Msg.ShowE(error, "THIS MESSAGE IS DISPLAYED ONLY IN DEBUG MODE\n");
 //#endif
 
-            if (evtLogException != null)
-                Msg.ShowE(evtLogException, "An error occured while trying to write to Event Log.");
+            // TODO: document this error!!
+            //if (evtLogException != null)
+            //    Msg.ShowE(evtLogException, "An error occured while trying to write to Event Log.");
 
             return error;
         }

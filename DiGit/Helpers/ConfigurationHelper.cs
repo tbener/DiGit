@@ -78,7 +78,7 @@ namespace DiGit.Helpers
                 }
             }
 
-            if (isNew || isUpgrade)
+            if (isNew || isUpgrade || !_configRoot.versionUpdatedSpecified)
             {
                 _configRoot.versionUpdated = DateTime.Now;
                 _configRoot.versionUpdatedSpecified = true;
