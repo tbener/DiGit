@@ -43,6 +43,7 @@ namespace DiGit.Model
                         new XAttribute("date", DateTime.Now.ToString(CultureInfo.InvariantCulture)),
                         new XAttribute("userName", Environment.UserName),
                         new XAttribute("userDisplayName", user.DisplayName),
+                        new XAttribute("userEmail", user.EmailAddress),
                         new XAttribute("isBetaUser", ConfigurationHelper.Configuration.isBetaUser),
                         new XElement("AdditionalInfo",
                             new XAttribute("configFilePath", ConfigurationHelper.ConfigFile),

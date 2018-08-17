@@ -2,7 +2,7 @@
 
 <?define UpgradeCode=60cdae80-62eb-4d2f-bc41-f3ab3c1ceb61?>
 <!--<?define VERSION=!(bind.FileVersion.$(var.DiGit.TargetFileName))?>-->
-<?define VERSION=1.0.218?>
+<?define VERSION=1.0.219?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product Id="*" Name="DiGit" Language="1033" Version="$(var.VERSION)" Manufacturer="Tal Bener (Allscripts)" UpgradeCode="$(var.UpgradeCode)">
