@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="ConfigFilePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">DiGit.xml</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="InfoUrl" Type="System.String" Scope="User">
       <Value Profile="(Default)">O:\dbMotion-Development\dbMotion 2005\Dev\TalB\DiGit\Info</Value>

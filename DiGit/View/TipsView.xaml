@@ -11,7 +11,7 @@
                   Title="DiGit"
                   Style="{StaticResource BlankWindow}" WindowStartupLocation="CenterScreen" Icon="/DiGit;component/Resources/Images/App.ico" Topmost="True" d:DesignHeight="696">
     <mui:ModernWindow.Resources>
-        <c:VersionToBooleanConverter x:Key="VersionConverter"/>
+        <!--<c:VersionToBooleanConverter x:Key="VersionConverter"/>-->
 
         <Style TargetType="Expander">
             <Setter Property="Margin" Value="0 14"/>

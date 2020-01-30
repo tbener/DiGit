@@ -8,6 +8,7 @@ using DiGit.View;
 using DiGit.ViewModel;
 using System.Linq;
 using System.Collections.Generic;
+using System.IO;
 
 namespace DiGit.Helpers
 {
@@ -16,6 +17,8 @@ namespace DiGit.Helpers
 
     public static class ConfigurationHelper
     {
+        // My Documents\DiGit\DiGit.xml
+        private static readonly string DEFAULT_FILE = PathHelper.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.Personal), @"DiGit\DiGit.xml");
 
         private static DiGitConfig _configRoot = null;
 
@@ -24,7 +27,11 @@ namespace DiGit.Helpers
         public static string ConfigFile
         {
             get { return PathHelper.GetFullPath(Settings.Default.ConfigFilePath); }
-            set { Settings.Default.ConfigFilePath = value; }
+            set
+            {
+                Settings.Default.ConfigFilePath = value;
+                Settings.Default.Save();
+            }
         }
 
         public static DiGitConfig Configuration
@@ -38,15 +45,41 @@ namespace DiGit.Helpers
             }
         }
 
+        public static void LoadOrCreate()
+        {
+            // try loading the last saved file
+            if (TryLoad())
+                return;
+
+            // try loading the default file
+            ConfigFile = DEFAULT_FILE;
+            if (TryLoad())
+                return;
+
+            // create new file and save as default file
+            CreateDefault();
+            Save();
+        }
+
         public static void CreateDefault()
         {
             _configRoot = new DiGitConfig();
             Upgrade();
         }
 
+        private static bool TryLoad()
+        {
+            if (!string.IsNullOrEmpty(ConfigFile) && File.Exists(ConfigFile))
+            {
+                return Load(ConfigFile, false);
+            }
+            return false;
+        }
+
         public static bool Load(string file = "", bool showErr = true)
         {
-            if (file == "") file = ConfigFile;
+            if (file == "")
+                file = ConfigFile;
             try
             {
                 _configRoot = SerializeHelper.Load(typeof(DiGitConfig), file) as DiGitConfig;
@@ -188,7 +221,10 @@ namespace DiGit.Helpers
 
         public static bool Save(string file = "")
         {
-            if (file == "") file = ConfigFile;
+            if (file == "")
+                file = ConfigFile;
+            if (!Directory.Exists(Path.GetDirectoryName(file)))
+                Directory.CreateDirectory(Path.GetDirectoryName(file));
             if (_configRoot == null)
             {
                 CreateDefault();

@@ -20,8 +20,7 @@ namespace DiGit
             string step = "Load configuration";
             try
             {
-                if (!ConfigurationHelper.Load("", false))
-                    ConfigurationHelper.CreateDefault();
+                ConfigurationHelper.LoadOrCreate();
 
                 step = "Read repositories";
                 RepositoriesManager.ReadRepositories(false);
