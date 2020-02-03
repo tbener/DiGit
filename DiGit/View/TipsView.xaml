@@ -4,14 +4,15 @@
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                   xmlns:mui="http://firstfloorsoftware.com/ModernUI"
-                  xmlns:c="clr-namespace:DiGit.Converters"
                   mc:Ignorable="d" 
                   Width="640" 
                   Height="640"
                   Title="DiGit"
-                  Style="{StaticResource BlankWindow}" WindowStartupLocation="CenterScreen" Icon="/DiGit;component/Resources/Images/App.ico" Topmost="True" d:DesignHeight="696">
+                  Style="{StaticResource BlankWindow}" 
+                  WindowStartupLocation="CenterScreen" 
+                  Icon="/DiGit;component/Resources/Images/App.ico" 
+                  Topmost="True" d:DesignHeight="696">
     <mui:ModernWindow.Resources>
-        <!--<c:VersionToBooleanConverter x:Key="VersionConverter"/>-->
 
         <Style TargetType="Expander">
             <Setter Property="Margin" Value="0 14"/>
