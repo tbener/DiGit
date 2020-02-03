@@ -35,5 +35,11 @@
     <Setting Name="FoldersMRU" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">10</Value>
     </Setting>
+    <Setting Name="DiGitCommandID_Template" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">digit-command-{0}</Value>
+    </Setting>
+    <Setting Name="DiGitCommandID_Prefix" Type="System.String" Scope="User">
+      <Value Profile="(Default)">digit-command</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

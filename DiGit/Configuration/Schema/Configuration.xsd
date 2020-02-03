@@ -48,6 +48,7 @@
             <xs:sequence>
               <xs:element maxOccurs="unbounded" name="Command">
                 <xs:complexType>
+                  <xs:attribute name="id" type="xs:string" use="optional" />
                   <xs:attribute name="header" type="xs:string" use="required" />
                   <xs:attribute name="fileName" type="xs:string" use="required" />
                   <xs:attribute name="arguments" type="xs:string" use="optional" />

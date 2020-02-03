@@ -12,6 +12,7 @@ using DiGit.View;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.IO;
+using DiGit.Versioning;
 
 namespace DiGit.ViewModel
 {
@@ -40,8 +41,7 @@ namespace DiGit.ViewModel
         public ICommand DeleteCommand { get; set; }
         public ICommand AddRepoCommand { get; set; }
         public ICommand ShowAboutCommand { get; set; }
-
-        public ObservableCollection<ICommand> CommandsList { get; set; }
+        public ICommand ShowUpdateCommand { get; set; }
 
         public BubbleViewModel(Repository repo)
             : base(repo)
@@ -61,13 +61,12 @@ namespace DiGit.ViewModel
             ExitCommand = new ExitCommand();
 
             ShowHideMenuCommand = new RelayCommand(ShowHideMenu);
+            ShowUpdateCommand = new ShowSingleViewCommand(typeof(UpdateView));
 
             CurrentBranch = repo.Head.Name;
             var repoTracker = new RepoTracker(repo);
             repoTracker.OnLockFileChanged += (s, e) => { OnPropertyChanged("LockExists"); };
             repoTracker.OnBranchChanged += (s, e) => Refresh();
-
-            //CommandsList = CreateCommandList();
 
             ConfigurationHelper.Configuration.Settings.Bubbles.PropertyChanged += (sender, args) =>
             {
@@ -94,6 +93,11 @@ namespace DiGit.ViewModel
             {
                 OnPropertyChanged("FavoriteFoldersViewModels");
                 OnPropertyChanged("RecentFoldersViewModels");
+            };
+            
+            UpdateManager.OnUpdateInfoChanged += (sender, args) =>
+            {
+                OnPropertyChanged("ShowUpdateIcon");
             };
 
         }
@@ -165,15 +169,12 @@ namespace DiGit.ViewModel
 
         public void Start(Window view)
         {
-            //BubblesManager.ShowView(view, true);
             HideCommand = new RelayCommand(() => BubblesManager.ShowView(view, false));
             HideAllButThisCommand = new RelayCommand(() => BubblesManager.HideAllButThis(view));
             view.LocationChanged += (s, e) =>
             {
                 if (((BubbleView)s).IsLoaded)
                     _flagMoved = true;
-                //BubbleView view1 = s as BubbleView;
-                //if (view1 != null) Status = string.Format("{0}, {1}", view1.Left.ToString(), view1.Top.ToString());
             };
 
             _flagMoved = false;
@@ -186,7 +187,6 @@ namespace DiGit.ViewModel
                 _flagMoved = false;
                 return;
             }
-            //CommandsListViewModel.IsShowMenu = !CommandsListViewModel.IsShowMenu;
 
             IsShowMenu = !IsShowMenu;
 
@@ -256,6 +256,8 @@ namespace DiGit.ViewModel
                 if (value) BubblesManager.Arrange();
             }
         }
+
+        public bool ShowUpdateIcon { get { return UpdateManager.UpdateRequired; } }
 
     }
 }

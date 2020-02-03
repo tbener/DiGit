@@ -109,6 +109,9 @@ namespace DiGit.Helpers
 
             if (isNew || isUpgrade)
             {
+                // v1.0.218
+                // add gated push
+
                 // Add Gated Checkin if not exists
                 if (!_configRoot.Commands.Any(cmd => cmd.header.StartsWith("Gated", StringComparison.CurrentCultureIgnoreCase)))
                 {
@@ -117,11 +120,32 @@ namespace DiGit.Helpers
                     {
                         header = "Gated Push",
                         arguments = "{rep_path}",
-                        fileName = @"C:\Program Files\Gated Client\Gated CheckIn Client.exe"
+                        fileName = @"C:\Program Files\Gated Updater\Gated Updater.exe"
                     });
                     _configRoot.Commands = listCommands.ToArray();
                 }
+
+                // v1.0.220
+                // this is where we first add ID to command
+                // in addtion, the gated push command path has changed
+
+                // if there is no command with id (if at least one with ID we assume it's been handled)
+                if (!_configRoot.Commands.Any(cmd => cmd.id != null))
+                {
+                    SetDiGitID("Switch");
+                    SetDiGitID("Push");
+                    SetDiGitID("Pull");
+                    SetDiGitID("Commit");
+                    SetDiGitID("Merge");
+                    SetDiGitID("Show log", "showlog");
+                    SetDiGitID("Sync");
+
+                    DiGitConfigCommand cmdGated = SetDiGitID("Gated");
+                    if (cmdGated != null)
+                        cmdGated.fileName = @"C:\Program Files\Gated Updater\Gated Updater.exe";
+                }
             }
+
 
             if (_configRoot.Folders == null)
             {
@@ -140,6 +164,15 @@ namespace DiGit.Helpers
                 _configRoot.Settings.Bubbles.Opacity = _configRoot.Settings.VisualSettings._bubblesOpacity;
                 _configRoot.Settings.VisualSettings = null;
             }
+        }
+
+        private static DiGitConfigCommand SetDiGitID(string headerKey, string id = "")
+        {
+            if (id == "") id = headerKey.ToLower();
+            DiGitConfigCommand cmd = _configRoot.Commands.First(c => c.header.StartsWith(headerKey));
+            if (cmd != null) cmd.id = string.Format(Settings.Default.DiGitCommandID_Template, id);
+
+            return cmd;
         }
 
         private static DiGitConfigCommand GetUserCommand(string header, string cmd)

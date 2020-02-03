@@ -426,6 +426,8 @@ namespace DiGit.Configuration {
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     public partial class DiGitConfigCommand {
         
+        private string idField;
+        
         private string headerField;
         
         private string fileNameField;
@@ -437,6 +439,17 @@ namespace DiGit.Configuration {
         private string optionsField;
         
         private string helpTextField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]

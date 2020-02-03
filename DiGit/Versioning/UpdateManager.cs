@@ -36,6 +36,7 @@ namespace DiGit.Versioning
             UserManager.AddLog("Check Update", "Start");
             try
             {
+                //NotificationHelper.ShowNotification("DiGit is checking for updates...", $"Current version: {AppInfo.AppVersionString}.\nClick to open the Update window.", new ShowSingleViewCommand(typeof(UpdateView)));
                 LastReadError = null;
                 OnUpdateInfoChanged?.Invoke(null, new EventArgs());
                 string file = GetFileName();

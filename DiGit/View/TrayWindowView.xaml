@@ -9,7 +9,7 @@
     <Grid>
         <tb:TaskbarIcon
                   x:Name="TaskbarIcon"
-                  IconSource="/Resources/Images/App.ico"
+                  IconSource="{Binding TrayIcon}"
                   MenuActivation="RightClick"
                   ToolTipText="{Binding ToolTipText}"
                   LeftClickCommand="{Binding LeftClickCommand}"

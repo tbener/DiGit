@@ -64,11 +64,12 @@ namespace DiGit.Helpers
         }
         
 
-        public static void ShowNotification(string header, string message, ICommand clickCommand)
+        public static void ShowNotification(string header, string message, ICommand clickCommand, int duration=5)
         {
             Command = clickCommand;
             Header = header;
             Message = message;
+            Duration = duration;
 
             ShowNotification();
         }

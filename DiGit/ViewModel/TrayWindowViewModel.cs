@@ -14,6 +14,11 @@ using DiGit.View.NotifyIconBalloons;
 using DiGit.ViewModel.NotifyIconBalloons;
 using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
+using System.Drawing;
+using System.Windows.Shell;
+using System.Windows.Media;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
 
 namespace DiGit.ViewModel
 {
@@ -107,9 +112,27 @@ namespace DiGit.ViewModel
 
 #if DEBUG
                 // ShowBalloonTip doesn't work in Windows 10
-                _taskbarIcon.ShowBalloonTip("Checking for updates...", "", BalloonIcon.Info);
+                //_taskbarIcon.ShowBalloonTip("Checking for updates...", "", BalloonIcon.Info);
 #endif
             };
+
+
+            /// Code for icon overlay ???
+
+            //RectangleF rectF = new RectangleF(0, 0, 40, 40);
+            //Bitmap bitmap = new Bitmap(40, 40, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            //Graphics g = Graphics.FromImage(bitmap);
+            //g.FillRectangle(System.Drawing.Brushes.White, 0, 0, 40, 40);
+            //g.DrawString("5", new Font("Arial", 25), System.Drawing.Brushes.Black, new PointF(0, 0));
+
+            //IntPtr hBitmap = bitmap.GetHbitmap();
+
+            //ImageSource wpfBitmap =
+            //    Imaging.CreateBitmapSourceFromHBitmap(
+            //        hBitmap, IntPtr.Zero, Int32Rect.Empty,
+            //        BitmapSizeOptions.FromEmptyOptions());
+
+            //TaskbarItemInfo.Overlay = wpfBitmap;
 
         }
 
@@ -141,6 +164,14 @@ namespace DiGit.ViewModel
             get
             {
                 return string.Format("{0} {1}{2}", AppInfo.AppName, AppInfo.AppVersionString, UpdateManager.UpdateAvailable ? " (update available)" : "");
+            }
+        }
+
+        public string TrayIcon
+        {
+            get
+            {
+                return string.Format("/Resources/Images/{0}", UpdateManager.UpdateAvailable ? "AppUpdate.png" : "App.ico");
             }
         }
 

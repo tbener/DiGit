@@ -154,5 +154,26 @@ namespace DiGit.Properties {
                 this["FoldersMRU"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("digit-command-{0}")]
+        public string DiGitCommandID_Template {
+            get {
+                return ((string)(this["DiGitCommandID_Template"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("digit-command")]
+        public string DiGitCommandID_Prefix {
+            get {
+                return ((string)(this["DiGitCommandID_Prefix"]));
+            }
+            set {
+                this["DiGitCommandID_Prefix"] = value;
+            }
+        }
     }
 }
