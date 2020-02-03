@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?define UpgradeCode=60cdae80-62eb-4d2f-bc41-f3ab3c1ceb61?>
 <!--<?define VERSION=!(bind.FileVersion.$(var.DiGit.TargetFileName))?>-->
-<?define VERSION=1.0.219?>
-
+<?define VERSION=1.0.220?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product Id="*" Name="DiGit" Language="1033" Version="$(var.VERSION)" Manufacturer="Tal Bener (Allscripts)" UpgradeCode="$(var.UpgradeCode)">
-    <Package InstallerVersion="200" Compressed="yes" ReadOnly="no"/>
+    <Package InstallerVersion="200" Compressed="yes" ReadOnly="no" />
     <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
     <Upgrade Id="$(var.UpgradeCode)">
-      <UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" OnlyDetect="no" RemoveFeatures="ALL"
-                      IncludeMaximum="no"
-                      IncludeMinimum ="yes" Minimum="0.0.0.0" />
+      <UpgradeVersion Property="PREVIOUSVERSIONSINSTALLED" OnlyDetect="no" RemoveFeatures="ALL" IncludeMaximum="no" IncludeMinimum="yes" Minimum="0.0.0.0" />
     </Upgrade>
     <InstallExecuteSequence>
       <FindRelatedProducts Before="LaunchConditions" />
@@ -26,20 +22,17 @@
       <ComponentRef Id="comp_C1C379DA_9F57_48C8_841C_273DB059490B" />
       <ComponentRef Id="comp_dir_17A601CA_C3E2_4C0D_8FC5_232AB93CB4F4" />
       <ComponentGroupRef Id="DiGit.Binaries" />
-      <ComponentRef Id="comp_47C72752_C371_4BF0_BF47_F9ECA618DB98" />
       <ComponentGroupRef Id="RegistryGroup" />
       <ComponentRef Id="NotifyIconWpf" />
       <ComponentRef Id="BondTech.HotKeyManagement.WPF.4" />
       <ComponentRef Id="comp_16403C2F_39B8_49FE_823E_F3FB436BE570" />
-      <ComponentRef Id="SystemWindowsInteractivity" />
       <ComponentRef Id="FirstFloorModernUI" />
       <ComponentRef Id="comp_36DAB21D_1AA9_4E56_A785_56C322F18E2A" />
       <ComponentRef Id="comp_5C79D5B1_69AF_4FEE_AF5A_B6F41559F9AB" />
       <ComponentRef Id="comp_2AAD3D30_F6F3_4CD4_8E14_21DBF5C45307" />
-      <ComponentRef Id="digit_version_log" />
+      <ComponentRef Id="comp_47C72752_C371_4BF0_BF47_F9ECA618DB98" />
       <ComponentRef Id="SchedulerK" />
-      <ComponentRef Id="Microsoft.Expression.Interactions" />
-      <ComponentRef Id="Microsoft.Expression.Effects" />
+      <ComponentRef Id="Microsoft.Xaml.Behaviors" />
     </Feature>
     <Property Id="WixShellExecTarget" Value="[TARGETDIR]$(var.DiGit.TargetFileName)" />
     <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
@@ -73,9 +66,7 @@
     <UIRef Id="WelcomeDlg" />
     <UIRef Id="ProgressDlg" />
     <UI Id="LaunchApplication">
-      <Publish Dialog="FinishedForm" Control="CloseButton" Event="DoAction" Value="LaunchApplication">
-        <![CDATA[NOT Remove]]>
-      </Publish>
+      <Publish Dialog="FinishedForm" Control="CloseButton" Event="DoAction" Value="LaunchApplication"><![CDATA[NOT Remove]]></Publish>
     </UI>
     <UI Id="Base">
       <Property Id="VSDNETURLMSG" Value="This setup requires the .NET Framework version [1].  Please install the .NET Framework and run this setup again.  The .NET Framework can be obtained from the web.  Would you like to do this now?" />
@@ -363,9 +354,6 @@
           <Component Id="comp_36DAB21D_1AA9_4E56_A785_56C322F18E2A" Guid="F3082E30-E702-4E4A-82F1-E1C3A99168BA" Permanent="no" SharedDllRefCount="no" Transitive="no">
             <File Id="_EFA075F8_C003_4EE2_B4D1_8B48CA0233B5" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="DiGit.ico" Source="..\DiGit\Resources\Images\App.ico" KeyPath="yes" />
           </Component>
-          <Component Id="digit_version_log" Guid="*">
-            <File Id="digit_version_log" Source="..\DiGit\Resources\Version log.txt" KeyPath="yes" />
-          </Component>
           <Directory Id="dir_4A9B099B_DDBB_4B04_8DC1_4DE3E1AA421E" Name="Help">
             <Component Id="comp_5C79D5B1_69AF_4FEE_AF5A_B6F41559F9AB" Guid="C10CD220-E318-4468-A3FA-C5B7005588D4" Permanent="no" SharedDllRefCount="no" Transitive="no">
               <File Id="_10A93B21_D15C_4DAC_B297_67F79D68930F" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="DiGit preview.bmp" Source="Resources\DiGit preview.bmp" KeyPath="yes" />
@@ -402,20 +390,14 @@
           <Component Id="FirstFloorModernUI">
             <File Source="$(var.DiGit.TargetDir)\FirstFloor.ModernUI.dll" KeyPath="yes" />
           </Component>
-          <Component Id="SystemWindowsInteractivity">
-            <File Source="$(var.DiGit.TargetDir)\System.Windows.Interactivity.dll" KeyPath="yes" />
-          </Component>
           <Component Id="BondTech.HotKeyManagement.WPF.4">
             <File Source="$(var.BondTech.HotKeyManagement.WPF.4.TargetPath)" KeyPath="yes" />
           </Component>
           <Component Id="SchedulerK">
             <File Source="$(var.DiGit.TargetDir)\SchedulerK.dll" KeyPath="yes" />
           </Component>
-          <Component Id="Microsoft.Expression.Interactions">
-            <File Source="$(var.DiGit.TargetDir)\Microsoft.Expression.Interactions.dll" KeyPath="yes" />
-          </Component>
-          <Component Id="Microsoft.Expression.Effects">
-            <File Source="$(var.DiGit.TargetDir)\Microsoft.Expression.Effects.dll" KeyPath="yes" />
+          <Component Id="Microsoft.Xaml.Behaviors">
+            <File Source="$(var.DiGit.TargetDir)\Microsoft.Xaml.Behaviors.dll" KeyPath="yes" />
           </Component>
         </Directory>
       </Directory>

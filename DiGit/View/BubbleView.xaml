@@ -1,8 +1,7 @@
 ﻿<Window  x:Class="DiGit.View.BubbleView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        xmlns:model="clr-namespace:DiGit.Model"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         Title="BubbleView" Height="200" Width="160" 
         Topmost="True"
         
@@ -15,13 +14,8 @@
         x:Name="BubbleWindow"
         >
     <Window.Resources>
-
         <ContextMenu Style="{StaticResource ContextMenuCommandsStyleTest}" x:Key="CommandsContextMenu" Opened="CommandsContextMenu_Opened" Closed="CommandsContextMenu_Closed" ItemsSource="{Binding UserCommandList}"/>
-
-
     </Window.Resources>
-
-
 
     <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>

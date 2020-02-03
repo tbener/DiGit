@@ -58,7 +58,6 @@ namespace DiGit.Helpers
 
             // create new file and save as default file
             CreateDefault();
-            Save();
         }
 
         public static void CreateDefault()

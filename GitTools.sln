@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiGit", "DiGit\DiGit.csproj", "{F16EE2C0-7F23-425A-B5E3-348ABBC47249}"
 EndProject
@@ -152,7 +152,6 @@ Global
 		{17D18CA0-DCA7-4690-8C93-D7F3F2CA5E0D}.CD_ROM|x86.Build.0 = Release|x86
 		{17D18CA0-DCA7-4690-8C93-D7F3F2CA5E0D}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{17D18CA0-DCA7-4690-8C93-D7F3F2CA5E0D}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{17D18CA0-DCA7-4690-8C93-D7F3F2CA5E0D}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{17D18CA0-DCA7-4690-8C93-D7F3F2CA5E0D}.Debug|x86.ActiveCfg = Debug|x86
 		{17D18CA0-DCA7-4690-8C93-D7F3F2CA5E0D}.Debug|x86.Build.0 = Debug|x86
 		{17D18CA0-DCA7-4690-8C93-D7F3F2CA5E0D}.DVD-5|Any CPU.ActiveCfg = Release|x86
@@ -162,6 +161,7 @@ Global
 		{17D18CA0-DCA7-4690-8C93-D7F3F2CA5E0D}.DVD-5|x86.ActiveCfg = Debug|x86
 		{17D18CA0-DCA7-4690-8C93-D7F3F2CA5E0D}.DVD-5|x86.Build.0 = Debug|x86
 		{17D18CA0-DCA7-4690-8C93-D7F3F2CA5E0D}.Release|Any CPU.ActiveCfg = Release|x86
+		{17D18CA0-DCA7-4690-8C93-D7F3F2CA5E0D}.Release|Any CPU.Build.0 = Release|x86
 		{17D18CA0-DCA7-4690-8C93-D7F3F2CA5E0D}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{17D18CA0-DCA7-4690-8C93-D7F3F2CA5E0D}.Release|Mixed Platforms.Build.0 = Release|x86
 		{17D18CA0-DCA7-4690-8C93-D7F3F2CA5E0D}.Release|x86.ActiveCfg = Release|x86
@@ -175,5 +175,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {970929CD-F2D1-4A3A-93D5-4B7C4B6164D1}
 	EndGlobalSection
 EndGlobal

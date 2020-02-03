@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
 using DiGit.Helpers;
 using System.Windows;
 using DiGit.Commands;
 using DiGit.Model;
 using DiGit.Versioning;
+using DiGit.Properties;
 
 namespace DiGit
 {
@@ -20,6 +19,14 @@ namespace DiGit
             string step = "Load configuration";
             try
             {
+                // need this to keep user settings from previous version
+                if (Settings.Default.UpdateRequired)
+                {
+                    Settings.Default.Upgrade();
+                    Settings.Default.UpdateRequired = false;
+                    Settings.Default.Save();
+                }
+
                 ConfigurationHelper.LoadOrCreate();
 
                 step = "Read repositories";
