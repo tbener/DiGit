@@ -1,0 +1,14 @@
+﻿Version upgrade check list:
+
+1. AssemblyInfo.cs
+2. Product.wxs
+3. Versioning\DiGitVersionInfo.xml
+4. View\TipsView.xaml - copy last section and change version in 3 places (if nothing special to present there it just takes from the file)
+
+5. run and check - the what's new window is expected to show on startup.
+6. build in Release!!!
+
+7. Copy the setup file from "C:\Users\tbener\Documents\GitHub\DiGit\DiGitSetup\bin\Release" to "O:\IT-Department\Software\Tools\DiGit"
+8. Update O:\dbMotion-Development\dbMotion 2005\Dev\TalB\DiGit\Info\DiGitVersionInfo.xml
+
+9. Start DiGit and verify the Popup appears and installation works.
