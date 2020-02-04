@@ -20,10 +20,10 @@ namespace DiGit
             try
             {
                 // need this to keep user settings from previous version
-                if (Settings.Default.UpdateRequired)
+                if (Settings.Default.SettingsUpgradeRequired)
                 {
                     Settings.Default.Upgrade();
-                    Settings.Default.UpdateRequired = false;
+                    Settings.Default.SettingsUpgradeRequired = false;
                     Settings.Default.Save();
                 }
 
