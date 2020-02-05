@@ -241,7 +241,14 @@ namespace DiGit.Configuration
 
         public void Apply()
         {
-            HotkeyHelper.RegisterHotkey(ModifierKeys, key);
+            try
+            {
+                HotkeyHelper.RegisterHotkey(ModifierKeys, key);
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Handle(ex, false);
+            }
         }
 
         private ModifierKeys ModifierKeys
