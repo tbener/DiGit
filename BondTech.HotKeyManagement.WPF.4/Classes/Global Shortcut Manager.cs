@@ -490,22 +490,30 @@ namespace BondTech.HotKeyManagement.WPF._4
         {
             if ((int)hwndSource.Handle != 0)
             {
+                // modified by tbener 2/2020 - fix bug - Marshal.GetLastWin32Error() returned unexplained error 8 (no more files...)
+                int modifier;
                 if (hotKey.Key == Keys.LWin && (hotKey.Modifier & ModifierKeys.Windows) == ModifierKeys.None)
-                    HelperMethods.RegisterHotKey(hwndSource.Handle, id, (int)(hotKey.Modifier | ModifierKeys.Windows), (int)hotKey.Key);
+                    modifier = (int)(hotKey.Modifier | ModifierKeys.Windows);
                 else
-                    HelperMethods.RegisterHotKey(hwndSource.Handle, id, (int)hotKey.Modifier, (int)(hotKey.Key));
+                    modifier = (int)hotKey.Modifier;
 
-                int error = Marshal.GetLastWin32Error();
-                if (error != 0)
+                int successIndicator = HelperMethods.RegisterHotKey(hwndSource.Handle, id, modifier, (int)(hotKey.Key));
+
+                if (successIndicator == 0)  // zero means error (tbener)
                 {
-                    if (!this.SuppressException)
+                    // we'll check GetLastWin32Error() only if RegisterHotKey returned 0
+                    int error = Marshal.GetLastWin32Error();
+                    if (error != 0)
                     {
-                        Exception e = new Win32Exception(error);
+                        if (!this.SuppressException)
+                        {
+                            Exception e = new Win32Exception(error);
 
-                        if (error == 1409)
-                            throw new HotKeyAlreadyRegisteredException(e.Message, hotKey, e);
-                        else if (error != 2)
-                            throw e;
+                            if (error == 1409)
+                                throw new HotKeyAlreadyRegisteredException(e.Message, hotKey, e);
+                            else if (error != 2)
+                                throw e;
+                        }
                     }
                 }
             }
