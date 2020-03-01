@@ -9,6 +9,7 @@ using DiGit.ViewModel;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using DiGit.Versioning;
 
 namespace DiGit.Helpers
 {
@@ -103,7 +104,7 @@ namespace DiGit.Helpers
             Version prevVer;
             if (!isNew && Version.TryParse(_configRoot.ver, out prevVer))
             {
-                if (AppInfo.AppVersion.Build > Version.Parse(_configRoot.ver).Build)
+                if (AppInfo.AppVersion.IsHigherThan(Version.Parse(_configRoot.ver)))
                 {
                     isUpgrade = true;
                     new ShowSingleViewCommand(typeof(TipsView)).Execute(null);

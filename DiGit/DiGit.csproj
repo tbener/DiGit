@@ -141,6 +141,7 @@
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
     <Compile Include="Versioning\DiGitVersionInfo.cs" />
+    <Compile Include="Versioning\ExtensionMethods.cs" />
     <Compile Include="Versioning\UpdateManager.cs" />
     <Compile Include="ViewModel\AboutViewModel.cs" />
     <Compile Include="ViewModel\Base\BaseDialogViewModel.cs" />

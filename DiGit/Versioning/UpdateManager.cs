@@ -8,8 +8,6 @@ using DiGit.Commands;
 using DiGit.Helpers;
 using DiGit.Model;
 using DiGit.Properties;
-using DiGit.Versioning;
-using DiGit.View;
 
 namespace DiGit.Versioning
 {
@@ -113,7 +111,7 @@ namespace DiGit.Versioning
             LastVersionInfo =
                 VersionInfo.Version.FirstOrDefault(v => v.version.Equals(VersionInfo.Version.Max(v1 => v1.version)));
             if (LastVersionInfo != null)
-                UpdateRequired = AppInfo.AppVersion.CompareTo(Version.Parse(LastVersionInfo.version)) < 0;
+                UpdateRequired = Version.Parse(LastVersionInfo.version).IsHigherThan(AppInfo.AppVersion);
             else
                 UpdateRequired = false;
             if (UpdateAvailable)
@@ -133,12 +131,12 @@ namespace DiGit.Versioning
         {
             Version versionToCompare = Version.Parse(AppInfo.AppVersion.ToString(3));
             var versions =
-                VersionInfo.Version.Where(v => Version.Parse(v.version).CompareTo(versionToCompare) > 0).ToList();
+                VersionInfo.Version.Where(v => Version.Parse(v.version).IsHigherThan(versionToCompare)).ToList();
 
             if (!versions.Any())
             {
                 // return a list with a single item - the same version
-                versions = VersionInfo.Version.Where(v => Version.Parse(v.version).CompareTo(versionToCompare) == 0).ToList();
+                versions = VersionInfo.Version.Where(v => Version.Parse(v.version).Equals(versionToCompare)).ToList();
             }
 
             return versions;
