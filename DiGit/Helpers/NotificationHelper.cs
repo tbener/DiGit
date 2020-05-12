@@ -62,7 +62,17 @@ namespace DiGit.Helpers
             _balloonViewModel.StartShow();
 
         }
-        
+
+        public static void ShowNotification(string header, string message, int duration = 5)
+        {
+            ICommand cmd = null;
+            ShowNotification(header, message, cmd, duration);
+        }
+
+        public static void ShowNotification(string header, string message, Type viewToShowOnClick, int duration = 5)
+        {
+            ShowNotification(header, message, new ShowSingleViewCommand(viewToShowOnClick), duration);
+        }
 
         public static void ShowNotification(string header, string message, ICommand clickCommand, int duration=5)
         {
