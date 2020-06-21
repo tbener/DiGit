@@ -30,7 +30,7 @@
                     <Separator/>
 
                     <MenuItem x:Name="MnuToggle" 
-                              Header="{Binding ShowHideHeader}" ToolTip="Ctrl+G"
+                              Header="{Binding ShowHideHeader}"
                               Command="{Binding LeftClickCommand}" FontWeight="Bold"/>
 
                     <MenuItem x:Name="MnuShow" 

@@ -239,15 +239,19 @@ namespace DiGit.Configuration
             Apply();
         }
 
-        public void Apply()
+        public void Apply(bool showNotification = true)
         {
             try
             {
                 HotkeyHelper.RegisterHotkey(ModifierKeys, key);
+                if (showNotification)
+                    NotificationHelper.ShowNotification("DiGit Hotkey", $"Hotkey set successfully.\nClick [{HotkeyHelper.HotkeyShortcut}] to show/hide bubbles.");
             }
             catch (Exception ex)
             {
                 ErrorHandler.Handle(ex, false);
+                if (showNotification)
+                    NotificationHelper.ShowNotification("DiGit Hotkey Error", "Show/hide hotkey not set");
             }
         }
 

@@ -5,6 +5,7 @@ using DiGit.Commands;
 using DiGit.Model;
 using DiGit.Versioning;
 using DiGit.Properties;
+using DiGit.View;
 
 namespace DiGit
 {
@@ -44,6 +45,8 @@ namespace DiGit
 
                 step = "Init Update Manager";
                 BackgroundTasksManager.Start();
+
+                NotificationHelper.ShowNotification("DiGit", $"DiGit {AppInfo.AppVersionString} has started successfully.", typeof(TipsView));
             }
             catch (Exception ex)
             {

@@ -124,7 +124,7 @@ namespace DiGit.Helpers
             if (_configRoot.Settings.ShowHideHotkey == null)
                 _configRoot.Settings.ShowHideHotkey = new DiGitConfigSettingsShowHideHotkey(ModifierKeys.Control | ModifierKeys.Shift, "G");
             else
-                _configRoot.Settings.ShowHideHotkey.Apply();
+                _configRoot.Settings.ShowHideHotkey.Apply(false);
 
             if (_configRoot.Commands == null)
             {
