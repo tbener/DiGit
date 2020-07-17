@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DiGitVersionInfo>
+  <Setup URI="O:\IT-Department\Software\Tools\DiGit\DiGitSetup.msi"/>
+  <Version version="1.0.224" notifyVersion="All">
+    <Change type="fix">Fixed bug - Show\hide hotkey failed occasionally on Win10 and crashed the application</Change>
+  </Version>
+  <Version version="1.0.223" notifyVersion="All">
+    <Change type="fix">Fixed bug - DiGit asked for the repositories paths every restart</Change>
+  </Version>
+  <Version version="1.0.222" notifyVersion="All">
+    <Change type="minor">Improved update mechanism</Change>
+  </Version>
+  <Version version="1.0.221" notifyVersion="All">
+    <Change type="minor">Update Gated Push executable path</Change>
+  </Version>
+  <Version version="1.0.219" notifyVersion="All">
+    <Change type="feature">Improved update checks</Change>
+    <Change type="fix">Minor bug fixes</Change>
+  </Version>
+  <Version version="1.0.218" notifyVersion="All">
+    <Change type="feature">Support Gated Check-in</Change>
+    <Change type="feature">New notifications look and feel</Change>
+    <Change type="fix">Hide from Alt+Tab</Change>
+    <Change type="fix">Fixed - Windows 10 stopped displaying notifications</Change>
+    <Change type="fix">Minor bug fixes</Change>
+  </Version>
+  <Version version="1.0.212" notifyVersion="All">
+    <Change type="Feature">Support multiple monitors</Change>
+    <Change type="minor">Adjustments for Windows 10</Change>
+    <Change type="Feature">Added Delete and Add on bubble right click menu</Change>
+    <Change type="fix">Fix - save bubbles position</Change>
+    <Change type="Feature">Extended position capabilities, including Auto Arrange</Change>
+    <Change type="Feature">Added Hide all but this</Change>
+    <Change type="Feature">Changed index.lock icon</Change>
+  </Version>
+  <Version version="1.0.208" notifyVersion="All">
+    <Change type="Feature">Favorite folders + Clipboard support</Change>
+    <Change type="Feature">Recent folders</Change>
+  </Version>
+  <Version version="1.0.207" notifyVersion="All">
+    <Change type="Feature">Commands are customizable</Change>
+    <Change type="Feature">Open configutaion folder</Change>
+  </Version>
+  <Version version="1.0.206" notifyVersion="All">
+    <Change type="Feature">Add transparency</Change>
+    <Change type="Feature">Limit path length in bubble context menu</Change>
+  </Version>
+  <Version version="1.0.205" notifyVersion="All">
+    <Change type="Feature">Improve update manager</Change>
+  </Version>
+  <Version version="1.0.203" revision="23922" notifyVersion="All">
+    <Change type="Feature">Update manager added</Change>
+    <Change type="Feature">Run single instance</Change>
+    <Change type="Feature">Added Sync command</Change>
+    <Change type="Feature">Improve error handling</Change>
+  </Version>
+  <Version version="1.0.202" notifyVersion="All">
+    <Change type="Feature">Add show/hide hotkey to configuration (manual)</Change>
+  </Version>
+  <Version version="1.0.201" notifyVersion="All">
+    <Change type="Feature">Add GIT commands Merge and Show Log</Change>
+    <Change type="Feature">Add "index.lock" icon tooltip</Change>
+    <Change type="Feature">Add text ellipsis for long branch names</Change>
+  </Version>
+</DiGitVersionInfo>
