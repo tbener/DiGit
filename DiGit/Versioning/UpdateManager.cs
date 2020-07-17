@@ -17,6 +17,7 @@ namespace DiGit.Versioning
     internal static class UpdateManager
     {
         private static Exception _lastReadError;
+        private static bool _errorNotificationShown;
         public static event UpdateInfoChangedEventHandler OnUpdateInfoChanged;
         public static event UpdateRequiredEventHandler OnUpdateRequired;
         public static DiGitVersionInfo VersionInfo { get; private set; }
@@ -38,6 +39,8 @@ namespace DiGit.Versioning
                 LastReadError = null;
                 OnUpdateInfoChanged?.Invoke(null, new EventArgs());
                 string file = GetFileName();
+                if (string.IsNullOrEmpty(file))
+                    throw new FileNotFoundException();
                 VersionInfo = SerializeHelper.Load(typeof(DiGitVersionInfo), file) as DiGitVersionInfo;
                 SetData();
                 UserManager.AddLog("Check Update", "Success");
@@ -86,8 +89,16 @@ namespace DiGit.Versioning
                 if (File.Exists(file)) return file;
             }
 
+            file = Path.Combine(Settings.Default.InfoUrl, string.Format(Settings.Default.InfoBaseFileName, ""));
+            if (File.Exists(file)) return file;
 
-            return Path.Combine(Settings.Default.InfoUrl, string.Format(Settings.Default.InfoBaseFileName, ""));
+            if (!_errorNotificationShown)
+            {
+                NotificationHelper.ShowNotification("Error: missing file", "The Version Information file could not be found. Updates will not be available.");
+                _errorNotificationShown = true;
+            }
+
+            return null;
         }
 
         private static string GetFileName(string subname)

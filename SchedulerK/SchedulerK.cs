@@ -53,6 +53,8 @@ namespace SchedulerK
 
         public TimeSpan DefaultInterval { get; set; }
 
+        public List<IEventClass> EventList { get => _eventList; }
+
         #endregion
 
         #region Public delegates

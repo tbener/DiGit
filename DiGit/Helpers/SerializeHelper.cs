@@ -52,7 +52,8 @@ namespace DiGit.Helpers
             {
                 try
                 {
-                    fs.Close();
+                    if (fs != null)
+                        fs.Close();
                 }
                 catch { }
                 finally { fs = null; }

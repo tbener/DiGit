@@ -84,7 +84,10 @@ namespace DiGit.Model
             logEntry.Counter++;
             logEntry.LastUpdate = DateTime.Now;
             i++;
-            _logEntries[logEntry.Key] = logEntry;
+            if (_logEntries.ContainsKey(logEntry.Key))
+                _logEntries[logEntry.Key] = logEntry;
+            else
+                _logEntries.Add(logEntry.Key, logEntry);
             i++;
             Debug.Print(logEntry.ToString());
         }

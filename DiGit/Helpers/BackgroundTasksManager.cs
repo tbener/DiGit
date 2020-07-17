@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DiGit.Model;
 using DiGit.Properties;
-using DiGit.Versioning;
 using DiGit.Versioning;
 using SchedulerK;
 
@@ -16,18 +11,8 @@ namespace DiGit.Helpers
         public static void Start()
         {
             Scheduler sch = Scheduler.SharedInstance;
-            sch.TimerElapsedEvent += SchedulerOnTimerElapsedEvent;
-            
-            // Daily update check
-            // Check for updates a few seconds after startup and then every day on the same time
-            RecurrenceClass rec = new RecurrenceClass(new TimeSpan(1, 0, 0, 0), DateTime.Now.AddSeconds(Settings.Default.ReadInfoDelaySec))
-            {
-                Description = "Check update",
-                Tag = "check_update"
-            };
-            //rec.OnActivated += @class => UpdateManager.CheckRemoteAsync();
-            rec.OnActivated += RecurrenceCheckUpdate_OnActivated;
-            sch.Add(rec);
+
+            StartCheckUpdateScheduler(sch);
 
             //// Update user info on server a few seconds after startup
             //EventClass evt = new EventClass(DateTime.Now.AddSeconds(Settings.Default.WriteInfoDelaySec))
@@ -37,27 +22,29 @@ namespace DiGit.Helpers
             //evt.OnActivated += @class => Task.Factory.StartNew(UserManager.UpdateInfo).ContinueWith(task => ConfigurationHelper.Configuration.ver = AppInfo.AppVersion.ToString());
             //sch.Add(evt);
 
-            sch.Start();
+            if (sch.EventList.Count > 0)
+            {
+                sch.TimerElapsedEvent += SchedulerOnTimerElapsedEvent;
 
-            /*
-            var t = new System.Timers.Timer();
-            t.Interval = Settings.Default.ReadInfoDelaySec * 1000;
-            t.AutoReset = false;
-            t.Elapsed += (sender, args) => UpdateManager.CheckRemoteAsync();
-            t.Start();
+                sch.Start();
+            }
+        }
+        
+        private static void StartCheckUpdateScheduler(Scheduler scheduler)
+        {
+            if (string.IsNullOrEmpty(Settings.Default.InfoUrl) || string.IsNullOrEmpty(Settings.Default.InfoBaseFileName))
+                return;
 
-            t = new System.Timers.Timer();
-            t.Interval = Settings.Default.WriteInfoDelaySec * 1000;
-            t.AutoReset = false;
-            t.Elapsed += (sender, args) => Task.Factory.StartNew(UserManager.UpdateInfo).ContinueWith(task => ConfigurationHelper.Configuration.ver = AppInfo.AppVersion.ToString());
-            t.Start();
-
-            t = new System.Timers.Timer();
-            t.Interval = TimeSpan.FromHours(Settings.Default.CheckUpdateIntervalHr).TotalMilliseconds;
-            t.AutoReset = true;
-            t.Elapsed += (sender, args) => UpdateManager.CheckRemoteAsync();
-            t.Start();
-             */
+            // Daily update check
+            // Check for updates a few seconds after startup and then every day on the same time
+            RecurrenceClass rec = new RecurrenceClass(new TimeSpan(1, 0, 0, 0), DateTime.Now.AddSeconds(Settings.Default.ReadInfoDelaySec))
+            {
+                Description = "Check update",
+                Tag = "check_update"
+            };
+            //rec.OnActivated += @class => UpdateManager.CheckRemoteAsync();
+            rec.OnActivated += RecurrenceCheckUpdate_OnActivated;
+            scheduler.Add(rec);
         }
 
         private static void RecurrenceCheckUpdate_OnActivated(IEventClass evt)
