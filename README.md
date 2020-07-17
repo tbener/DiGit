@@ -1,7 +1,7 @@
 # DiGit
 Control your active GIT branches
 
-## [Download latest version](setup/DiGitSetup.msi)
+## [Download latest version](Setup/DiGitSetup.msi)
 
 ![](Images/Preview.png)
 
