@@ -18,11 +18,11 @@ namespace DiGit.ViewModel
             UpdateManager.OnUpdateInfoChanged += (sender, args) => Refresh();
             Refresh();
 
-            CheckUpdateCommand = new RelayCommand(UpdateManager.CheckRemoteAsync);
+            CheckUpdateCommand = new RelayCommand(UpdateManager.CheckUpdateAsync);
             UpdateCommand = new RelayCommand(UpdateManager.RunUpdate, CanUpdate);
 
-            if (!UpdateManager.Working && !UpdateManager.HasData)
-                UpdateManager.CheckRemoteAsync();
+            if (!UpdateManager.Working && !UpdateManager.VersionInfoUpdated)
+                UpdateManager.CheckUpdateAsync();
         }
 
         private bool CanUpdate(object obj)
@@ -42,12 +42,12 @@ namespace DiGit.ViewModel
             {
                 if (UpdateManager.LastReadError == null)
                 {
-                    NewVersion = UpdateManager.HasData ? UpdateManager.LastVersionInfo.version : "";
+                    NewVersion = UpdateManager.VersionInfoUpdated ? UpdateManager.LatestVersionInfo.version : "";
                 }
                 else
                     NewVersion = UpdateManager.LastReadError.Message;
 
-                if (UpdateManager.LastVersionInfo != null)
+                if (UpdateManager.LatestVersionInfo != null)
                     WhatsNewList =new ObservableCollection<DiGitVersionInfoVersion>(UpdateManager.GetGreaterOrEqualVersions());
 
                 //new ObservableCollection<DiGitVersionInfoVersionChange>(UpdateManager.LastVersionInfo.Change.ToList());
@@ -78,7 +78,7 @@ namespace DiGit.ViewModel
             set
             {
                 ConfigurationHelper.Configuration.isBetaUser = value;
-                UpdateManager.CheckRemoteAsync();
+                UpdateManager.CheckUpdateAsync();
             }
         }
     }

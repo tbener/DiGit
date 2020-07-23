@@ -32,7 +32,7 @@ namespace DiGit.Helpers
         
         private static void StartCheckUpdateScheduler(Scheduler scheduler)
         {
-            if (string.IsNullOrEmpty(Settings.Default.InfoUrl) || string.IsNullOrEmpty(Settings.Default.InfoBaseFileName))
+            if (string.IsNullOrEmpty(Settings.Default.VersionInfoUrl) || string.IsNullOrEmpty(Settings.Default.InfoBaseFileName))
                 return;
 
             // Daily update check
@@ -56,7 +56,7 @@ namespace DiGit.Helpers
             evt.Compute();
 
             UserManager.UpdateInfo("nextScheduledEvent", evt.ToString());
-            UpdateManager.CheckRemoteAsync();
+            UpdateManager.CheckUpdateAsync();
         }
 
         private static void SchedulerOnTimerElapsedEvent(object sender, IEventClass evt)

@@ -81,7 +81,7 @@ namespace DiGit.ViewModel
         {
             get
             {
-                if (UpdateManager.HasData)
+                if (UpdateManager.VersionInfoUpdated)
                 {
                     if (UpdateManager.UpdateRequired)
                         return "New version available.";
@@ -96,7 +96,6 @@ namespace DiGit.ViewModel
         {
             get
             {
-
                 if (UpdateManager.UpdateRequired)
                     return "Click to update";
                 return "Check for update";

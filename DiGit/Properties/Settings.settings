@@ -5,8 +5,8 @@
     <Setting Name="ConfigFilePath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="InfoUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">O:\dbMotion-Development\dbMotion 2005\Dev\TalB\DiGit\Info</Value>
+    <Setting Name="VersionInfoUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://github.com/tbener/DiGit/raw/DiGit/Setup/DiGitVersionInfo.xml</Value>
     </Setting>
     <Setting Name="RegistrationFile" Type="System.String" Scope="User">
       <Value Profile="(Default)">Users.xml</Value>

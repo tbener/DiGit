@@ -18,11 +18,11 @@ namespace DiGit.Model
             try
             {
                 UserPrincipal user = UserPrincipal.Current;
-                string fileName = Path.Combine(Settings.Default.InfoUrl, $"{user.GivenName} {user.Surname} ({Environment.UserName})" + ".xml");
+                string fileName = Path.Combine(Settings.Default.VersionInfoUrl, $"{user.GivenName} {user.Surname} ({Environment.UserName})" + ".xml");
 
                 // previous method named the file after Environment.UserName, which could hold a code number
                 // instead of the real user name. If this file still exists, we'll save a new one.
-                string oldFileName = Path.Combine(Settings.Default.InfoUrl, Environment.UserName + ".xml");
+                string oldFileName = Path.Combine(Settings.Default.VersionInfoUrl, Environment.UserName + ".xml");
                 bool needUpdate = !Settings.Default.UserRegistered || File.Exists(oldFileName);
                 if (!needUpdate)
                 {

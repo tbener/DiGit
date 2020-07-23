@@ -73,7 +73,7 @@ namespace DiGit.Model
         {
             get
             {
-                return "Tal Bener (Allscripts)";
+                return "Tal Bener";
             }
         }
 
@@ -81,7 +81,7 @@ namespace DiGit.Model
         {
             get
             {
-                return "tal.bener@allscripts.com";
+                return "tbener@gmail.com";
             }
         }
     }

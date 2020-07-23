@@ -12,7 +12,7 @@ namespace DiGit.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.4.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.6.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -37,13 +37,13 @@ namespace DiGit.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("O:\\dbMotion-Development\\dbMotion 2005\\Dev\\TalB\\DiGit\\Info")]
-        public string InfoUrl {
+        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/tbener/DiGit/raw/DiGit/Setup/DiGitVersionInfo.xml")]
+        public string VersionInfoUrl {
             get {
-                return ((string)(this["InfoUrl"]));
+                return ((string)(this["VersionInfoUrl"]));
             }
             set {
-                this["InfoUrl"] = value;
+                this["VersionInfoUrl"] = value;
             }
         }
         
