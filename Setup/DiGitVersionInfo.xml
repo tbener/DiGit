@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DiGitVersionInfo>
-  <Setup URI="O:\IT-Department\Software\Tools\DiGit\DiGitSetup.msi"/>
+  <Setup URI="https://github.com/tbener/DiGit/raw/DiGit/Setup/DiGitSetup.msi" beta="https://github.com/tbener/DiGit/raw/DiGit/Setup/DiGitSetup_beta.msi"/>
+  <Version isBeta="false" version="1.0.225" notifyVersion="All">
+    <Change type="feature">Upgrade the update mechanism</Change>
+    <Change type="minor">Change author details</Change>
+  </Version>
   <Version version="1.0.224" notifyVersion="All">
     <Change type="fix">Fixed bug - Show\hide hotkey failed occasionally on Win10 and crashed the application</Change>
   </Version>
