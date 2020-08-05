@@ -18,13 +18,11 @@ namespace DiGit.Versioning
     internal static class UpdateManager
     {
         private static Exception _lastReadError;
-        private static bool _errorNotificationShown;
         private static string _localSetupFile;
 
         public static event UpdateInfoChangedEventHandler OnUpdateInfoChanged;
         public static event UpdateRequiredEventHandler OnUpdateRequired;
         public static DiGitVersionInfo VersionInfo { get; private set; }
-
 
         internal static void CheckUpdateAsync()
         {
@@ -132,7 +130,7 @@ namespace DiGit.Versioning
                 _localSetupFile = Path.Combine(PathHelper.GetFullPath(Path.GetTempPath(), "DiGit", true), $"DiGitSetup v{LatestVersionInfo.version}.msi");
                 if (VerifyLocalSetupFile())
                     return;
-
+                
                 Working = true;
                 using (var client = new WebClient())
                 {

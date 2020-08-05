@@ -4,11 +4,11 @@ using FirstFloor.ModernUI.Windows.Controls;
 namespace DiGit.View
 {
     /// <summary>
-    /// Interaction logic for UpdateView.xaml
+    /// Interaction logic for WhatsNewView.xaml
     /// </summary>
-    public partial class UpdateView : ModernWindow
+    public partial class WhatsNewView : ModernWindow
     {
-        public UpdateView()
+        public WhatsNewView()
         {
             InitializeComponent();
 
@@ -22,8 +22,7 @@ namespace DiGit.View
                 { }
             };
 
-            this.DataContext = new UpdateViewModel();
-
+            this.DataContext = new WhatsNewViewModel();
         }
     }
 }

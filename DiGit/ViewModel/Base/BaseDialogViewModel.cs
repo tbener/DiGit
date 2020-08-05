@@ -11,11 +11,9 @@ namespace DiGit.ViewModel.Base
     {
         public event CancelEventHandler RequestClose;
 
-
         protected virtual void OnRequestClose(bool cancel)
         {
-            if (RequestClose != null)
-                RequestClose(this, new CancelEventArgs(cancel));
+            RequestClose?.Invoke(this, new CancelEventArgs(cancel));
         }
 
     }

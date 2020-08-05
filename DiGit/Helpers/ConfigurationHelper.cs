@@ -107,7 +107,7 @@ namespace DiGit.Helpers
                 if (AppInfo.AppVersion.IsHigherThan(Version.Parse(_configRoot.ver)))
                 {
                     isUpgrade = true;
-                    new ShowSingleViewCommand(typeof(TipsView)).Execute(null);
+                    new ShowSingleViewCommand(typeof(WhatsNewView)).Execute(null);
                 }
             }
 
