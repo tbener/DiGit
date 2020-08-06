@@ -37,7 +37,23 @@
                 <XmlDataProvider Source="/Versioning/DiGitVersionInfo.xml" XPath="DiGitVersionInfo" />
             </ScrollViewer.DataContext>
             <StackPanel DockPanel.Dock="Top">
-                <Expander Tag="1.0.224" IsExpanded="True" Header="New in 1.0.224">
+                <Expander Tag="1.1.0" IsExpanded="True" Header="New in 1.1.0">
+                    <StackPanel Margin="30, 6">
+                        <ListView ItemsSource="{Binding XPath=./Version[@version\=\'1.1.0\']/*}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate >
+                                    <BulletDecorator>
+                                        <BulletDecorator.Bullet>
+                                            <Ellipse Height="5" Width="5" Fill="Black" />
+                                        </BulletDecorator.Bullet>
+                                        <TextBlock Text="{Binding XPath=text()}" Margin="8, 0, 0, 0"/>
+                                    </BulletDecorator>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+                </Expander>
+                <Expander Tag="1.0.224" IsExpanded="False" Header="New in 1.0.224">
                     <StackPanel Margin="30, 6">
                         <ListView ItemsSource="{Binding XPath=./Version[@version\=\'1.0.224\']/*}">
                             <ListView.ItemTemplate>

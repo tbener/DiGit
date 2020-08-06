@@ -79,11 +79,11 @@ namespace DiGit.Versioning
                 {
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                     client.DownloadStringCompleted += Client_DownloadStringCompleted;
-#if DEBUG
-                    client.DownloadStringAsync(new Uri(@"C:\Users\tbene\source\repos\DiGit\Setup\Debug\DiGitVersionInfo.xml"));
-#else
+//#if DEBUG
+//                    client.DownloadStringAsync(new Uri(@"C:\Users\tbene\source\repos\DiGit\Setup\Debug\DiGitVersionInfo.xml"));
+//#else
                     client.DownloadStringAsync(new Uri(Settings.Default.VersionInfoUrl)); 
-#endif
+//#endif
                 }
             }
             catch (Exception ex)
@@ -128,7 +128,7 @@ namespace DiGit.Versioning
 
         private static void ReadVersionInfo()
         {
-            LatestVersionInfo = VersionInfo.Version.FirstOrDefault(v => v.version.Equals(VersionInfo.Version.Max(v1 => v1.version)));
+            LatestVersionInfo = VersionInfo.Version.First();
             LastReadDateTime = DateTime.Now;
             if (LatestVersionInfo != null)
                 UpdateRequired = Version.Parse(LatestVersionInfo.version).IsHigherThan(AppInfo.AppVersion);
