@@ -16,13 +16,19 @@ namespace DiGit.ViewModel
         public UpdateViewModel()
         {
             UpdateManager.OnUpdateInfoChanged += (sender, args) => Refresh();
+            UpdateManager.OnPropertyChanged += UpdateManager_OnPropertyChanged;
             Refresh();
 
-            CheckUpdateCommand = new RelayCommand(UpdateManager.CheckUpdateAsync);
+            CheckUpdateCommand = new RelayCommand(CheckUpdate);
             UpdateCommand = new RelayCommand(UpdateManager.RunUpdate, CanUpdate);
 
             if (!UpdateManager.Working && !UpdateManager.VersionInfoUpdated)
                 UpdateManager.CheckUpdateAsync();
+        }
+
+        private void UpdateManager_OnPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged("Status");
         }
 
         private bool CanUpdate(object obj)
@@ -30,28 +36,21 @@ namespace DiGit.ViewModel
             return UpdateManager.SetupFileFound;
         }
 
+        private void CheckUpdate()
+        {
+            WhatsNewList = null;
+            UpdateManager.CheckUpdateAsync();
+        }
+
         public void Refresh()
         {
             CurrentVersion = AppInfo.AppVersionString;
-            if (UpdateManager.Working)
-            {
-                NewVersion = "Reading...";
-                WhatsNewList = null;
-            }
-            else
-            {
-                if (UpdateManager.LastReadError == null)
-                {
-                    NewVersion = UpdateManager.VersionInfoUpdated ? UpdateManager.LatestVersionInfo.version : "";
-                }
-                else
-                    NewVersion = UpdateManager.LastReadError.Message;
+            NewVersion = UpdateManager.VersionInfoUpdated ? UpdateManager.LatestVersionInfo.version : "";
 
-                if (UpdateManager.LatestVersionInfo != null)
-                    WhatsNewList =new ObservableCollection<DiGitVersionInfoVersion>(UpdateManager.GetGreaterOrEqualVersions());
+            if (UpdateManager.LatestVersionInfo != null)
+                WhatsNewList =new ObservableCollection<DiGitVersionInfoVersion>(UpdateManager.GetGreaterOrEqualVersions());
 
-                //new ObservableCollection<DiGitVersionInfoVersionChange>(UpdateManager.LastVersionInfo.Change.ToList());
-            }
+            OnPropertyChanged("Status");
             OnPropertyChanged("NewVersion");
             OnPropertyChanged("WhatsNewList");
             OnPropertyChanged("CanUpdate");
@@ -62,8 +61,16 @@ namespace DiGit.ViewModel
         {
             get
             {
-                return UpdateManager.LastReadError != null ? UpdateManager.LastReadError.Message :
-                    UpdateManager.SetupFileFound ? "Update to the latest version of DiGit" : "Setup file not found";
+                return UpdateManager.SetupFileFound ? "Update to the latest version of DiGit" : "Setup file not found";
+            }
+        }
+
+        public string Status {
+            get
+            {
+                if (UpdateManager.LastReadError != null)
+                    return UpdateManager.LastReadError.Message;
+                return string.IsNullOrEmpty(UpdateManager.Status) ? $"Last read: {UpdateManager.LastReadDateTime}" : UpdateManager.Status;
             }
         }
 

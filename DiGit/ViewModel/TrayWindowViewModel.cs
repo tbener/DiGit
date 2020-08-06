@@ -100,7 +100,7 @@ namespace DiGit.ViewModel
 
             #endregion
 
-            ShowTipsCommand = new RelayCommand(() => new ShowSingleViewCommand(typeof(TipsView)).Execute(null));
+            ShowTipsCommand = new RelayCommand(() => new ShowSingleViewCommand(typeof(WhatsNewView)).Execute(null));
 
             HotkeyHelper.OnHotkeyChanged += (sender, args) => OnPropertyChanged("ShowHideHeader");
             // todo: currently the only balloon is for update, so no distinction about what to do.

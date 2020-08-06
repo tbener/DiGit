@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -19,9 +20,18 @@ namespace DiGit.Versioning
     {
         private static Exception _lastReadError;
         private static string _localSetupFile;
+        private static DateTime _lastReadDateTime;
+        private static string _status;
 
         public static event UpdateInfoChangedEventHandler OnUpdateInfoChanged;
         public static event UpdateRequiredEventHandler OnUpdateRequired;
+        public static event PropertyChangedEventHandler OnPropertyChanged;
+
+        private static void PropertyChanged(string propertyName)
+        {
+            OnPropertyChanged?.Invoke(null, new PropertyChangedEventArgs(propertyName));
+        }
+
         public static DiGitVersionInfo VersionInfo { get; private set; }
 
         internal static void CheckUpdateAsync()
@@ -39,7 +49,7 @@ namespace DiGit.Versioning
                 LastReadError = null;
                 GetVersionInfo();
                 //NotificationHelper.ShowNotification("DiGit is checking for updates...", $"Current version: {AppInfo.AppVersionString}.\nClick to open the Update window.", new ShowSingleViewCommand(typeof(UpdateView)));
-                
+
                 //UserManager.AddLog("Check Update", "Success");
             }
             catch (FileNotFoundException ex1)
@@ -64,11 +74,16 @@ namespace DiGit.Versioning
         {
             try
             {
+                Status = "Reading...";
                 using (var client = new WebClient())
                 {
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                     client.DownloadStringCompleted += Client_DownloadStringCompleted;
-                    client.DownloadStringAsync(new Uri(Settings.Default.VersionInfoUrl));
+#if DEBUG
+                    client.DownloadStringAsync(new Uri(@"C:\Users\tbene\source\repos\DiGit\Setup\Debug\DiGitVersionInfo.xml"));
+#else
+                    client.DownloadStringAsync(new Uri(Settings.Default.VersionInfoUrl)); 
+#endif
                 }
             }
             catch (Exception ex)
@@ -94,6 +109,7 @@ namespace DiGit.Versioning
                 VersionInfo = (DiGitVersionInfo)serializer.Deserialize(new StringReader(e.Result));
 
                 ReadVersionInfo();
+                Status = "";
             }
             catch (Exception ex)
             {
@@ -130,7 +146,8 @@ namespace DiGit.Versioning
                 _localSetupFile = Path.Combine(PathHelper.GetFullPath(Path.GetTempPath(), "DiGit", true), $"DiGitSetup v{LatestVersionInfo.version}.msi");
                 if (VerifyLocalSetupFile())
                     return;
-                
+
+                Status = "Update found. Downloading...";
                 Working = true;
                 using (var client = new WebClient())
                 {
@@ -151,6 +168,7 @@ namespace DiGit.Versioning
         {
             try
             {
+                Status = "";
                 if (e.Error != null)
                 {
                     // log...
@@ -185,7 +203,7 @@ namespace DiGit.Versioning
             return SetupFileFound;
         }
 
-        
+
 
 
         private static void ResetVars()
@@ -254,17 +272,36 @@ namespace DiGit.Versioning
 
         public static DiGitVersionInfoVersion LatestVersionInfo { get; private set; }
 
+        public static DateTime LastReadDateTime
+        {
+            get => _lastReadDateTime;
+            private set
+            {
+                _lastReadDateTime = value;
+                PropertyChanged("LastReadDateTime");
+            }
+        }
+
+        public static string Status
+        {
+            get => _status; 
+            set
+            {
+                _status = value;
+                PropertyChanged("Status");
+            }
+        }
+
         public static Exception LastReadError
         {
             get { return _lastReadError; }
             private set
             {
+                Status = "Error";
                 _lastReadError = value;
                 if (value != null) ErrorHandler.Handle(value, false);
             }
         }
-
-        public static DateTime LastReadDateTime { get; private set; }
 
     }
 }
