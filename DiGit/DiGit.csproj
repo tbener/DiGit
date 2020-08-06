@@ -420,9 +420,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\DiGitVersionInfo.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Configuration\Schema\DiGit.xml" />
   </ItemGroup>
   <ItemGroup>
