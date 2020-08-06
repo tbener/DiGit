@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DiGitVersionInfo>
   <Setup URI="https://github.com/tbener/DiGit/raw/DiGit/Setup/DiGitSetup.msi" beta="https://github.com/tbener/DiGit/raw/DiGit/Setup/DiGitSetup_beta.msi"/>
+  <Version version="1.0.01" notifyVersion="All">
+    <Change type="fix">Fixed a bug in update window</Change>
+  </Version>
   <Version isBeta="false" version="1.1.0" notifyVersion="All">
     <Change type="feature">Upgrade the update mechanism</Change>
     <Change type="minor">Change author details</Change>
